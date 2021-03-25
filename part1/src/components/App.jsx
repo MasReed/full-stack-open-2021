@@ -5,6 +5,9 @@ import Header from './Header.jsx';
 import Content from './Content.jsx';
 import Total from './Total.jsx';
 import Hello from './Hello.jsx';
+import Display from './counter/Display.jsx';
+import Button from './counter/Buttons.jsx';
+
 
 const App = () => {
   const course = 'Half Stack application development'
@@ -29,9 +32,9 @@ const App = () => {
 
   const [ counter, setCounter ] = useState(0);
 
-  const incrementCounter = () => setCounter(counter + 1)
-  const decrementCounter = () => setCounter(counter - 1)
-  const resetCounter = () => setCounter(0)
+  const incCount = () => setCounter(counter + 1)
+  const decCount = () => setCounter(counter - 1)
+  const resetCount = () => setCounter(0)
 
   return (
     <div style={{padding: "2% 25%"}}>
@@ -41,10 +44,10 @@ const App = () => {
       <hr />
       <Hello info={aPerson} />
       <hr />
-      <h1>{counter}</h1>
-      <button onClick={incrementCounter}>+</button>
-      <button onClick={decrementCounter}>-</button>
-      <button onClick={resetCounter}>Reset</button>
+      <Display counter={counter} />
+      <Button handleClick={incCount} text={'+'}/>
+      <Button handleClick={decCount} text={'-'}/>
+      <Button handleClick={resetCount} text={'Reset'}/>
     </div>
     );
 }
