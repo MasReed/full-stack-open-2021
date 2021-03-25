@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // components
 import Header from './Header.jsx';
@@ -26,24 +26,25 @@ const App = () => {
       name: 'Dave',
       age: 26
   };
-  const somePeople = [
-      {
-          name: 'Steve',
-          age: 55
-      },
-      {
-          name: 'Susan',
-          age: 62
-      }
-  ];
+
+  const [ counter, setCounter ] = useState(0);
+
+  const incrementCounter = () => setCounter(counter + 1)
+  const decrementCounter = () => setCounter(counter - 1)
+  const resetCounter = () => setCounter(0)
 
   return (
-    <div>
+    <div style={{padding: "2% 25%"}}>
       <Header title={course} />
       <Content parts={allParts} />
       <Total parts={allParts} />
       <hr />
       <Hello info={aPerson} />
+      <hr />
+      <h1>{counter}</h1>
+      <button onClick={incrementCounter}>+</button>
+      <button onClick={decrementCounter}>-</button>
+      <button onClick={resetCounter}>Reset</button>
     </div>
     );
 }
