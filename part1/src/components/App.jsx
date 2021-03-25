@@ -4,6 +4,7 @@ import React from 'react';
 import Header from './Header.jsx';
 import Content from './Content.jsx';
 import Total from './Total.jsx';
+import Hello from './Hello.jsx';
 
 const App = () => {
   const course = 'Half Stack application development'
@@ -21,12 +22,28 @@ const App = () => {
           exercises: 14
       }
   ];
+  const aPerson = {
+      name: 'Dave',
+      age: 26
+  };
+  const somePeople = [
+      {
+          name: 'Steve',
+          age: 55
+      },
+      {
+          name: 'Susan',
+          age: 62
+      }
+  ];
 
   return (
     <div>
       <Header title={course} />
       <Content parts={allParts} />
       <Total parts={allParts} />
+      <hr />
+      <Hello info={aPerson} />
     </div>
     );
 }
