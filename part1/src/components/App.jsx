@@ -18,9 +18,7 @@ const App = () => {
   return (
     <>
       <Header title={course}/>
-      <Content part={part1} n={exercises1}/>
-      <Content part={part2} n={exercises2}/>
-      <Content part={part3} n={exercises3}/>
+      <Content parts={[part1, part2, part3]} n={[exercises1, exercises2, exercises3]}/>
       <Total exercises={[exercises1, exercises2, exercises3]}/>
     </>
     );
