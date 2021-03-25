@@ -1,6 +1,6 @@
 import React from 'react';
 
 const Buttons = ({ handleClick, text }) =>
-    <button onClick={handleClick}>{text}</button>
+    <button style={{padding: '20px', margin: '0 5px', display: 'inline'}} onClick={handleClick}>{text}</button>
 
 export default Buttons

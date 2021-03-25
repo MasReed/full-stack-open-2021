@@ -30,11 +30,37 @@ const App = () => {
       age: 26
   };
 
+  // Counter State
   const [ counter, setCounter ] = useState(0);
 
   const incCount = () => setCounter(counter + 1)
   const decCount = () => setCounter(counter - 1)
   const resetCount = () => setCounter(0)
+
+  // Clicker State (purposefully complex)
+  const [ clicks, setClicks ] = useState({
+      left: 0,
+      right: 0
+  });
+
+  // Stateful Array
+  const [allClicks, setAllClicks] = useState([]);
+
+  const handleLeftClick = () => {
+      setClicks({...clicks, left: clicks.left + 1});
+      setAllClicks(allClicks.concat('L'));
+  }
+
+  const handleRightClick = () => {
+      setClicks({...clicks, right: clicks.right + 1});
+      setAllClicks(allClicks.concat('R'));
+  }
+
+  const resetClick = () => {
+      setClicks({left: 0, right: 0});
+      setAllClicks([]);
+  }
+
 
   return (
     <div style={{padding: "2% 25%"}}>
@@ -44,10 +70,24 @@ const App = () => {
       <hr />
       <Hello info={aPerson} />
       <hr />
-      <Display counter={counter} />
-      <Button handleClick={incCount} text={'+'}/>
-      <Button handleClick={decCount} text={'-'}/>
-      <Button handleClick={resetCount} text={'Reset'}/>
+
+      <div>
+        <Display counter={counter} />
+        <Button handleClick={incCount} text={'+'}/>
+        <Button handleClick={decCount} text={'-'}/>
+        <Button handleClick={resetCount} text={'Reset'}/>
+      </div>
+
+      <hr />
+
+      <div>
+        <Display counter={clicks.left} />
+        <Button handleClick={handleLeftClick} text={'Left'}/>
+        <Button handleClick={resetClick} text={'Reset'}/>
+        <Button handleClick={handleRightClick} text={'Right'}/>
+        <Display counter={clicks.right} />
+        <p>{allClicks.join(' ')}</p>
+      </div>
     </div>
     );
 }
