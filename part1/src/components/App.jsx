@@ -5,8 +5,9 @@ import Header from './Header.jsx';
 import Content from './Content.jsx';
 import Total from './Total.jsx';
 import Hello from './Hello.jsx';
-import Display from './counter/Display.jsx';
-import Button from './counter/Buttons.jsx';
+import History from './History.jsx';
+import Display from './Display.jsx';
+import Button from './Buttons.jsx';
 
 
 const App = () => {
@@ -82,11 +83,11 @@ const App = () => {
 
       <div>
         <Display counter={clicks.left} />
-        <Button handleClick={handleLeftClick} text={'Left'}/>
+        <Button handleClick={handleLeftClick} text='Left'/>
         <Button handleClick={resetClick} text={'Reset'}/>
         <Button handleClick={handleRightClick} text={'Right'}/>
         <Display counter={clicks.right} />
-        <p>{allClicks.join(' ')}</p>
+        <History allClicks={allClicks} />
       </div>
     </div>
     );
