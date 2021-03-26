@@ -73,7 +73,7 @@ const App = () => {
       <hr />
 
       <div>
-        <Display counter={counter} />
+        <Display number={counter} />
         <Button handleClick={incCount} text={'+'}/>
         <Button handleClick={decCount} text={'-'}/>
         <Button handleClick={resetCount} text={'Reset'}/>
@@ -82,11 +82,11 @@ const App = () => {
       <hr />
 
       <div>
-        <Display counter={clicks.left} />
+        <Display number={clicks.left} />
         <Button handleClick={handleLeftClick} text='Left'/>
         <Button handleClick={resetClick} text={'Reset'}/>
         <Button handleClick={handleRightClick} text={'Right'}/>
-        <Display counter={clicks.right} />
+        <Display number={clicks.right} />
         <History allClicks={allClicks} />
       </div>
     </div>
