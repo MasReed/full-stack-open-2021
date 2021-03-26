@@ -2,8 +2,6 @@ import React from 'react';
 
 const History = (props) => {
 
-    console.log(props.allClicks);
-
     if (props.allClicks.length === 0) {
         return (
             <div>

@@ -1,7 +1,7 @@
 // A simple web application for collecting and displaying customer feedback.
 import React, { useState } from 'react';
 import Button from '../components/Buttons.jsx';
-import Statistic from './Statistic.jsx';
+import Statistics from './Statistics.jsx';
 
 
 const App = () => {
@@ -42,7 +42,7 @@ const App = () => {
             <Button handleClick={() => handleClick('neut')} text={'Neutral'}/>
             <Button handleClick={() => handleClick('bad')} text={'Bad'}/>
             {hasFeedback ?
-                <Statistic
+                <Statistics
                     good={goodRating}
                     neut={neutRating}
                     bad={badRating}

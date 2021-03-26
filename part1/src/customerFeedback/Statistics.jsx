@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Statistic = ( {good, neut, bad} ) => {
+const Statistics = ( {good, neut, bad} ) => {
 
     const tot = good + neut + bad;
     let avgScore = null;
@@ -28,4 +28,4 @@ const Statistic = ( {good, neut, bad} ) => {
     );
 }
 
-export default Statistic;
+export default Statistics;
