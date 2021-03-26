@@ -10,9 +10,13 @@ const App = () => {
     const [ goodRating, setGoodRating ] = useState(0);
     const [ neutRating, setNeutRating ] = useState(0);
     const [ badRating, setBadRating ] = useState(0);
+    const [ hasFeedback, setHasFeedback ] = useState(false);
 
     // Called when rating buttons are clicked
     const handleClick = (ratingType) => {
+
+        setHasFeedback(true);
+
         switch(ratingType) {
             case 'good':
                 setGoodRating(goodRating + 1);
@@ -37,11 +41,14 @@ const App = () => {
             <Button handleClick={() => handleClick('good')} text={'Good'}/>
             <Button handleClick={() => handleClick('neut')} text={'Neutral'}/>
             <Button handleClick={() => handleClick('bad')} text={'Bad'}/>
-            <Statistic
-                good={goodRating}
-                neut={neutRating}
-                bad={badRating}
-            />
+            {hasFeedback ?
+                <Statistic
+                    good={goodRating}
+                    neut={neutRating}
+                    bad={badRating}
+                />
+                : <p>Be the first to leave feedback!</p>
+            }
             <hr />
         </div>
     );
