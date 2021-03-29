@@ -76,6 +76,8 @@ const App = () => {
             New Anecdote
             </button>
             <h3 style={{display: 'inline', padding: "5px 20px"}}>{selected.votes[selected.index]} Votes</h3>
+            <h2>Most Voted Anecdote with {Math.max(...selected.votes)} Votes:</h2>
+            <p>{anecdotes[selected.votes.indexOf((Math.max(...selected.votes)))]}</p>
         </div>
     );
 }
