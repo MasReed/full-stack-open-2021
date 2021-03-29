@@ -75,7 +75,7 @@ const App = () => {
             >
             New Anecdote
             </button>
-
+            <h3 style={{display: 'inline', padding: "5px 20px"}}>{selected.votes[selected.index]} Votes</h3>
         </div>
     );
 }
