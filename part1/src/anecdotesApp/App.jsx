@@ -12,24 +12,70 @@ const App = () => {
         'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
     ];
 
-    const [selected, setSelected] = useState(0);
+    // 0-filled array to initialize selected.votes
+    let aV = []
+    aV.length = anecdotes.length;
+    aV.fill(0);
 
+    // Stateful anecdote index and votes.
+    // Note: Innacurate if anecdotes array changes order. Better w/ different data struct.
+    // Practicing complex state updates
+    const [selected, setSelected] = useState({
+        index: 0,
+        votes: aV
+    });
+
+    //
+    const handleVoteClick = () => {
+        setSelected( (prevState) => {
+            // Array of all votes to be returned
+            const votesCopy = [...prevState.votes]
+            votesCopy[selected.index] += 1;
+
+            return({
+                ...prevState,
+                votes: votesCopy
+            });
+        });
+    }
+
+    //
+    const handleNewAnecdoteClick = () => {
+        const rn = getRandomInt(0, anecdotes.length);
+        const newAnecdote = {
+            index: rn,
+            votes: selected.votes
+        }
+        setSelected(newAnecdote);
+    }
+
+    //
     function getRandomInt(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min) + min);
     }
 
-    const handleClick = () => {
-        setSelected(getRandomInt(0, anecdotes.length));
-    }
-
+    // Elements to render
     return (
         <div style={{padding: "2% 25%"}}>
             <hr />
             <h1>Anecdotes App</h1>
-            <p>{anecdotes[selected]}</p>
-            <button onClick={handleClick}>New Anecdote</button>
+            <p>{anecdotes[selected.index]}</p>
+            <button
+                onClick={handleVoteClick}
+                text={'Vote'}
+                style={{padding: "5px 20px"}}
+            >
+            Vote!
+            </button>
+            <button
+                style={{padding: '5px 20px'}}
+                onClick={handleNewAnecdoteClick}
+            >
+            New Anecdote
+            </button>
+
         </div>
     );
 }
