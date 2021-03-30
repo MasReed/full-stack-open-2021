@@ -4,8 +4,10 @@ const Part = ({ partName, exercises }) => {
 
     return (
         <>
-            <h3>{partName}</h3>
-            <p>Number of Exercises: {exercises}</p>
+            <div>
+                <h3 style={{display: 'inline'}}>{partName}: </h3>
+                <p style={{display: 'inline'}}>{exercises} exercises</p>
+            </div>
         </>
     );
 }

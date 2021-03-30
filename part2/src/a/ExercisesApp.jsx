@@ -3,7 +3,9 @@ import React from 'react';
 import Course from './Course.jsx';
 
 const ExercisesApp = (props) => {
+    // Display information for a given course
 
+    // Temporary data
     const course = {
         id: 1,
         name: 'Half Stack application development',
@@ -26,6 +28,7 @@ const ExercisesApp = (props) => {
         ]
     };
 
+    // Elements to render
     return (
         <>
         <hr />
