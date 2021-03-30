@@ -5,7 +5,8 @@ import Content from './Content.jsx';
 import Total from './Total.jsx';
 
 const Course = ({ course }) => {
-    // Display content within a 'course' object
+    // Display content within each 'course' object
+
     return (
         <div>
             <Header title={course.name} />
