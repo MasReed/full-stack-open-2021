@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+// Components
+import PersonForm from './PersonForm.jsx';
+import Persons from './Persons.jsx';
 
 const App = () => {
 
@@ -46,7 +49,7 @@ const App = () => {
     }
 
     // When Name input is changed
-    const handleContactChange = (event) => {
+    const handleNameChange = (event) => {
         setNewName(event.target.value);
     }
 
@@ -61,6 +64,7 @@ const App = () => {
         setSearchStr(event.target.value);
     }
 
+    // Filter list of contacts to show if search input is changed
     const contactsToShow = showAllContacts
         ? persons
         : persons.filter( person => person.name.toLowerCase().includes(searchStr.toLowerCase()) === true )
@@ -76,11 +80,20 @@ const App = () => {
                     value={searchStr}
                 />
             </div>
+
+            <PersonForm
+                onSubmit={addContact}
+                newName={newName}
+                handleNameChange={handleNameChange}
+                newNumber={newNumber}
+                handleNumberChange={handleNumberChange}
+            />
+
             <h2>Add New Contact</h2>
             <form onSubmit={addContact}>
                 <div>
                     <label>Name: </label>
-                    <input value={newName} onChange={handleContactChange}/>
+                    <input value={newName} onChange={handleNameChange}/>
                 </div>
                 <div>
                     <label>Number: </label>
@@ -90,8 +103,8 @@ const App = () => {
                     <button type='submit'>Add</button>
                 </div>
             </form>
-            <h2>Numbers</h2>
-            { contactsToShow.map( person => <p key={person.name}>{person.name}: #{person.number}</p>) }
+
+            <Persons contacts={contactsToShow} />
         </div>
     );
 }
