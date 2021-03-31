@@ -6,7 +6,7 @@ import Persons from './Persons.jsx';
 
 const App = () => {
 
-    // Stateful list of all contacts
+    // Stateful list of all contacts (temporary hardcoded data)
     const [ persons, setPersons ] = useState([
         {
             name: 'Arto Hellas',
@@ -30,21 +30,23 @@ const App = () => {
     const [ newName, setNewName ] = useState('');
     const [ newNumber, setNewNumber ] = useState('');
 
-    // Stateful display of contacts used with search filter
+    // Stateful display of contacts from search filter
     const [ searchStr, setSearchStr ] = useState('');
     const [ showAllContacts, setShowAllContacts ] = useState(true);
 
     // Add contact name from input
     const addContact = (event) => {
+        // Don't reload page on submit
         event.preventDefault();
 
-        // Checks if entry alread exists
+        // Checks if entry already exists
         if (persons.some( person => person.name.toLowerCase() === newName.toLowerCase() )) {
             alert(`${newName} is already entered.`);
         } else {
             const contactObject = { name: newName, number: newNumber }
             setPersons(persons.concat(contactObject));
         }
+        // Reset input fields
         setNewName('');
         setNewNumber('');
     }
@@ -68,12 +70,17 @@ const App = () => {
     // Filter list of contacts to show if search input is changed
     const contactsToShow = showAllContacts
         ? persons
-        : persons.filter( person => person.name.toLowerCase().includes(searchStr.toLowerCase()) === true )
+        : persons.filter( person =>
+            person.name.toLowerCase().includes(
+                searchStr.toLowerCase()
+            ) === true
+        )
 
     // Elements to render
     return (
-        <div>
-            <h2>Phonebook</h2>
+        <>
+            <h1>Phonebook</h1>
+
             <Filter
                 onChange={handleSearchChange}
                 value={searchStr}
@@ -87,23 +94,8 @@ const App = () => {
                 handleNumberChange={handleNumberChange}
             />
 
-            <h2>Add New Contact</h2>
-            <form onSubmit={addContact}>
-                <div>
-                    <label>Name: </label>
-                    <input value={newName} onChange={handleNameChange}/>
-                </div>
-                <div>
-                    <label>Number: </label>
-                    <input value={newNumber} onChange={handleNumberChange}/>
-                </div>
-                <div>
-                    <button type='submit'>Add</button>
-                </div>
-            </form>
-
             <Persons contacts={contactsToShow} />
-        </div>
+        </>
     );
 }
 
