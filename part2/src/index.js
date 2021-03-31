@@ -2,11 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App0 from './example/App.jsx';
 import ExercisesApp from './exercise/a/ExercisesApp.jsx';
+import PhonebookApp from './phonebook/PhonebookApp.jsx';
 
 // Example
 ReactDOM.render(
   <>
-  <App0 />
+  <PhonebookApp />
   </>,
   document.getElementById('root')
 );
@@ -14,6 +15,7 @@ ReactDOM.render(
 // Exercise
 // ReactDOM.render(
 //     <>
+//         <App0 />
 //         <ExercisesApp />
 //     </>,
 //     document.getElementById('root')
