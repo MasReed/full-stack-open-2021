@@ -18,7 +18,10 @@ import PhonebookApp from './phonebook/PhonebookApp.jsx';
 ReactDOM.render(
     <>
         <App0 />
+        <hr />
         <ExercisesApp />
+        <hr />
+        <PhonebookApp />
     </>,
     document.getElementById('root')
 );

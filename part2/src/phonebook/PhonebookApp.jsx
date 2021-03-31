@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 // Components
 import Filter from './Filter.jsx';
 import PersonForm from './PersonForm.jsx';
@@ -6,25 +7,8 @@ import Persons from './Persons.jsx';
 
 const App = () => {
 
-    // Stateful list of all contacts (temporary hardcoded data)
-    const [ persons, setPersons ] = useState([
-        {
-            name: 'Arto Hellas',
-            number: '867-5309'
-        },
-        {
-            name: 'Test Person',
-            number: 'TestNumber'
-        },
-        {
-            name: 'Cora theCat',
-            number: 'meow purr'
-        },
-        {
-            name: 'The Quick Brown Fox Jumps Over The Lazy Dog',
-            number: '123-456-7890'
-        }
-    ]);
+    // Stateful list of all contacts
+    const [ persons, setPersons ] = useState([]);
 
     // Stateful contact info
     const [ newName, setNewName ] = useState('');
@@ -33,6 +17,14 @@ const App = () => {
     // Stateful display of contacts from search filter
     const [ searchStr, setSearchStr ] = useState('');
     const [ showAllContacts, setShowAllContacts ] = useState(true);
+
+    // Fetch Data from json-server with useEffect hook
+    useEffect( () => {
+        axios
+            .get('http://localhost:3001/persons')
+            .then( response => {setPersons(response.data)
+        })
+    }, []);
 
     // Add contact name from input
     const addContact = (event) => {

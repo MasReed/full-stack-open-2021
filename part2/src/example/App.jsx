@@ -13,11 +13,9 @@ const App = () => {
 
     // Fetch Data from json-server
     useEffect( () => {
-        console.log('effect');
         axios
             .get('http://localhost:3001/notes')
             .then( response => {
-                console.log('promise fulfilled')
                 setNotes(response.data)
             });
     }, []);
