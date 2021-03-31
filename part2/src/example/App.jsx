@@ -1,35 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Note from './Note.jsx';
 
 // Main App
 const App = () => {
 
-    // Temp Data
-    const tempNotes = [
-      {
-        id: 1,
-        content: 'HTML is easy',
-        date: '2019-05-30T17:30:31.098Z',
-        important: false
-      },
-      {
-        id: 2,
-        content: 'Browser can execute only JavaScript',
-        date: '2019-05-30T18:39:34.091Z',
-        important: true
-      },
-      {
-        id: 3,
-        content: 'GET and POST are the most important methods of HTTP protocol',
-        date: '2019-05-30T19:20:14.298Z',
-        important: true
-      }
-    ];
-
     // Stateful Data
-    const [ notes, setNotes ] = useState(tempNotes);
+    const [ notes, setNotes ] = useState([]);
     const [ newNote, setNewNote ] = useState('a new note...');
     const [ showAll, setShowAll ] = useState(true);
+
+
+    // Fetch Data from json-server
+    useEffect( () => {
+        console.log('effect');
+        axios
+            .get('http://localhost:3001/notes')
+            .then( response => {
+                console.log('promise fulfilled')
+                setNotes(response.data)
+            });
+    }, []);
 
     // User saves new note
     const addNote = (event) => {
@@ -45,7 +36,6 @@ const App = () => {
     }
 
     const handleNoteChange = (event) => {
-        console.log(event.target.value);
         setNewNote(event.target.value);
     }
 
