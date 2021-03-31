@@ -13,7 +13,12 @@ const App = () => {
             number: 'TestNumber'
         },
         {
-            name: 'Cora theCat'
+            name: 'Cora theCat',
+            number: 'meow purr'
+        },
+        {
+            name: 'The Quick Brown Fox Jumps Over The Lazy Dog',
+            number: '123-456-7890'
         }
     ]);
 
@@ -21,6 +26,9 @@ const App = () => {
     const [ newName, setNewName ] = useState('');
     const [ newNumber, setNewNumber ] = useState('');
 
+    // Stateful display of contacts used with search filter
+    const [ searchStr, setSearchStr ] = useState('');
+    const [ showAllContacts, setShowAllContacts ] = useState(true);
 
     // Add contact name from input
     const addContact = (event) => {
@@ -47,10 +55,28 @@ const App = () => {
         setNewNumber(event.target.value);
     }
 
+    // When Search input is changed
+    const handleSearchChange = (event) => {
+        setShowAllContacts(false);
+        setSearchStr(event.target.value);
+    }
+
+    const contactsToShow = showAllContacts
+        ? persons
+        : persons.filter( person => person.name.toLowerCase().includes(searchStr.toLowerCase()) === true )
+
     // Elements to render
     return (
         <div>
             <h2>Phonebook</h2>
+            <div>
+                <input
+                    placeholder='Search Contacts...'
+                    onChange={handleSearchChange}
+                    value={searchStr}
+                />
+            </div>
+            <h2>Add New Contact</h2>
             <form onSubmit={addContact}>
                 <div>
                     <label>Name: </label>
@@ -65,7 +91,7 @@ const App = () => {
                 </div>
             </form>
             <h2>Numbers</h2>
-            { persons.map( person => <p key={person.name}>{person.name}: #{person.number}</p>) }
+            { contactsToShow.map( person => <p key={person.name}>{person.name}: #{person.number}</p>) }
         </div>
     );
 }
