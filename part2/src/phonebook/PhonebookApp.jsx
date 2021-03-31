@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 // Components
+import Filter from './Filter.jsx';
 import PersonForm from './PersonForm.jsx';
 import Persons from './Persons.jsx';
 
@@ -73,13 +74,10 @@ const App = () => {
     return (
         <div>
             <h2>Phonebook</h2>
-            <div>
-                <input
-                    placeholder='Search Contacts...'
-                    onChange={handleSearchChange}
-                    value={searchStr}
-                />
-            </div>
+            <Filter
+                onChange={handleSearchChange}
+                value={searchStr}
+            />
 
             <PersonForm
                 onSubmit={addContact}
