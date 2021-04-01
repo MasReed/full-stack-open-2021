@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DisplayCountry = ({ country }) => {
+const CountryInfo = ({ country }) => {
     // Display country information
     return (
         <div>
@@ -10,9 +10,9 @@ const DisplayCountry = ({ country }) => {
             <h3>Languages:</h3>
             { country.languages.map( lang => <p key={lang.iso639_1}>{lang.name}</p>)}
             <h3>Flag:</h3>
-            <img src={country.flag} alt='Country flag' style={{maxWidth: '300px', border: '2px solid #555'}}/>
+            <img src={country.flag} alt={`Flag of ${country.name}`} style={{maxWidth: '300px', border: '2px solid #555'}}/>
         </div>
     );
 }
 
-export default DisplayCountry;
+export default CountryInfo;
