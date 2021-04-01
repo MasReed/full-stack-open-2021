@@ -1,9 +1,12 @@
 // Dependencies
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+
 // Components
 import CountryInfo from './CountryInfo.jsx';
-// import DisplayCountries from './DisplayCountries.jsx';
+
+// Access environment variables (API keys)
+// require('dotenv').config();
 
 // Search for different countries to find out their details.
 const App = () => {
@@ -23,6 +26,20 @@ const App = () => {
             });
     }, []);
 
+    // Fetch weather data from API
+    useEffect( () => {
+        const params = {
+            query: 'Chicago',
+            access_key: process.env.REACT_APP_WEATHER_API_KEY
+        }
+        axios
+            .get('http://api.weatherstack.com/current', {params} )
+            .then( response => {
+                const apiResponse = response.data
+                console.log(apiResponse);
+            });
+    }, []);
+
     // Filtering function
     const filterCountries = (countries, filter) => {
         return countries.filter( country =>
@@ -36,7 +53,7 @@ const App = () => {
         setFilteredCountries( filterCountries(countries, event.target.value) );
     }
 
-    // Show details
+    // Show details, coupled to button event.
     const [ details, setDetails ] = useState(null);
     const [ showDetails, setShowDetails ] = useState(false);
 
@@ -47,20 +64,19 @@ const App = () => {
         const id = event.target.parentNode.id;
         const country = filterCountries(countries, id)[0]
 
-        setDetails( () => <CountryInfo country={country} /> );
+        setDetails( (prevState) => <CountryInfo country={country} /> );
     }
-
 
     // Determine what elements to display
     const handleDisplay = (countries) => {
-        if (countries.length === 1) {
+        if ((countries.length === 1) && (!showDetails)) {
             return (<CountryInfo key={countries[0].name} country={countries[0]} />);
 
         } else if (countries.length < 10) {
             return (countries.map( country => (
                 <div key={country.name} id={country.name} style={{display: 'block'}}>
                     <p style={{display: 'inline'}}>{country.name}</p>
-                    <button onClick={handleShowClick}  style={{margin: '2px 5px'}}>Show</button>
+                    <button onClick={handleShowClick} style={{margin: '2px 5px'}}>Show</button>
                 </div>))
             );
 
