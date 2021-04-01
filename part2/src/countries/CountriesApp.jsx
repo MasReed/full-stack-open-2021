@@ -5,9 +5,6 @@ import axios from 'axios';
 // Components
 import CountryInfo from './CountryInfo.jsx';
 
-// Access environment variables (API keys)
-// require('dotenv').config();
-
 // Search for different countries to find out their details.
 const App = () => {
 
@@ -15,7 +12,8 @@ const App = () => {
     const [ countries, setCountries ] = useState([]);
     const [ searchString, setSearchString ] = useState('');
     const [ filteredCountries, setFilteredCountries ] = useState([]);
-
+    const [ details, setDetails ] = useState(null);
+    const [ showDetails, setShowDetails ] = useState(false);
 
     // Fetch country data from API
     useEffect( () => {
@@ -26,19 +24,6 @@ const App = () => {
             });
     }, []);
 
-    // Fetch weather data from API
-    useEffect( () => {
-        const params = {
-            query: 'Chicago',
-            access_key: process.env.REACT_APP_WEATHER_API_KEY
-        }
-        axios
-            .get('http://api.weatherstack.com/current', {params} )
-            .then( response => {
-                const apiResponse = response.data
-                console.log(apiResponse);
-            });
-    }, []);
 
     // Filtering function
     const filterCountries = (countries, filter) => {
@@ -53,18 +38,13 @@ const App = () => {
         setFilteredCountries( filterCountries(countries, event.target.value) );
     }
 
-    // Show details, coupled to button event.
-    const [ details, setDetails ] = useState(null);
-    const [ showDetails, setShowDetails ] = useState(false);
-
+    // Show country details on button click event.
     const handleShowClick = (event) => {
-
-        setShowDetails( () => !showDetails );
-
         const id = event.target.parentNode.id;
         const country = filterCountries(countries, id)[0]
-
-        setDetails( (prevState) => <CountryInfo country={country} /> );
+        
+        setShowDetails( () => !showDetails );
+        setDetails( <CountryInfo country={country} /> );
     }
 
     // Determine what elements to display
@@ -100,27 +80,8 @@ const App = () => {
 
             {handleDisplay(filteredCountries)}
             {showDetails && details}
-
         </div>
     );
 }
 
 export default App;
-
-
-// {/* Show Information when filtered to 1 country */}
-// { (filteredCountries.length === 1)
-//   ? <DisplayCountry key={filteredCountries[0].name} country={filteredCountries[0]} />
-//   : null
-// }
-//
-// {/* Only show up to 10 results */}
-// { (filteredCountries.length < 10)
-//     ? filteredCountries.map( country => (
-//         <div key={country.name} style={{display: 'block'}}>
-//             <p style={{display: 'inline'}}>{country.name}</p>
-//             <button onClick={handleShowClick}  style={{margin: '2px 5px'}}>Show</button>
-//         </div>
-//     ))
-//     : <p>Please refine your search.</p>
-// }
