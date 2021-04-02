@@ -27,19 +27,26 @@ const App = () => {
             content: newNote,
             date: new Date().toISOString(),
             important: Math.random() < 0.5,
-            id: notes.length + 1,
         }
-        setNotes(notes.concat(noteObject));
-        setNewNote('');
+
+        axios
+            .post('http://localhost:3001/notes', noteObject)
+            .then( response => {
+                setNotes(notes.concat(response.data))
+                setNewNote('')
+                }
+            );
     }
 
+    //
     const handleNoteChange = (event) => {
         setNewNote(event.target.value);
     }
 
+    // Able to show only important notes
     const notesToShow = showAll
         ? notes
-        : notes.filter( note => note.important === true )
+        : notes.filter( note => note.important)
 
 
     // Items to render
@@ -47,7 +54,7 @@ const App = () => {
         <div>
             <h1>Notes</h1>
             <div>
-                <button onClick={ () => setShowAll(!showAll)}>
+                <button onClick={ () => setShowAll(!showAll) }>
                     Show {showAll ? 'important' : 'all'}
                 </button>
             </div>
