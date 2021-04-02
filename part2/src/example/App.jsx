@@ -1,5 +1,8 @@
+// Modules
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+// Services
+import noteService from './services/notes.js';
+// Components
 import Note from './Note.jsx';
 
 // Main App
@@ -13,10 +16,10 @@ const App = () => {
 
     // Fetch Data from json-server
     useEffect( () => {
-        axios
-            .get('http://localhost:3001/notes')
-            .then( response => {
-                setNotes(response.data)
+        noteService
+            .getAll()
+            .then( initialNotes => {
+                setNotes(initialNotes)
             });
     }, []);
 
@@ -29,10 +32,10 @@ const App = () => {
             important: Math.random() < 0.5,
         }
 
-        axios
-            .post('http://localhost:3001/notes', noteObject)
-            .then( response => {
-                setNotes(notes.concat(response.data))
+        noteService
+            .create(noteObject)
+            .then( returnedNote => {
+                setNotes(notes.concat(returnedNote))
                 setNewNote('')
                 }
             );
@@ -51,16 +54,18 @@ const App = () => {
 
     //
     const toggleImportanceOf = (id) => {
-        const url = `http://localhost:3001/notes/${id}`
         const note = notes.find( n => n.id === id )
         const changedNote = { ...note, important: !note.important }
 
-        axios
-            .put(url, changedNote)
-            .then( response => {
-                setNotes(notes.map( note => note.id !== id ? note : response.data))
+        noteService
+            .update(id, changedNote)
+            .then( returnedNote => {
+                setNotes(notes.map( note => note.id !== id ? note : returnedNote))
+            })
+            .catch( error => {
+                alert(`The note '${note.content}' does not exist.`)
+                setNotes(notes.filter( n => n.id !== id ))
             });
-        console.log(`importance of ${id} needs to be toggled`)
     }
 
 
