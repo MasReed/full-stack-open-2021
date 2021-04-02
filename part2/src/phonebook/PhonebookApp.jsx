@@ -24,8 +24,8 @@ const App = () => {
     useEffect( () => {
         contactsService
             .readAllContacts()
-            .then( response => setPersons(response) )
-    }, []);
+            .then( response => setPersons(response))
+        }, []);
 
 
     // Add contact info from input
@@ -64,30 +64,15 @@ const App = () => {
             contactsService
                 .deleteContact(eventId)
                 .then( returnedData => {
-                    console.log(persons);
-                    setPersons(persons.map( person => person.id !== eventId ? person : null))
+                    setPersons(persons.filter( person => person.id !== eventId ))
                 })
                 .catch( error => {
                     console.log(error)
-                    setPersons(persons.filter( person => person.id !== eventId ))
                 });
+
         }
     }
 
-    // const toggleImportanceOf = (id) => {
-    //     const note = notes.find( n => n.id === id )
-    //     const changedNote = { ...note, important: !note.important }
-    //
-    //     noteService
-    //         .update(id, changedNote)
-    //         .then( returnedNote => {
-    //             setNotes(notes.map( note => note.id !== id ? note : returnedNote))
-    //         })
-    //         .catch( error => {
-    //             alert(`The note '${note.content}' does not exist.`)
-    //             setNotes(notes.filter( n => n.id !== id ))
-    //         });
-    // }
 
     // When Name input is changed
     const handleNameChange = (event) => {
@@ -105,14 +90,20 @@ const App = () => {
         setSearchStr(event.target.value);
     }
 
-    // Filter list of contacts to show if search input is changed
-    const contactsToShow = showAllContacts
-        ? persons
-        : persons.filter( person =>
-            person.name.toLowerCase().includes(
-                searchStr.toLowerCase()
-            ) === true
-        )
+    // Filter list of contacts to show
+    const contactsToDisplay = () => {
+
+        const contactsSet = showAllContacts
+            ? persons
+            : persons.filter( person =>
+                person.name.toLowerCase().includes(
+                    searchStr.toLowerCase()
+                ) === true
+              )
+        return contactsSet;
+    }
+
+
 
     // Elements to render
     return (
@@ -133,7 +124,7 @@ const App = () => {
             />
 
             <Persons
-                contacts={contactsToShow}
+                getContacts={contactsToDisplay}
                 onClick={deleteContact}
             />
         </>
