@@ -9,25 +9,26 @@ import Persons from './Persons.jsx';
 
 const App = () => {
 
-    // Stateful list of all contacts
+    // All contacts
     const [ persons, setPersons ] = useState([]);
 
-    // Stateful contact info
+    // New contact info
     const [ newName, setNewName ] = useState('');
     const [ newNumber, setNewNumber ] = useState('');
 
-    // Stateful display of contacts from search filter
+    // Display of contacts from search filter
     const [ searchStr, setSearchStr ] = useState('');
     const [ showAllContacts, setShowAllContacts ] = useState(true);
 
-    // Fetch Data from json-server with useEffect hook
+    // Fetch Data from json-server
     useEffect( () => {
         contactsService
             .readAllContacts()
             .then( response => setPersons(response) )
     }, []);
 
-    // Add contact name from input
+
+    // Add contact info from input
     const addContact = (event) => {
         // Don't reload page on submit
         event.preventDefault();
@@ -36,7 +37,10 @@ const App = () => {
         // if (persons.some( person => person.name.toLowerCase() === newName.toLowerCase() )) {
         //     alert(`${newName} is already entered.`);
         // } else {
-        const contactObject = { name: newName, number: newNumber }
+        const contactObject = {
+            name: newName,
+            number: newNumber
+        }
 
         // Server Communication
         contactsService
@@ -49,6 +53,41 @@ const App = () => {
         setNewName('');
         setNewNumber('');
     }
+
+
+    const deleteContact = (event) => {
+        const eventId = parseInt(event.target.parentNode.id);
+        const contact = persons.find( person => person.id === eventId );
+        const isConfirmed = window.confirm(`Delete contact '${contact.name}' ?`);
+
+        if (isConfirmed) {
+            contactsService
+                .deleteContact(eventId)
+                .then( returnedData => {
+                    console.log(persons);
+                    setPersons(persons.map( person => person.id !== eventId ? person : null))
+                })
+                .catch( error => {
+                    console.log(error)
+                    setPersons(persons.filter( person => person.id !== eventId ))
+                });
+        }
+    }
+
+    // const toggleImportanceOf = (id) => {
+    //     const note = notes.find( n => n.id === id )
+    //     const changedNote = { ...note, important: !note.important }
+    //
+    //     noteService
+    //         .update(id, changedNote)
+    //         .then( returnedNote => {
+    //             setNotes(notes.map( note => note.id !== id ? note : returnedNote))
+    //         })
+    //         .catch( error => {
+    //             alert(`The note '${note.content}' does not exist.`)
+    //             setNotes(notes.filter( n => n.id !== id ))
+    //         });
+    // }
 
     // When Name input is changed
     const handleNameChange = (event) => {
@@ -93,7 +132,10 @@ const App = () => {
                 handleNumberChange={handleNumberChange}
             />
 
-            <Persons contacts={contactsToShow} />
+            <Persons
+                contacts={contactsToShow}
+                onClick={deleteContact}
+            />
         </>
     );
 }

@@ -70,43 +70,9 @@
       "id": 5
     },
     {
-      "name": "A new",
-      "number": "Contact",
-      "id": 6
-    },
-    {
-      "name": "aasdf",
-      "number": "1234",
+      "name": "124",
+      "number": "12412414",
       "id": 7
-    },
-    {
-      "name": "fd",
-      "number": "12",
-      "id": 8
-    },
-    {
-      "name": "asdf",
-      "number": "1234",
-      "id": 9
-    },
-    {
-      "http://localhost:3001/persons": "",
-      "id": 10
-    },
-    {
-      "name": "11",
-      "number": "11",
-      "id": 11
-    },
-    {
-      "name": "Name",
-      "number": "12?",
-      "id": 12
-    },
-    {
-      "name": "Name",
-      "number": "12?",
-      "id": 13
     }
   ]
 }
