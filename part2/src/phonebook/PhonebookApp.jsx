@@ -1,5 +1,7 @@
+// Modules
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+// Services
+import contactsService from './services/contacts.js';
 // Components
 import Filter from './Filter.jsx';
 import PersonForm from './PersonForm.jsx';
@@ -20,10 +22,9 @@ const App = () => {
 
     // Fetch Data from json-server with useEffect hook
     useEffect( () => {
-        axios
-            .get('http://localhost:3001/persons')
-            .then( response => {setPersons(response.data)
-        })
+        contactsService
+            .readAllContacts()
+            .then( response => setPersons(response) )
     }, []);
 
     // Add contact name from input
@@ -32,12 +33,18 @@ const App = () => {
         event.preventDefault();
 
         // Checks if entry already exists
-        if (persons.some( person => person.name.toLowerCase() === newName.toLowerCase() )) {
-            alert(`${newName} is already entered.`);
-        } else {
-            const contactObject = { name: newName, number: newNumber }
-            setPersons(persons.concat(contactObject));
-        }
+        // if (persons.some( person => person.name.toLowerCase() === newName.toLowerCase() )) {
+        //     alert(`${newName} is already entered.`);
+        // } else {
+        const contactObject = { name: newName, number: newNumber }
+
+        // Server Communication
+        contactsService
+            .createContact(contactObject)
+            .then( returnedContact => {
+                setPersons(persons.concat(returnedContact))
+            });
+
         // Reset input fields
         setNewName('');
         setNewNumber('');
