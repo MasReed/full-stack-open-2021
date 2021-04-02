@@ -20,6 +20,7 @@ const App = () => {
     const [ searchStr, setSearchStr ] = useState('');
     const [ showAllContacts, setShowAllContacts ] = useState(true);
 
+
     // Fetch Data from json-server
     useEffect( () => {
         contactsService
@@ -33,20 +34,57 @@ const App = () => {
         // Don't reload page on submit
         event.preventDefault();
 
-        // Checks if entry already exists
-        // if (persons.some( person => person.name.toLowerCase() === newName.toLowerCase() )) {
-        //     alert(`${newName} is already entered.`);
-        // } else {
         const contactObject = {
             name: newName,
             number: newNumber
         }
 
-        // Server Communication
+        // Checks if entry already exists
+        if (persons.some( person => person.name.toLowerCase() === newName.toLowerCase() )) {
+            const affirm = window.confirm(
+                `\n'${newName}' is already a contact.
+                \nReplace the previous number with: ${newNumber}?`
+            )
+            // Update contact number
+            if (affirm) {
+                updateContact(contactObject);
+            }
+        } else {
+            // Server Communication
+            contactsService
+                .createContact(contactObject)
+                .then( returnedContact => {
+                    setPersons(persons.concat(returnedContact))
+                });
+
+        // Reset input fields
+        setNewName('');
+        setNewNumber('');
+        }
+    }
+
+
+    // Update contact number
+    const updateContact = ({ name, number }) => {
+
+        const match = persons.filter( person => person.name === name)[0]
+        const id = match.id;
+        const updatedContact = {
+            name: name,
+            number: number,
+            id: id
+        }
+
         contactsService
-            .createContact(contactObject)
-            .then( returnedContact => {
-                setPersons(persons.concat(returnedContact))
+            .updateContact(updatedContact)
+            .then( response => {
+                setPersons( prevState => {
+                    const prevIndex = prevState.indexOf(match);
+                    let updatedPersons = [...prevState];
+                    updatedPersons[prevIndex] = response;
+
+                    return updatedPersons
+                })
             });
 
         // Reset input fields
@@ -55,6 +93,7 @@ const App = () => {
     }
 
 
+    // Delete Contact from list
     const deleteContact = (event) => {
         const eventId = parseInt(event.target.parentNode.id);
         const contact = persons.find( person => person.id === eventId );
@@ -69,10 +108,22 @@ const App = () => {
                 .catch( error => {
                     console.log(error)
                 });
-
         }
     }
 
+
+    // Filter list of contacts to show
+    const contactsToDisplay = () => {
+
+        const contactsSet = showAllContacts
+            ? persons
+            : persons.filter( person =>
+                person.name.toLowerCase().includes(
+                    searchStr.toLowerCase()
+                ) === true
+              )
+        return contactsSet;
+    }
 
     // When Name input is changed
     const handleNameChange = (event) => {
@@ -89,20 +140,6 @@ const App = () => {
         setShowAllContacts(false);
         setSearchStr(event.target.value);
     }
-
-    // Filter list of contacts to show
-    const contactsToDisplay = () => {
-
-        const contactsSet = showAllContacts
-            ? persons
-            : persons.filter( person =>
-                person.name.toLowerCase().includes(
-                    searchStr.toLowerCase()
-                ) === true
-              )
-        return contactsSet;
-    }
-
 
 
     // Elements to render
