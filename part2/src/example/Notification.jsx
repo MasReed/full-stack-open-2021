@@ -10,7 +10,6 @@ const Notification = ({ message }) => {
         <div className='error-notification'>
             {message}
         </div>
-
     );
 }
 
