@@ -1,11 +1,9 @@
-// Modules
 import React, { useState, useEffect } from 'react';
-// Services
 import contactsService from './services/contacts.js';
-// Components
 import Filter from './Filter.jsx';
 import PersonForm from './PersonForm.jsx';
 import Persons from './Persons.jsx';
+import SuccessNotification from './SuccessNotification.jsx';
 
 const App = () => {
 
@@ -19,6 +17,9 @@ const App = () => {
     // Display of contacts from search filter
     const [ searchStr, setSearchStr ] = useState('');
     const [ showAllContacts, setShowAllContacts ] = useState(true);
+
+    //
+    const [ successMsg, setSuccessMsg ] = useState('test');
 
 
     // Fetch Data from json-server
@@ -57,10 +58,18 @@ const App = () => {
                     setPersons(persons.concat(returnedContact))
                 });
 
+            // toast success banner
+            setSuccessMsg(
+                `'${contactObject.name}' successfully added!`
+            );
+            setTimeout( () => {
+                setSuccessMsg(null)
+            }, 5000)
+        }
+
         // Reset input fields
         setNewName('');
         setNewNumber('');
-        }
     }
 
 
@@ -75,6 +84,7 @@ const App = () => {
             id: id
         }
 
+        // Update on server
         contactsService
             .updateContact(updatedContact)
             .then( response => {
@@ -86,6 +96,14 @@ const App = () => {
                     return updatedPersons
                 })
             });
+
+        // Toast success banner
+        setSuccessMsg(
+            `'${name}' successfully updated!`
+        );
+        setTimeout( () => {
+            setSuccessMsg(null)
+        }, 5000)
 
         // Reset input fields
         setNewName('');
@@ -146,6 +164,8 @@ const App = () => {
     return (
         <>
             <h1>Phonebook</h1>
+
+            <SuccessNotification message={successMsg} />
 
             <Filter
                 onChange={handleSearchChange}
