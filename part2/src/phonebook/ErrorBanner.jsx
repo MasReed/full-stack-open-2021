@@ -1,13 +1,13 @@
 import React from 'react';
 
-const SuccessNotification = ({ message }) => {
+const ErrorBanner = ({ message }) => {
 
     if (!message) {
         return null
     }
 
-    const successStyle = {
-        color: 'green',
+    const errorStyle = {
+        color: 'red',
         background: 'lightgrey',
         fontSize: '20px',
         borderStyle: 'solid',
@@ -17,10 +17,10 @@ const SuccessNotification = ({ message }) => {
     }
 
     return (
-        <div style={successStyle}>
+        <div style={errorStyle}>
             {message}
         </div>
     );
 }
 
-export default SuccessNotification;
+export default ErrorBanner;

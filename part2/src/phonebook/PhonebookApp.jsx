@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import contactsService from './services/contacts.js';
+import ErrorBanner from './ErrorBanner.jsx';
 import Filter from './Filter.jsx';
 import PersonForm from './PersonForm.jsx';
 import Persons from './Persons.jsx';
-import SuccessNotification from './SuccessNotification.jsx';
+import SuccessBanner from './SuccessBanner.jsx';
 
 const App = () => {
 
@@ -18,8 +19,9 @@ const App = () => {
     const [ searchStr, setSearchStr ] = useState('');
     const [ showAllContacts, setShowAllContacts ] = useState(true);
 
-    //
-    const [ successMsg, setSuccessMsg ] = useState('test');
+    // Messages
+    const [ successMsg, setSuccessMsg ] = useState(null);
+    const [ errorMsg, setErrorMsg ] = useState(null);
 
 
     // Fetch Data from json-server
@@ -56,15 +58,16 @@ const App = () => {
                 .createContact(contactObject)
                 .then( returnedContact => {
                     setPersons(persons.concat(returnedContact))
+                    // toast success banner
+                    setSuccessMsg(
+                        `'${contactObject.name}' successfully added!`
+                    );
+                    setTimeout( () => {
+                        setSuccessMsg(null)
+                    }, 5000)
                 });
 
-            // toast success banner
-            setSuccessMsg(
-                `'${contactObject.name}' successfully added!`
-            );
-            setTimeout( () => {
-                setSuccessMsg(null)
-            }, 5000)
+
         }
 
         // Reset input fields
@@ -95,15 +98,23 @@ const App = () => {
 
                     return updatedPersons
                 })
-            });
 
-        // Toast success banner
-        setSuccessMsg(
-            `'${name}' successfully updated!`
-        );
-        setTimeout( () => {
-            setSuccessMsg(null)
-        }, 5000)
+                // Toast success banner
+                setSuccessMsg(
+                    `'${name}' successfully updated!`
+                );
+                setTimeout( () => {
+                    setSuccessMsg(null)
+                }, 5000)
+            })
+            .catch( error => {
+                setErrorMsg(
+                    `'${updatedContact.name}' cannot be found.`
+                )
+                setTimeout( () => {
+                    setErrorMsg(null)
+                }, 5000)
+            });
 
         // Reset input fields
         setNewName('');
@@ -165,7 +176,8 @@ const App = () => {
         <>
             <h1>Phonebook</h1>
 
-            <SuccessNotification message={successMsg} />
+            <SuccessBanner message={successMsg} />
+            <ErrorBanner message={errorMsg} />
 
             <Filter
                 onChange={handleSearchChange}
