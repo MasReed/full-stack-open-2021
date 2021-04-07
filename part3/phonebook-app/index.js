@@ -74,11 +74,18 @@ const generateId = () => {
 
 app.post('/api/persons', (req, res) => {
     const body = req.body
-    console.log(body);
 
-    if (!body.name) {
-        return response.status(400).json({
+    // Check for required content
+    if ((!body.name) || (!body.number)) {
+        return res.status(400).json({
             error: 'content missing'
+        })
+    }
+
+    // Check for duplicate contact
+    if (persons.some( person => person.name === body.name)) {
+        return res.status(400).json({
+            error: 'This person already exists.'
         })
     }
 
