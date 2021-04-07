@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import noteService from './services/notes.js';
 // Components
 import Note from './Note.jsx';
+import Notification from './Notification.jsx';
 
 // Main App
 const App = () => {
@@ -12,6 +13,7 @@ const App = () => {
     const [ notes, setNotes ] = useState([]);
     const [ newNote, setNewNote ] = useState('a new note...');
     const [ showAll, setShowAll ] = useState(true);
+    const [ errorMsg, setErrorMsg ] = useState(null);
 
 
     // Fetch Data from json-server
@@ -63,7 +65,12 @@ const App = () => {
                 setNotes(notes.map( note => note.id !== id ? note : returnedNote))
             })
             .catch( error => {
-                alert(`The note '${note.content}' does not exist.`)
+                setErrorMsg(
+                    `Note '${note.content}' does not exist on the server.`
+                )
+                setTimeout( () => {
+                    setErrorMsg(null)
+                }, 5000)
                 setNotes(notes.filter( n => n.id !== id ))
             });
     }
@@ -73,6 +80,7 @@ const App = () => {
     return (
         <div>
             <h1>Notes</h1>
+            <Notification message={errorMsg} />
             <div>
                 <button onClick={ () => setShowAll(!showAll) }>
                     Show {showAll ? 'important' : 'all'}

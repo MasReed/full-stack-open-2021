@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './styles.css'
 // App components
 import App0 from './example/App.jsx';
 import ExercisesApp from './exercise/a/ExercisesApp.jsx';

@@ -39,7 +39,7 @@
     {
       "content": "asdf",
       "date": "2021-04-02T14:54:40.954Z",
-      "important": false,
+      "important": true,
       "id": 7
     }
   ],
