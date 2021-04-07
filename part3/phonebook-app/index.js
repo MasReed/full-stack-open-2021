@@ -1,8 +1,9 @@
 const express = require('express');
 
 const app = express();
+app.use(express.json());
 
-const persons = [
+let persons = [
     {
         id: 1,
         name: 'Arto Hellas',
@@ -39,12 +40,57 @@ app.get('/api/persons', (req, res) => {
 });
 
 app.get('/info', (req, res) => {
-
     const nPeople = persons.length;
     const time = new Date();
     const infoPage = `Phonebook has info for ${nPeople} people. ${time}`;
 
     res.send(infoPage)
+});
+
+app.get('/api/persons/:id', (req, res) => {
+    const id = Number(req.params.id);
+    const contact = persons.find( person => person.id === id );
+
+    if (contact) {
+        res.json(contact)
+    } else {
+        res.status(404).end()
+    }
+});
+
+app.delete('/api/persons/:id', (req, res) => {
+    const id = Number(req.params.id);
+    persons = persons.filter( person => person.id !== id );
+    res.status(204).end()
+
+});
+
+const generateId = () => {
+    const maxId = persons.length > 0
+      ? Math.max(...persons.map( n => n.id) )
+      : 0
+    return maxId + 1
+}
+
+app.post('/api/persons', (req, res) => {
+    const body = req.body
+    console.log(body);
+
+    if (!body.name) {
+        return response.status(400).json({
+            error: 'content missing'
+        })
+    }
+
+    const person = {
+        id: generateId(),
+        name: body.name,
+        number: body.number
+    }
+
+    persons = persons.concat(person)
+
+    res.json(person)
 });
 
 
