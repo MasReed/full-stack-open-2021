@@ -1,7 +1,19 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
 app.use(express.json());
+app.use(cors());
+
+const requestLogger = (request, response, next) => {
+  console.log('Method:', request.method)
+  console.log('Path:  ', request.path)
+  console.log('Body:  ', request.body)
+  console.log('---')
+  next()
+}
+
+app.use(requestLogger)
 
 let notes = [
   {
@@ -50,7 +62,7 @@ app.delete('/api/notes/:id', (req, res) => {
 });
 
 const generateId = () => {
-    const maxId = notes.lenght > 0
+    const maxId = notes.length > 0
       ? Math.max(...notes.map( n => n.id) )
       : 0
     return maxId + 1
@@ -76,6 +88,13 @@ app.post('/api/notes', (req, res) => {
 
     res.json(note)
 });
+
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
 
 
 const PORT = 3002;
