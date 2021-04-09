@@ -1,6 +1,4 @@
-// Modules
 import React, { useState, useEffect } from 'react';
-// Services
 import noteService from './services/notes.js';
 // Components
 import Footer from './Footer.jsx';
@@ -72,7 +70,7 @@ const App = () => {
                 setTimeout( () => {
                     setErrorMsg(null)
                 }, 5000)
-                setNotes(notes.filter( n => n.id !== id ))
+                // setNotes(notes.filter( n => n.id !== id ))
             });
     }
 

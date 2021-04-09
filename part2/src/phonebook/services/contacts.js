@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:3001/persons';
+const baseUrl = 'http://localhost:3002/persons';
 
 const createContact = (newContactObject) => {
     const request = axios.post(baseUrl, newContactObject);

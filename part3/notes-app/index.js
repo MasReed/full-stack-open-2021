@@ -4,6 +4,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
+app.use(express.static('public'));
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
@@ -33,8 +34,18 @@ let notes = [
     content: "GET and POST are the most important methods of HTTP protocol",
     date: "2019-05-30T19:20:14.298Z",
     important: true
+  },
+  {
+    id: 4,
+    content: "From hard coded notes in notes app part 3",
+    date: "2021-04-30T05:31.111Z",
+    important: true
   }
 ]
+
+app.get('/persons', (req, res) => {
+    res.status(404).end();
+});
 
 app.get('/', (req, res) => {
     res.send('<h1>Hello World</h1>')
@@ -55,10 +66,18 @@ app.get('/api/notes/:id', (req, res) => {
     }
 });
 
+// Not fully implemented
+app.put('/api/notes/:id', (req, res) => {
+    const id = Number(req.params.id)
+    const note = notes.find( note => note.id === id )
+
+    console.log('app.put', id)
+})
+
 app.delete('/api/notes/:id', (req, res) => {
-    const id = Number(request.params.id)
+    const id = Number(req.params.id)
     notes = notes.filter( note => note.id === id );
-    response.status(204).end()
+    res.status(204).end()
 });
 
 const generateId = () => {
@@ -72,7 +91,7 @@ app.post('/api/notes', (req, res) => {
     const body = req.body
 
     if (!body.content) {
-        return response.status(400).json({
+        return res.status(400).json({
             error: 'content missing'
         })
     }
@@ -90,14 +109,14 @@ app.post('/api/notes', (req, res) => {
 });
 
 
-const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
+const unknownEndpoint = (req, res) => {
+  res.status(404).send({ error: 'unknown endpoint' })
 }
 
 app.use(unknownEndpoint)
 
 
-const PORT = 3002;
+const PORT = 3001;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 });
