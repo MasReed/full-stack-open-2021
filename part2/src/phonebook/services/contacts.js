@@ -22,7 +22,6 @@ const deleteContact = (id) => {
     return request.then( response => response.data );
 }
 
-
 const contactsService = { createContact, readAllContacts, updateContact, deleteContact };
 
 export default contactsService;
