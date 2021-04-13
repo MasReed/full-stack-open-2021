@@ -124,9 +124,8 @@ const App = () => {
 
     // Delete Contact from list
     const deleteContact = (event) => {
-        const eventId = parseInt(event.target.parentNode.id);
+        const eventId = event.target.parentNode.id;
         const contact = persons.find( person => person.id === eventId );
-        console.log('phonebookapp delete', contact)
         const isConfirmed = window.confirm(`Delete contact '${contact.name}' ?`);
 
         if (isConfirmed) {
