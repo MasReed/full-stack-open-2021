@@ -7,10 +7,6 @@ const Contact = require('./models/contact');
 const PORT = process.env.PORT;
 const app = express();
 
-app.use(express.json());
-app.use(cors());
-app.use(express.static('build'));
-
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
   console.log('Path:  ', request.path)
@@ -18,9 +14,14 @@ const requestLogger = (request, response, next) => {
   console.log('---')
   next()
 }
+
+app.use(express.static('build'));
+app.use(express.json());
+app.use(cors());
 app.use(requestLogger)
 
-// Routes
+
+// Get Routes
 app.get('/', (req, res) => {
     res.send('<h1>Phonebook App</h1>');
 });
@@ -31,6 +32,7 @@ app.get('/api/persons', (req, res) => {
         .then(contacts => {
             res.json(contacts)
         })
+        .catch(error => next(error))
 });
 
 app.get('/api/persons/:id', (req, res) => {
@@ -39,17 +41,20 @@ app.get('/api/persons/:id', (req, res) => {
         .then(person => {
             res.json(person)
         })
+        .catch(error => next(error))
 });
 
-//
-app.delete('/api/persons/:id', (req, res) => {
-    const id = Number(req.params.id);
-    persons = persons.filter( person => person.id !== id );
-    res.status(204).end()
-
+// Delete Route
+app.delete('/api/persons/:id', (req, res, next) => {
+    Contact
+        .findByIdAndRemove(req.params.id)
+        .then(result => {
+            res.status(204).end()
+        })
+        .catch(error => next(error))
 });
 
-// Create
+// Create Route
 app.post('/api/persons', (req, res) => {
     const body = req.body
 
@@ -64,10 +69,30 @@ app.post('/api/persons', (req, res) => {
         number: body.number,
     })
 
-    contact.save().then(savedContact => {
-        res.json(savedContact)
-    })
+    contact
+        .save()
+        .then(savedContact => {
+            res.json(savedContact)
+        })
+        .catch(error => next(error))
 });
+
+// Update Route
+app.put('/api/persons/:id', (req, res, next) => {
+    const body = req.body
+    const contact = {
+        name: body.name,
+        number: body.number
+    }
+
+    Contact
+        .findByIdAndUpdate(req.params.id, contact, { new: true })
+        .then(updatedContact => {
+            res.json(updatedContact)
+        })
+        .catch(error => next(error))
+})
+
 
 //
 const unknownEndpoint = (req, res) => {
@@ -75,38 +100,21 @@ const unknownEndpoint = (req, res) => {
 }
 app.use(unknownEndpoint);
 
+
+// errorHandler
+const errorHandler = (error, req, res, next) => {
+    console.error(error.message)
+
+    if (error.name === 'CastError') {
+        return res.status(400).send({ error: 'malformatted id'})
+    }
+    next(error)
+}
+app.use(errorHandler)
+
+
+
 //
 app.listen(PORT, () => {
     console.log(`Server started on port: ${PORT}`);
 })
-
-
-
-// TEMP DATA
-// let persons = [
-//     {
-//         id: 1,
-//         name: 'Arto Hellas',
-//         number: '040-123456'
-//     },
-//     {
-//         id: 2,
-//         name: 'Ada Lovelace',
-//         number: '39-44-4323423'
-//     },
-//     {
-//         id: 3,
-//         name: 'Dan Abramov',
-//         number: '12-43-234345'
-//     },
-//     {
-//         id: 4,
-//         name: 'Mary Poppendick',
-//         number: '39-23-6423122'
-//     },
-//     {
-//         id: 5,
-//         name: 'Croix',
-//         number: '23-42-4984899'
-//     }
-// ]
