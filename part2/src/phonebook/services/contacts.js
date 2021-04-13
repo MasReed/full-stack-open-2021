@@ -14,7 +14,7 @@ const readAllContacts = () => {
 
 const updateContact = (updatedContactObject) => {
     const request = axios.put(baseUrl + `/${updatedContactObject.id}`, updatedContactObject)
-    return request.then ( response => response.data );
+    return request.then( response => response.data );
 }
 
 const deleteContact = (id) => {
