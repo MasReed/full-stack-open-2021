@@ -1,4 +1,6 @@
-require('dotenv').config()
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+}
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -29,7 +31,7 @@ app.get('/', (req, res) => {
 app.get('/api/notes', (req, res) => {
     Note.find({})
         .then(notes => {
-            res.json(notes)
+            res.json(notes.map(note => note.toJSON()))
         })
 });
 
@@ -37,13 +39,17 @@ app.get('/api/notes/:id', (req, res) => {
     Note.findById(req.params.id)
         .then(note => {
             if (note) {
-                res.json(note)
+                res.json(note.toJSON())
             } else {
                 res.status(404).end()
             }
         })
         .catch(error => next(error))
 });
+
+app.get('/api/persons', (req, res) => {
+    console.log('ignoring api/persons')
+})
 
 // Update
 app.put('/api/notes/:id', (req, res, next) => {
@@ -55,7 +61,7 @@ app.put('/api/notes/:id', (req, res, next) => {
 
     Note.findByIdAndUpdate(req.params.id, note, { new: true })
         .then(updatedNote => {
-            res.json(updatedNote)
+            res.json(updatedNote.toJSON())
         })
         .catch(error => next(error))
 })
@@ -71,14 +77,8 @@ app.delete('/api/notes/:id', (req, res, next) => {
 
 
 // Create
-app.post('/api/notes', (req, res) => {
+app.post('/api/notes', (req, res, next) => {
     const body = req.body
-
-    if (!body.content) {
-        return res.status(400).json({
-            error: 'content missing'
-        })
-    }
 
     const note = new Note({
         content: body.content,
@@ -86,9 +86,13 @@ app.post('/api/notes', (req, res) => {
         date: new Date(),
     })
 
-    note.save().then(savedNote => {
-        res.json(savedNote)
-    })
+    note
+        .save()
+        .then(savedNote => savedNote.toJSON())
+        .then(savedAndFormattedNote => {
+            res.json(savedAndFormattedNote)
+        })
+        .catch(error => next(error))
 });
 
 
@@ -105,6 +109,8 @@ const errorHandler = (error, req, res, next) => {
 
     if (error.name === 'CastError') {
         return res.status(400).send({ error: 'malformatted id'})
+    } else if (error.name === 'ValidationError') {
+        return res.status(400).json({ error: error.message })
     }
     next(error)
 }
