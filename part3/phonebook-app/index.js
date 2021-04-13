@@ -1,6 +1,10 @@
+require('dotenv').config()
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose');
+const Contact = require('./models/contact');
 
+const PORT = process.env.PORT;
 const app = express();
 
 app.use(express.json());
@@ -14,64 +18,30 @@ const requestLogger = (request, response, next) => {
   console.log('---')
   next()
 }
-
 app.use(requestLogger)
 
-let persons = [
-    {
-        id: 1,
-        name: 'Arto Hellas',
-        number: '040-123456'
-    },
-    {
-        id: 2,
-        name: 'Ada Lovelace',
-        number: '39-44-4323423'
-    },
-    {
-        id: 3,
-        name: 'Dan Abramov',
-        number: '12-43-234345'
-    },
-    {
-        id: 4,
-        name: 'Mary Poppendick',
-        number: '39-23-6423122'
-    },
-    {
-        id: 5,
-        name: 'Croix',
-        number: '23-42-4984899'
-    }
-]
-
+// Routes
 app.get('/', (req, res) => {
     res.send('<h1>Phonebook App</h1>');
 });
 
 app.get('/api/persons', (req, res) => {
-    res.json(persons);
-});
-
-app.get('/info', (req, res) => {
-    const nPeople = persons.length;
-    const time = new Date();
-    const infoPage = `Phonebook has info for ${nPeople} people. ${time}`;
-
-    res.send(infoPage)
+    Contact
+        .find({})
+        .then(contacts => {
+            res.json(contacts)
+        })
 });
 
 app.get('/api/persons/:id', (req, res) => {
-    const id = Number(req.params.id);
-    const contact = persons.find( person => person.id === id );
-
-    if (contact) {
-        res.json(contact)
-    } else {
-        res.status(404).end()
-    }
+    Contact
+        .findById(req.params.id)
+        .then(person => {
+            res.json(person)
+        })
 });
 
+//
 app.delete('/api/persons/:id', (req, res) => {
     const id = Number(req.params.id);
     persons = persons.filter( person => person.id !== id );
@@ -79,48 +49,64 @@ app.delete('/api/persons/:id', (req, res) => {
 
 });
 
-const generateId = () => {
-    const maxId = persons.length > 0
-      ? Math.max(...persons.map( n => n.id) )
-      : 0
-    return maxId + 1
-}
-
+// Create
 app.post('/api/persons', (req, res) => {
     const body = req.body
 
-    // Check for required content
-    if ((!body.name) || (!body.number)) {
+    if (!body.name) {
         return res.status(400).json({
             error: 'content missing'
         })
     }
 
-    // Check for duplicate contact
-    if (persons.some( person => person.name === body.name)) {
-        return res.status(400).json({
-            error: 'This person already exists.'
-        })
-    }
-
-    const person = {
-        id: generateId(),
+    const contact = new Contact({
         name: body.name,
-        number: body.number
-    }
+        number: body.number,
+    })
 
-    persons = persons.concat(person)
-
-    res.json(person)
+    contact.save().then(savedContact => {
+        res.json(savedContact)
+    })
 });
 
+//
 const unknownEndpoint = (req, res) => {
-    response.status(404).send({ error: 'unknown endpoint' })
+    res.status(404).send({ error: 'unknown endpoint' })
 }
-
 app.use(unknownEndpoint);
 
-const PORT = process.env.PORT || 3001;
+//
 app.listen(PORT, () => {
     console.log(`Server started on port: ${PORT}`);
 })
+
+
+
+// TEMP DATA
+// let persons = [
+//     {
+//         id: 1,
+//         name: 'Arto Hellas',
+//         number: '040-123456'
+//     },
+//     {
+//         id: 2,
+//         name: 'Ada Lovelace',
+//         number: '39-44-4323423'
+//     },
+//     {
+//         id: 3,
+//         name: 'Dan Abramov',
+//         number: '12-43-234345'
+//     },
+//     {
+//         id: 4,
+//         name: 'Mary Poppendick',
+//         number: '39-23-6423122'
+//     },
+//     {
+//         id: 5,
+//         name: 'Croix',
+//         number: '23-42-4984899'
+//     }
+// ]
