@@ -1,41 +1,40 @@
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const Note = require('./models/note');
+const express = require('express')
+const cors = require('cors')
+const Note = require('./models/note')
 
-const PORT = process.env.PORT;
-const app = express();
+const PORT = process.env.PORT
+const app = express()
 
 const requestLogger = (request, response, next) => {
-  console.log('Method:', request.method)
-  console.log('Path:  ', request.path)
-  console.log('Body:  ', request.body)
-  console.log('---')
-  next()
+    console.log('Method:', request.method)
+    console.log('Path:  ', request.path)
+    console.log('Body:  ', request.body)
+    console.log('---')
+    next()
 }
 
-app.use(express.static('build'));
-app.use(express.json());
-app.use(cors());
+app.use(express.static('build'))
+app.use(express.json())
+app.use(cors())
 app.use(requestLogger)
 
 
 // Get Routes
 app.get('/', (req, res) => {
     res.send('<h1>Hello World -- Notes App</h1>')
-});
+})
 
 app.get('/api/notes', (req, res) => {
     Note.find({})
         .then(notes => {
             res.json(notes.map(note => note.toJSON()))
         })
-});
+})
 
-app.get('/api/notes/:id', (req, res) => {
+app.get('/api/notes/:id', (req, res, next) => {
     Note.findById(req.params.id)
         .then(note => {
             if (note) {
@@ -45,10 +44,11 @@ app.get('/api/notes/:id', (req, res) => {
             }
         })
         .catch(error => next(error))
-});
+})
 
 app.get('/api/persons', (req, res) => {
     console.log('ignoring api/persons')
+    res.status(404).end()
 })
 
 // Update
@@ -73,7 +73,7 @@ app.delete('/api/notes/:id', (req, res, next) => {
             res.status(204).end()
         })
         .catch(error => next(error))
-});
+})
 
 
 // Create
@@ -93,12 +93,12 @@ app.post('/api/notes', (req, res, next) => {
             res.json(savedAndFormattedNote)
         })
         .catch(error => next(error))
-});
+})
 
 
 // Unknown endpoint middleware
 const unknownEndpoint = (req, res) => {
-  res.status(404).send({ error: 'unknown endpoint' })
+    res.status(404).send({ error: 'unknown endpoint' })
 }
 app.use(unknownEndpoint)
 
@@ -120,4 +120,4 @@ app.use(errorHandler)
 // Host
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
-});
+})

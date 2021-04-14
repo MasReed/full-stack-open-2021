@@ -113,7 +113,6 @@ const App = () => {
                 }, 5000)
             })
             .catch( error => {
-                console.log('update err: ', error)
                 const msg = error.response.data.error.toString()
                 setErrorMsg(msg)
                 setTimeout( () => {
