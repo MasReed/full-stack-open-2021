@@ -65,7 +65,12 @@ const App = () => {
                     setTimeout( () => {
                         setSuccessMsg(null)
                     }, 5000)
-                });
+                })
+                .catch(error => {
+                    const msg = error.response.data.error.toString()
+                    setErrorMsg(msg)
+                    setTimeout( () => { setErrorMsg(null) }, 4500)
+                })
 
 
         }
@@ -108,9 +113,9 @@ const App = () => {
                 }, 5000)
             })
             .catch( error => {
-                setErrorMsg(
-                    `'${updatedContact.name}' cannot be found.`
-                )
+                console.log('update err: ', error)
+                const msg = error.response.data.error.toString()
+                setErrorMsg(msg)
                 setTimeout( () => {
                     setErrorMsg(null)
                 }, 5000)
