@@ -46,6 +46,11 @@ app.get('/api/persons/:id', (req, res) => {
         .catch(error => next(error))
 });
 
+// Ignore notes app
+app.get('/api/notes', (req, res) => {
+    console.log('')
+})
+
 // Delete Route
 app.delete('/api/persons/:id', (req, res, next) => {
     Contact
@@ -57,7 +62,7 @@ app.delete('/api/persons/:id', (req, res, next) => {
 });
 
 // Create Route
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
     const body = req.body
 
     if (!body.name) {
@@ -88,7 +93,7 @@ app.put('/api/persons/:id', (req, res, next) => {
     }
 
     Contact
-        .findByIdAndUpdate(req.params.id, contact, { new: true })
+        .findByIdAndUpdate(req.params.id, contact, { new: true, runValidators: true, context: 'query' })
         .then(updatedContact => {
             res.json(updatedContact)
         })
@@ -108,12 +113,13 @@ const errorHandler = (error, req, res, next) => {
     console.error(error.message)
 
     if (error.name === 'CastError') {
-        return res.status(400).send({ error: 'malformatted id'})
+        return res.status(400).send({ error: 'malformatted id' })
+    } else if (error.name === 'ValidationError') {
+        return res.status(400).send({ error: 'invalid contact information' })
     }
     next(error)
 }
 app.use(errorHandler)
-
 
 
 //
