@@ -55,6 +55,7 @@ describe('totalLikes', () => {
         }
     ]
 
+
     test('zero blogs in list', () => {
         expect(listHelper.totalLikes([])).toBe(0)
     })
@@ -65,5 +66,59 @@ describe('totalLikes', () => {
 
     test('many blogs in list', () => {
         expect(listHelper.totalLikes(manyBlogs)).toBe(34)
+    })
+})
+
+
+describe('Favorite Blog', () => {
+
+    const blogsWithTopLikesTied = [
+        {
+            _id: "5a422a851b54a676234d17f7",
+            title: "React patterns",
+            author: "Michael Chan",
+            url: "https://reactpatterns.com/",
+            likes: 7,
+            __v: 0
+        },
+        {
+            _id: "5a422aa71b54a676234d17f8",
+            title: "Go To Statement Considered Harmful",
+            author: "Edsger W. Dijkstra",
+            url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+            likes: 5,
+            __v: 0
+        },
+        {
+            _id: "5a422a851b54a676234d17f7",
+            title: "React patterns",
+            author: "Michael Chan",
+            url: "https://reactpatterns.com/",
+            likes: 7,
+            __v: 0
+        },
+        {
+            _id: "5a422aa71b54a676234d17f8",
+            title: "Go To Statement Considered Harmful",
+            author: "Edsger W. Dijkstra",
+            url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+            likes: 5,
+            __v: 0
+        }
+    ]
+
+    test('no blogs', () => {
+        expect(listHelper.favoriteBlog([])).toEqual([])
+    })
+
+    test('one blog', () => {
+        expect(listHelper.favoriteBlog( [blogsWithTopLikesTied[0]] ))
+            .toEqual( [blogsWithTopLikesTied[0]] )
+    })
+
+
+    test('blogs with tied likes', () => {
+        expect(listHelper.favoriteBlog(blogsWithTopLikesTied))
+            .toEqual([ blogsWithTopLikesTied[0], blogsWithTopLikesTied[2] ])
     })
 })
