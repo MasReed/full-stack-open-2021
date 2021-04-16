@@ -30,8 +30,31 @@ const favoriteBlog = (blogs) => {
     return favorite
 }
 
+// find the author with the most amount of blogs
+const mostBlogs = (blogs) => {
+
+    let counts = {}
+
+    blogs.forEach(blog => {
+        let author = blog.author
+        counts[author] = counts[author] ? counts[author] + 1 : 1;
+    })
+
+    const keyMax = Object.keys(counts).reduce( (a, b) => counts[a] > counts[b] ? a : b)
+
+    const result = {
+        author: keyMax,
+        blogs: counts[keyMax]
+    }
+
+    return result
+}
+
+
+
 module.exports = {
     dummy,
     totalLikes,
-    favoriteBlog
+    favoriteBlog,
+    mostBlogs
 }
