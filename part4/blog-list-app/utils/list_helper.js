@@ -40,14 +40,14 @@ const mostBlogs = (blogs) => {
         counts[author] = counts[author] ? counts[author] + 1 : 1;
     })
 
-    const keyMax = Object.keys(counts).reduce( (a, b) => counts[a] > counts[b] ? a : b)
+    const keyMax = Object.keys(counts).reduce( (a, b) => counts[a] > counts[b] ? a : b, null)
 
     const result = {
         author: keyMax,
-        blogs: counts[keyMax]
+        blogs: counts[keyMax] ? counts[keyMax] : null
     }
 
-    return result
+    return keyMax ? result : {}
 }
 
 

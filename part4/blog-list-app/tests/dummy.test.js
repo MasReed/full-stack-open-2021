@@ -124,7 +124,7 @@ describe('Favorite Blog', () => {
 
 
 
-describe('most blogs', () => {
+describe('author with most blogs', () => {
 
     const manyBlogs = [
         {
@@ -161,14 +161,24 @@ describe('most blogs', () => {
         }
     ]
 
+    test('no blogs', () => {
+        expect(listHelper.mostBlogs([])).toEqual({})
+    })
+
+    test('blogs with one author', () => {
+        expect(listHelper.mostBlogs([ manyBlogs[1], manyBlogs[2] ]))
+            .toEqual({
+                author: "Edsger W. Dijkstra",
+                blogs: 2
+            })
+    })
 
     test('blogs with repeat authors', () => {
         expect(listHelper.mostBlogs(manyBlogs))
-            .toEqual(
-                {
-                    author: "Edsger W. Dijkstra",
-                    blogs: 2
-                })
+            .toEqual({
+                author: "Edsger W. Dijkstra",
+                blogs: 2
+            })
     })
 
 })
