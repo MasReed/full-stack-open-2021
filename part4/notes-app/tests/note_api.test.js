@@ -11,10 +11,11 @@ const Note = require('../models/note')
 // reset database structure
 beforeEach(async () => {
     await Note.deleteMany({})
-    let noteObject = new Note(helper.initialNotes[0])
-    await noteObject.save()
-    noteObject = new Note(helper.initialNotes[1])
-    await noteObject.save()
+
+    for (let note of helper.initialNotes) {
+        let noteObject = new Note(note)
+        await noteObject.save()
+    }
 })
 
 test('notes are returned as json', async () => {
@@ -67,9 +68,9 @@ test('note without content is not added', async () => {
         .send(newNote)
         .expect(400)
 
-    const response = await api.get('/api/notes')
+    const notesAtEnd = await helper.notesInDb()
 
-    expect(response.body).toHaveLength(helper.initialNotes.length)
+    expect(notesAtEnd).toHaveLength(helper.initialNotes.length)
 })
 
 test('a specific note can be viewed', async () => {
