@@ -26,6 +26,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(middleware.requestLogger)
 app.use(middleware.jwtExtractor)
+// app.use(middleware.userExtractor)
 
 app.use('/api/blogs', blogsRouter)
 app.use('/api/login', loginRouter)
