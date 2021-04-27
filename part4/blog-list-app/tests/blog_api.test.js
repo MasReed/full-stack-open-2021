@@ -9,13 +9,13 @@ const Blog = require('../models/blog')
 const initialBlogs = [
     {
         title: 'Tester123',
-        author: "A different Author",
+        author: 'A different Author',
         url: 'http://exampleblogs.com/blog/123',
         likes: 24
     },
     {
         title: 'Test Number Two',
-        author: "An author",
+        author: 'An author',
         url: 'http://exampleblogs.com/blog/123',
         likes: 22
     }
@@ -60,15 +60,40 @@ describe('GET requests', () => {
 
 
 describe('POST requests', () => {
-    test('http post request successfully creates a new blog post', async () => {
+
+    test('successfully create a new blog post', async () => {
+
+        /////// MAKE AUTH USER ////////////////////////////////////////////////
+        const initialUser = {
+            name: 'Test User',
+            username: 'Tester11',
+            password: 'Secret'
+        }
+
+        const newUser = await api
+            .post('/api/users')
+            .send(initialUser)
+        console.log('newUser', newUser.body)
+
+
+        const res = await api
+            .post('/api/login')
+            .send({ username: initialUser.username, password: initialUser.password})
+
+        console.log('makeAuthUserToken', res.body.token)
+
+        //////////////////////////////////////////////////////////////////////
+
         const newBlog = {
             title: 'A new blog test',
             author: 'blog_api.test.js',
-            url: 'someurl.com'
+            url: 'someurl.com',
+            user: initialUser.username
         }
 
         await api
             .post('/api/blogs')
+            .set('Authorization', `Bearer ${res.body.token}`)
             .send(newBlog)
             .expect(200 || 201)
             .expect('Content-Type', /application\/json/)
