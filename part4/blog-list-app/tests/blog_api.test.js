@@ -4,7 +4,7 @@ const app = require('../app')
 
 const api = supertest(app)
 
-// SETUP DB
+// Setup Data
 const Blog = require('../models/blog')
 const initialBlogs = [
     {
@@ -21,12 +21,35 @@ const initialBlogs = [
     }
 ]
 
+const User = require('../models/user')
+const initialUser = {
+    name: 'Test User',
+    username: 'Tester0',
+    password: 'Secret'
+}
+let userToken;
+
+
+// Reset DB fore each test
 beforeEach(async () => {
+    // blogs
     await Blog.deleteMany({})
     let blogObject = new Blog(initialBlogs[0])
     await blogObject.save()
     blogObject = new Blog(initialBlogs[1])
     await blogObject.save()
+
+    // users
+    await User.deleteMany({})
+    await api
+        .post('/api/users')
+        .send(initialUser)
+
+    const res = await api
+        .post('/api/login')
+        .send({ username: initialUser.username, password: initialUser.password})
+
+    userToken = res.body.token
 })
 
 describe('GET requests', () => {
@@ -63,27 +86,6 @@ describe('POST requests', () => {
 
     test('successfully create a new blog post', async () => {
 
-        /////// MAKE AUTH USER ////////////////////////////////////////////////
-        const initialUser = {
-            name: 'Test User',
-            username: 'Tester11',
-            password: 'Secret'
-        }
-
-        const newUser = await api
-            .post('/api/users')
-            .send(initialUser)
-        console.log('newUser', newUser.body)
-
-
-        const res = await api
-            .post('/api/login')
-            .send({ username: initialUser.username, password: initialUser.password})
-
-        console.log('makeAuthUserToken', res.body.token)
-
-        //////////////////////////////////////////////////////////////////////
-
         const newBlog = {
             title: 'A new blog test',
             author: 'blog_api.test.js',
@@ -93,7 +95,7 @@ describe('POST requests', () => {
 
         await api
             .post('/api/blogs')
-            .set('Authorization', `Bearer ${res.body.token}`)
+            .set('Authorization', `Bearer ${userToken}`)
             .send(newBlog)
             .expect(200 || 201)
             .expect('Content-Type', /application\/json/)
@@ -110,11 +112,13 @@ describe('POST requests', () => {
         const newBlog = {
             title: 'A new blog test',
             author: 'blog_api.test.js',
-            url: 'someurl.com'
+            url: 'someurl.com',
+            user: initialUser.username
         }
 
         await api
             .post('/api/blogs')
+            .set('Authorization', `Bearer ${userToken}`)
             .send(newBlog)
             .expect(200 || 201)
             .expect('Content-Type', /application\/json/)
@@ -127,11 +131,13 @@ describe('POST requests', () => {
 
     test('post request missing title/url gets status code 400 response', async () => {
         const newBlog = {
-            author: 'blog_api.test.js'
+            author: 'blog_api.test.js',
+            user: initialUser.username
         }
 
         await api
             .post('/api/blogs')
+            .set('Authorization', `Bearer ${userToken}`)
             .send(newBlog)
             .expect(400)
     })
