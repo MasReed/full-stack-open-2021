@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import loginService from './services/login.js';
 import noteService from './services/notes.js';
 // Components
 import Footer from './Footer.jsx';
@@ -13,6 +14,9 @@ const App = () => {
     const [ newNote, setNewNote ] = useState('a new note...');
     const [ showAll, setShowAll ] = useState(true);
     const [ errorMsg, setErrorMsg ] = useState(null);
+    const [ username, setUsername ] = useState('');
+    const [ password, setPassword ] = useState('');
+    const [ user, setUser ] = useState(null)
 
 
     // Fetch Data from json-server
@@ -74,12 +78,77 @@ const App = () => {
             });
     }
 
+    const handleLogin = async (event) => {
+        event.preventDefault()
+
+        try {
+            const user = await loginService.login({
+                username, password,
+            })
+
+            window.localStorage.setItem(
+                'loggedNoteappUser', JSON.stringify(user)
+            )
+            
+            noteService.setToken(user.token)
+            setUser(user)
+            setUsername('')
+            setPassword('')
+        } catch (exception) {
+            setErrorMsg('Invalid credentials')
+            setTimeout( () => {
+                setErrorMsg(null)
+            }, 5000)
+        }
+        console.log('logging in with', username, password)
+    }
+
+    const loginForm = () => (
+        <form onSubmit={handleLogin} style={{margin: '20px 0px'}}>
+            <div>
+                <label>username</label>
+                <input
+                    type='text'
+                    value={username}
+                    name='username'
+                    onChange={ ({ target }) => setUsername(target.value)}
+                />
+            </div>
+            <div>
+                <label>password</label>
+                <input
+                    type='password'
+                    value={password}
+                    name='password'
+                    onChange={ ({ target }) => setPassword(target.value)}
+                />
+            </div>
+            <button type='submit'>Login</button>
+        </form>
+    )
+
+    const noteForm = () => (
+        <form onSubmit={addNote}>
+            <input value={newNote} onChange={handleNoteChange}/>
+            <button type='submit'>Save</button>
+        </form>
+    )
+
 
     // Items to render
     return (
         <div>
             <h1>Notes</h1>
             <Notification message={errorMsg} />
+
+            {user === null ?
+                loginForm()
+                : <div>
+                    <p>{user.name} logged in</p>
+                    {noteForm()}
+                </div>
+            }
+
             <div>
                 <button onClick={ () => setShowAll(!showAll) }>
                     Show {showAll ? 'important' : 'all'}
@@ -94,13 +163,19 @@ const App = () => {
                     />
                 )}
             </ul>
-            <form onSubmit={addNote}>
-                <input value={newNote} onChange={handleNoteChange}/>
-                <button type='submit'>Save</button>
-            </form>
+
             <Footer />
         </div>
     );
 }
 
 export default App;
+
+
+// {user === null ?
+//     loginForm() :
+//     <div>
+//         <p>{user.name} logged-in</p>
+//         {noteForm()}
+//     </div>
+// }
