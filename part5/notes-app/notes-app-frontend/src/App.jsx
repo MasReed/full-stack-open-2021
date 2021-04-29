@@ -3,8 +3,10 @@ import loginService from './services/login.js';
 import noteService from './services/notes.js';
 // Components
 import Footer from './Footer.jsx';
+import LoginForm from './components/LoginForm';
 import Note from './Note.jsx';
 import Notification from './Notification.jsx';
+import Togglable from './components/Togglable';
 
 // Main App
 const App = () => {
@@ -17,7 +19,6 @@ const App = () => {
     const [ username, setUsername ] = useState('');
     const [ password, setPassword ] = useState('');
     const [ user, setUser ] = useState(null)
-
 
     // Fetch Data from json-server
     useEffect( () => {
@@ -121,30 +122,6 @@ const App = () => {
         window.localStorage.removeItem('loggedNoteappUser')
     }
 
-    const loginForm = () => (
-        <form onSubmit={handleLogin} style={{margin: '20px 0px'}}>
-            <div>
-                <label>username</label>
-                <input
-                    type='text'
-                    value={username}
-                    name='username'
-                    onChange={ ({ target }) => setUsername(target.value)}
-                />
-            </div>
-            <div>
-                <label>password</label>
-                <input
-                    type='password'
-                    value={password}
-                    name='password'
-                    onChange={ ({ target }) => setPassword(target.value)}
-                />
-            </div>
-            <button type='submit'>Login</button>
-        </form>
-    )
-
     const noteForm = () => (
         <form onSubmit={addNote}>
             <input value={newNote} onChange={handleNoteChange}/>
@@ -160,7 +137,15 @@ const App = () => {
             <Notification message={errorMsg} />
 
             {user === null ?
-                loginForm()
+                <Togglable buttonLabel='Login'>
+                    <LoginForm
+                        username={username}
+                        password={password}
+                        handleUsernameChange={ ({ target }) => setUsername(target.value)}
+                        handlePasswordChange={ ({ target }) => setPassword(target.value)}
+                        handleSubmit={handleLogin}
+                    />
+                </Togglable>
                 : <div>
                     <p>{user.name} logged in</p>
                     {noteForm()}
