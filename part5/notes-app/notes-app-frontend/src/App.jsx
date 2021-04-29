@@ -5,6 +5,7 @@ import noteService from './services/notes.js';
 import Footer from './Footer.jsx';
 import LoginForm from './components/LoginForm';
 import Note from './Note.jsx';
+import NoteForm from './components/NoteForm';
 import Notification from './Notification.jsx';
 import Togglable from './components/Togglable';
 
@@ -13,11 +14,8 @@ const App = () => {
 
     // Stateful Data
     const [ notes, setNotes ] = useState([]);
-    const [ newNote, setNewNote ] = useState('a new note...');
     const [ showAll, setShowAll ] = useState(true);
     const [ errorMsg, setErrorMsg ] = useState(null);
-    const [ username, setUsername ] = useState('');
-    const [ password, setPassword ] = useState('');
     const [ user, setUser ] = useState(null)
 
     // Fetch Data from json-server
@@ -40,26 +38,14 @@ const App = () => {
     }, [])
 
     // User saves new note
-    const addNote = (event) => {
-        event.preventDefault();
-        const noteObject = {
-            content: newNote,
-            date: new Date().toISOString(),
-            important: Math.random() < 0.5,
-        }
+    const addNote = (noteObject) => {
 
         noteService
             .create(noteObject)
             .then( returnedNote => {
                 setNotes(notes.concat(returnedNote))
-                setNewNote('')
                 }
             );
-    }
-
-    //
-    const handleNoteChange = (event) => {
-        setNewNote(event.target.value);
     }
 
     // Able to show only important notes
@@ -89,13 +75,10 @@ const App = () => {
             });
     }
 
-    const handleLogin = async (event) => {
-        event.preventDefault()
+    const handleLogin = async (userObject) => {
 
         try {
-            const user = await loginService.login({
-                username, password,
-            })
+            const user = await loginService.login(userObject)
 
             window.localStorage.setItem(
                 'loggedNoteappUser', JSON.stringify(user)
@@ -103,15 +86,14 @@ const App = () => {
 
             noteService.setToken(user.token)
             setUser(user)
-            setUsername('')
-            setPassword('')
+
         } catch (exception) {
             setErrorMsg('Invalid credentials')
             setTimeout( () => {
                 setErrorMsg(null)
             }, 5000)
         }
-        console.log('logging in with', username, password)
+        console.log('logging in with', userObject.username)
     }
 
 
@@ -122,13 +104,6 @@ const App = () => {
         window.localStorage.removeItem('loggedNoteappUser')
     }
 
-    const noteForm = () => (
-        <form onSubmit={addNote}>
-            <input value={newNote} onChange={handleNoteChange}/>
-            <button type='submit'>Save</button>
-        </form>
-    )
-
 
     // Items to render
     return (
@@ -138,18 +113,14 @@ const App = () => {
 
             {user === null ?
                 <Togglable buttonLabel='Login'>
-                    <LoginForm
-                        username={username}
-                        password={password}
-                        handleUsernameChange={ ({ target }) => setUsername(target.value)}
-                        handlePasswordChange={ ({ target }) => setPassword(target.value)}
-                        handleSubmit={handleLogin}
-                    />
+                    <LoginForm handleSubmit={handleLogin}/>
                 </Togglable>
                 : <div>
                     <p>{user.name} logged in</p>
-                    {noteForm()}
                     <button onClick={handleLogout}>Logout</button>
+                    <Togglable buttonLabel='New Note'>
+                        <NoteForm createNote={addNote}/>
+                    </Togglable>
                 </div>
             }
 
@@ -174,12 +145,3 @@ const App = () => {
 }
 
 export default App;
-
-
-// {user === null ?
-//     loginForm() :
-//     <div>
-//         <p>{user.name} logged-in</p>
-//         {noteForm()}
-//     </div>
-// }
