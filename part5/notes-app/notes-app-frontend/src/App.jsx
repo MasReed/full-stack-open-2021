@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import loginService from './services/login.js';
 import noteService from './services/notes.js';
 // Components
@@ -37,9 +37,12 @@ const App = () => {
         }
     }, [])
 
+    //
+    const noteFormRef = useRef()
+
     // User saves new note
     const addNote = (noteObject) => {
-
+        noteFormRef.current.toggleVisibility()
         noteService
             .create(noteObject)
             .then( returnedNote => {
@@ -47,6 +50,7 @@ const App = () => {
                 }
             );
     }
+
 
     // Able to show only important notes
     const notesToShow = showAll
@@ -118,7 +122,7 @@ const App = () => {
                 : <div>
                     <p>{user.name} logged in</p>
                     <button onClick={handleLogout}>Logout</button>
-                    <Togglable buttonLabel='New Note'>
+                    <Togglable buttonLabel='New Note' ref={noteFormRef}>
                         <NoteForm createNote={addNote}/>
                     </Togglable>
                 </div>
