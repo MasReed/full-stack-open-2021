@@ -31,6 +31,15 @@ const update = async (id, updatedObject) => {
     return response.data
 }
 
-const exp = { getAll, create, update, setToken}
+const deletePost = async (id) => {
+    const config = {
+        headers: { Authorization: token }
+    }
+
+    const response = await axios.delete(`${baseUrl}/${id}`, config)
+    return response.data
+}
+
+const exp = { getAll, create, update, deletePost, setToken}
 
 export default exp

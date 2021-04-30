@@ -111,6 +111,21 @@ const App = () => {
     }
   }
 
+  const handleBlogDelete = async (blog) => {
+    try {
+      await blogService.deletePost(blog.id)
+      toastNotification(
+        `'${blog.title}' deleted!`,
+        'darkorange'
+      )
+    } catch (exception) {
+      toastNotification(
+        `${exception}`,
+        'red'
+      )
+    }
+  }
+
 
   const toastNotification = async (message, color) => {
     setNotificationMessage(message)
@@ -158,11 +173,16 @@ const App = () => {
               }
             })
             .map(blog =>
-          <Blog key={blog.id} blog={blog} updateLikes={handleBlogLike} />
-      )}
+              <Blog
+                key={blog.id}
+                blog={blog}
+                currentUser={user}
+                updateLikes={handleBlogLike}
+                deleteBlog={handleBlogDelete}
+              />
+            )
+        }
       </div>}
-
-
 
     </div>
   )

@@ -1,7 +1,7 @@
 import React from 'react'
 import Togglable from './Togglable'
 
-const Blog = ({ blog, updateLikes }) => {
+const Blog = ({ blog, currentUser, updateLikes, deleteBlog }) => {
 
     const blogStyle={
         border: 'solid',
@@ -24,6 +24,14 @@ const Blog = ({ blog, updateLikes }) => {
         updateLikes(blog.id, updatedBlogObject)
     }
 
+    const handleDeleteClick = (event) => {
+        event.preventDefault()
+
+        const isConfirmed = window.confirm(`Permanently delete '${blog.title}' ?`)
+
+        return isConfirmed ? deleteBlog(blog) : null
+    }
+
     return (
       <div style={blogStyle}>
         <h4 style={{margin: '2px 0'}}>{blog.title}</h4>
@@ -34,6 +42,8 @@ const Blog = ({ blog, updateLikes }) => {
                 <div style={{margin: '5px 0'}}>
                     <p style={{display: 'inline'}}> likes: {blog.likes}</p>
                     <button onClick={handleLikeClick} style={{marginLeft: '10px'}}>Like</button>
+                    {(blog.user.username === currentUser.username)
+                        && <button onClick={handleDeleteClick} style={{marginLeft: '10px'}}>Delete</button>}
                 </div>
             </div>
         </Togglable>
