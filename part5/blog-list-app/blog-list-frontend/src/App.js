@@ -14,9 +14,6 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [newBlogTitle, setNewBlogTitle] = useState('')
-  const [newBlogAuthor, setNewBlogAuthor] = useState('')
-  const [newBlogUrl, setNewBlogUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -92,21 +89,12 @@ const App = () => {
 
   const blogFormRef = useRef()
 
-  const handleNewPost = async (event) => {
-    event.preventDefault()
+  const handleNewPost = async (newBlogObject) => {
 
     try {
-      const newBlogPost = {
-        title: newBlogTitle,
-        author: newBlogAuthor,
-        url: newBlogUrl
-      }
+      const newBlogPost = newBlogObject
 
       await blogService.create(newBlogPost)
-
-      setNewBlogTitle('')
-      setNewBlogAuthor('')
-      setNewBlogUrl('')
 
       blogFormRef.current.toggleVisibility()
 
@@ -155,15 +143,7 @@ const App = () => {
         <hr />
 
         <Togglable buttonLabel='New Post' ref={blogFormRef}>
-          <NewBlogForm
-            handleNewPost={handleNewPost}
-            newBlogTitle={newBlogTitle}
-            newBlogAuthor={newBlogAuthor}
-            newBlogUrl={newBlogUrl}
-            setNewBlogTitle={setNewBlogTitle}
-            setNewBlogAuthor={setNewBlogAuthor}
-            setNewBlogUrl={setNewBlogUrl}
-          />
+          <NewBlogForm handleNewPost={handleNewPost} />
         </Togglable>
 
         <hr />
