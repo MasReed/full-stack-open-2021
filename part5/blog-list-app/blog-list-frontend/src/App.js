@@ -19,14 +19,14 @@ const App = () => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
     )
-}, [blogs])
+  }, [blogs])
 
   useEffect( () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
-        const user = JSON.parse(loggedUserJSON)
-        setUser(user)
-        blogService.setToken(user.token)
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
     }
   }, [])
 
@@ -47,18 +47,18 @@ const App = () => {
       setPassword('')
 
       toastNotification(
-          `${username} successfully logged in!`,
-          'green'
+        `${username} successfully logged in!`,
+        'green'
       )
     } catch (exception) {
       console.log(exception)
 
       toastNotification(
-          `Invalid Username or Password`,
-          'red'
+        'Invalid Username or Password',
+        'red'
       )
     }
-      console.log('logging in with', username, password)
+    console.log('logging in with', username, password)
   }
 
   const handleLogout = async (event) => {
@@ -67,8 +67,8 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogappUser')
 
     toastNotification(
-        `${username} successfully logged out!`,
-        'green'
+      `${username} successfully logged out!`,
+      'green'
     )
   }
 
@@ -84,14 +84,14 @@ const App = () => {
       blogFormRef.current.toggleVisibility()
 
       toastNotification(
-          `A new blog '${newBlogPost.title}' by ${newBlogPost.author} successfully added!`,
-          'green'
+        `A new blog '${newBlogPost.title}' by ${newBlogPost.author} successfully added!`,
+        'green'
       )
     } catch (exception) {
       console.log(exception)
       toastNotification(
-          `An error has occured: ${exception}`,
-          'red'
+        `An error has occured: ${exception}`,
+        'red'
       )
     }
   }
@@ -100,7 +100,7 @@ const App = () => {
     try {
       await blogService.update(id, updatedBlogObject)
       toastNotification(
-        `Liked!`,
+        'Liked!',
         'blue'
       )
     } catch (exception) {
@@ -132,15 +132,15 @@ const App = () => {
     setNotificationColor(color)
 
     await setTimeout( () => {
-        setNotificationMessage(null)
-        setNotificationColor('darkgrey')
+      setNotificationMessage(null)
+      setNotificationColor('darkgrey')
     }, 5000)
   }
 
 
   return (
     <div>
-      <h2 style={{margin: '20px 0'}}>Blogs</h2>
+      <h2 style={{ margin: '20px 0' }}>Blogs</h2>
 
       <Notification message={notificationMessage} color={notificationColor} />
 
@@ -153,23 +153,23 @@ const App = () => {
         setPassword={setPassword}
         handleLogin={handleLogin}
       />
-      : <div>
-        <p>{user.username} is logged in.</p>
-        <button onClick={handleLogout}>Logout</button>
-        <hr />
+        : <div>
+          <p>{user.username} is logged in.</p>
+          <button onClick={handleLogout}>Logout</button>
+          <hr />
 
-        <Togglable buttonLabelToOpen='New Post' buttonLabelToClose='Cancel' ref={blogFormRef}>
-          <NewBlogForm handleNewPost={handleNewPost} />
-        </Togglable>
+          <Togglable buttonLabelToOpen='New Post' buttonLabelToClose='Cancel' ref={blogFormRef}>
+            <NewBlogForm handleNewPost={handleNewPost} />
+          </Togglable>
 
-        <hr />
+          <hr />
 
-        {blogs
+          {blogs
             .sort( (a, b) => {
               if (a.likes < b.likes) {
-                  return 1
+                return 1
               } else {
-                  return -1
+                return -1
               }
             })
             .map(blog =>
@@ -181,8 +181,8 @@ const App = () => {
                 deleteBlog={handleBlogDelete}
               />
             )
-        }
-      </div>}
+          }
+        </div>}
 
     </div>
   )

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const LoginForm = ({ handleSubmit }) => {
 
@@ -49,31 +50,12 @@ const LoginForm = ({ handleSubmit }) => {
     )
 }
 
+LoginForm.propTypes = {
+    handleSubmit: PropTypes.func.isRequired,
+    handleUsernameChange: PropTypes.func.isRequired,
+    handlePasswordChange: PropTypes.func.isRequired,
+    username: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired
+}
+
 export default LoginForm
-
-
-
-// const handleLogin = async (event) => {
-//     event.preventDefault()
-//
-//     try {
-//         const user = await loginService.login({
-//             username, password,
-//         })
-//
-//         window.localStorage.setItem(
-//             'loggedNoteappUser', JSON.stringify(user)
-//         )
-//
-//         noteService.setToken(user.token)
-//         setUser(user)
-//         setUsername('')
-//         setPassword('')
-//     } catch (exception) {
-//         setErrorMsg('Invalid credentials')
-//         setTimeout( () => {
-//             setErrorMsg(null)
-//         }, 5000)
-//     }
-//     console.log('logging in with', username, password)
-// }
