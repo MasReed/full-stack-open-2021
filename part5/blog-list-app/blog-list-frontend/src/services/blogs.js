@@ -22,6 +22,15 @@ const create = async newObject => {
     return response.data
 }
 
-const exp = { getAll, create, setToken}
+const update = async (id, updatedObject) => {
+    const config = {
+        headers: { Authorization: token }
+    }
+
+    const response = await axios.put(`${baseUrl}/${id}`, updatedObject, config)
+    return response.data
+}
+
+const exp = { getAll, create, update, setToken}
 
 export default exp

@@ -74,7 +74,6 @@ const App = () => {
 
 
   const blogFormRef = useRef()
-
   const handleNewPost = async (newBlogObject) => {
 
     try {
@@ -97,11 +96,27 @@ const App = () => {
     }
   }
 
-  const toastNotification = (message, color) => {
+  const handleBlogLike = async (id, updatedBlogObject) => {
+    try {
+      await blogService.update(id, updatedBlogObject)
+      toastNotification(
+        `Liked!`,
+        'blue'
+      )
+    } catch (exception) {
+      toastNotification(
+        `${exception}`,
+        'red'
+      )
+    }
+  }
+
+
+  const toastNotification = async (message, color) => {
     setNotificationMessage(message)
     setNotificationColor(color)
 
-    setTimeout( () => {
+    await setTimeout( () => {
         setNotificationMessage(null)
         setNotificationColor('darkgrey')
     }, 5000)
@@ -134,7 +149,7 @@ const App = () => {
 
         <hr />
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} updateLikes={handleBlogLike}/>
         )}
       </div>}
 
