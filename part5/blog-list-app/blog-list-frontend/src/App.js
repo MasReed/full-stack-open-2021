@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -89,6 +90,8 @@ const App = () => {
   }
 
 
+  const blogFormRef = useRef()
+
   const handleNewPost = async (event) => {
     event.preventDefault()
 
@@ -104,6 +107,8 @@ const App = () => {
       setNewBlogTitle('')
       setNewBlogAuthor('')
       setNewBlogUrl('')
+
+      blogFormRef.current.toggleVisibility()
 
       // notification banner
       setNotificationColor('green')
@@ -131,7 +136,7 @@ const App = () => {
 
   return (
     <div>
-      <h2 style={{margin: '40px 0'}}>Blogs</h2>
+      <h2 style={{margin: '20px 0'}}>Blogs</h2>
 
       <Notification message={notificationMessage} color={notificationColor}/>
 
@@ -149,15 +154,17 @@ const App = () => {
         <button onClick={handleLogout}>Logout</button>
         <hr />
 
-        <NewBlogForm
-          handleNewPost={handleNewPost}
-          newBlogTitle={newBlogTitle}
-          newBlogAuthor={newBlogAuthor}
-          newBlogUrl={newBlogUrl}
-          setNewBlogTitle={setNewBlogTitle}
-          setNewBlogAuthor={setNewBlogAuthor}
-          setNewBlogUrl={setNewBlogUrl}
-        />
+        <Togglable buttonLabel='New Post' ref={blogFormRef}>
+          <NewBlogForm
+            handleNewPost={handleNewPost}
+            newBlogTitle={newBlogTitle}
+            newBlogAuthor={newBlogAuthor}
+            newBlogUrl={newBlogUrl}
+            setNewBlogTitle={setNewBlogTitle}
+            setNewBlogAuthor={setNewBlogAuthor}
+            setNewBlogUrl={setNewBlogUrl}
+          />
+        </Togglable>
 
         <hr />
         {blogs.map(blog =>
