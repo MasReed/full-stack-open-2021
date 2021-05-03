@@ -5,7 +5,7 @@ const Blog = ({ blog, currentUser, updateLikes, deleteBlog }) => {
 
   const blogStyle={
     border: 'solid',
-    borderColor: 'blue',
+    borderColor: 'purple',
     borderWidth: 1,
     marginBottom: 5,
     padding: '10px 0 7px 4px'
@@ -33,17 +33,23 @@ const Blog = ({ blog, currentUser, updateLikes, deleteBlog }) => {
   }
 
   return (
-    <div style={blogStyle}>
-      <h4 style={{ margin: '2px 0' }}>{blog.title}</h4>
-      <p style={{ margin: '2px 0' }}>{blog.author}</p>
+    <div style={blogStyle} className='blogDiv'>
+      <h4 style={{ margin: '2px 0' }} className='blogTitle'>{blog.title}</h4>
+      <p style={{ margin: '2px 0' }} className='blogAuthor'>{blog.author}</p>
       <Togglable buttonLabelToOpen='Details' buttonLabelToClose='Hide'>
-        <div>
+        <div className='togglableContent'>
           <p style={{ margin: '5px 0' }}>{blog.url}</p>
           <div style={{ margin: '5px 0' }}>
             <p style={{ display: 'inline' }}> likes: {blog.likes}</p>
             <button onClick={handleLikeClick} style={{ marginLeft: '10px' }}>Like</button>
-            {(blog.user.username === currentUser.username)
-                        && <button onClick={handleDeleteClick} style={{ marginLeft: '10px' }}>Delete</button>}
+            {
+              (blog.user.username === currentUser.username)
+              && <button
+                onClick={handleDeleteClick}
+                style={{ marginLeft: '10px' }}>
+                Delete
+              </button>
+            }
           </div>
         </div>
       </Togglable>

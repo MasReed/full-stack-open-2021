@@ -9,17 +9,22 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
+  const [pingBlogs, setPingBlogs] = useState(false)
   const [notificationMessage, setNotificationMessage] = useState('')
   const [notificationColor, setNotificationColor] = useState('darkgrey')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
-  useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )
-  }, [blogs])
+  useEffect( () => {
+
+    async function fetchData() {
+      const res = await blogService.getAll()
+      setBlogs(res)
+    }
+
+    fetchData()
+  }, [ pingBlogs ]) //[ setBlogs]
 
   useEffect( () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -83,6 +88,9 @@ const App = () => {
 
       blogFormRef.current.toggleVisibility()
 
+      // rerender blogs
+      setPingBlogs(!pingBlogs)
+
       toastNotification(
         `A new blog '${newBlogPost.title}' by ${newBlogPost.author} successfully added!`,
         'green'
@@ -99,6 +107,9 @@ const App = () => {
   const handleBlogLike = async (id, updatedBlogObject) => {
     try {
       await blogService.update(id, updatedBlogObject)
+      // rerender blogs
+      setPingBlogs(!pingBlogs)
+
       toastNotification(
         'Liked!',
         'blue'
@@ -114,6 +125,10 @@ const App = () => {
   const handleBlogDelete = async (blog) => {
     try {
       await blogService.deletePost(blog.id)
+
+      // rerender blogs
+      setPingBlogs(!pingBlogs)
+
       toastNotification(
         `'${blog.title}' deleted!`,
         'darkorange'
