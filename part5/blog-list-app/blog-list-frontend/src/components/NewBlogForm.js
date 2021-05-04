@@ -55,7 +55,7 @@ const NewBlogForm = ({ handleNewPost }) => {
           />
         </div>
         <div style={{ margin: '5px 0 0 60px' }}>
-          <button type='submit' style={{ padding: '3px 66.5px' }}>Create </button>
+          <button id='createBlog' type='submit' style={{ padding: '3px 66.5px' }}>Create </button>
         </div>
       </form>
     </div>
