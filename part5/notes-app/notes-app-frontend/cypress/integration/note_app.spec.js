@@ -33,13 +33,25 @@ describe('Note App', function() {
     cy.contains('Test User logged in')
   })
 
+  it('login fails with wrong password', function() {
+    cy.contains('Login').click()
+    cy.get('#loginUsername').type('Tester123')
+    cy.get('#loginPassword').type('Invalid')
+    cy.get('#loginButton').click()
+
+    cy.get('.error-notification')
+      .should('contain', 'Invalid credentials')
+      .and('have.css', 'color', 'rgb(255, 0, 0)')
+      .and('have.css', 'border-style', 'solid')
+
+    cy.get('html').should('not.contain', 'Test User logged in')
+  })
+
   ///////////////////////////////////////
   describe('when logged in', function() {
     beforeEach(function() {
-      cy.contains('Login').click()
-      cy.get('#loginUsername').type('Tester123')
-      cy.get('#loginPassword').type('Password')
-      cy.get('#loginButton').click()
+      // see ./support/commands
+      cy.login({ username: 'Tester123', password: 'Password' })
     })
 
     it('a new note can be created', function() {
@@ -52,9 +64,10 @@ describe('Note App', function() {
     //////////////////////////////////////////
     describe('and a note exists', function() {
       beforeEach(function() {
-        cy.contains('New Note').click()
-        cy.get('#newNote').type('another cypress note')
-        cy.contains('save').click()
+        cy.createNote({
+          content: 'another cypress note',
+          important: false
+        })
       })
 
       it('it can be made important', function() {
