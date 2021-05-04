@@ -23,10 +23,11 @@ const NewBlogForm = ({ handleNewPost }) => {
   return (
     <div>
       <h2>Create New Post</h2>
-      <form onSubmit={makeNewPostObject}>
+      <form onSubmit={makeNewPostObject} className='newBlogDiv'>
         <div style={{ margin: '5px 0' }}>
           <label style={{ marginRight: '26px' }}>Title:</label>
           <input
+            id='newBlogTitle'
             type='text'
             value={newBlogTitle}
             name='title'
@@ -36,6 +37,7 @@ const NewBlogForm = ({ handleNewPost }) => {
         <div style={{ margin: '5px 0' }}>
           <label style={{ marginRight: '10px' }}>Author:</label>
           <input
+            id='newBlogAuthor'
             type='text'
             value={newBlogAuthor}
             name='author'
@@ -45,6 +47,7 @@ const NewBlogForm = ({ handleNewPost }) => {
         <div style={{ margin: '5px 0' }}>
           <label style={{ marginRight: '24px' }}>URL:</label>
           <input
+            id='newBlogUrl'
             type='text'
             value={newBlogUrl}
             name='url'
