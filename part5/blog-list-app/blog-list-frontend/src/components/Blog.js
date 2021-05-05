@@ -40,7 +40,7 @@ const Blog = ({ blog, currentUser, updateLikes, deleteBlog }) => {
         <div className='togglableContent'>
           <p style={{ margin: '5px 0' }}>{blog.url}</p>
           <div style={{ margin: '5px 0' }}>
-            <p style={{ display: 'inline' }}> likes: {blog.likes}</p>
+            <p className='blogLikes' style={{ display: 'inline' }}>likes: {blog.likes}</p>
             <button onClick={handleLikeClick} style={{ marginLeft: '10px' }}>Like</button>
             {
               (blog.user.username === currentUser.username)

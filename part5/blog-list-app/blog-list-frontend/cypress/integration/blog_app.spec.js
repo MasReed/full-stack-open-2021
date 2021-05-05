@@ -86,7 +86,7 @@ describe('Blog app', function() {
         cy.contains('likes:').should('contain', '1')
       })
 
-      it.only('A blog can be deleted by the user who created it', function() {
+      it('A blog can be deleted by the user who created it', function() {
         cy.contains('Second').parent().as('theBlog')
 
         cy.get('@theBlog')
@@ -102,7 +102,39 @@ describe('Blog app', function() {
 
         cy.get('html').should('not.contain', '@theBlog')
       })
-    })
 
+      it('Blogs are sorted by most likes', function() {
+        cy.contains('First').parent().as('firstBlog')
+        cy.contains('Second').parent().as('secondBlog')
+        cy.contains('Third').parent().as('thirdBlog')
+
+        cy.get('@thirdBlog').contains('Details').click()
+        cy.get('@thirdBlog').contains('Like').click()
+        cy.wait(500)
+        cy.get('@thirdBlog').contains('Like').click()
+        cy.wait(500)
+
+        cy.get('@secondBlog').contains('Details').click()
+        cy.get('@secondBlog').contains('Like').click()
+        cy.wait(500)
+
+        cy.get('@firstBlog').contains('Details').click()
+
+
+        // https://stackoverflow.com/questions/63268483/does-cypress-get-returns-elements-in-order-it-appears-on-html-document#:~:text=Short%20answer%2C%20yes.
+        cy.get('.blogDiv').as('blogs').eq(0).should('contain', 'Third').and('contain', 'likes: 2')
+        cy.get('.blogDiv').as('blogs').eq(1).should('contain', 'Second').and('contain', 'likes: 1')
+        cy.get('.blogDiv').as('blogs').eq(2).should('contain', 'First').and('contain', 'likes: 0')
+
+        cy.get('@secondBlog').contains('Like').click()
+        cy.wait(500)
+        cy.get('@secondBlog').contains('Like').click()
+        cy.wait(500)
+
+        cy.get('.blogDiv').as('blogs').eq(0).should('contain', 'Second').and('contain', 'likes: 3')
+        cy.get('.blogDiv').as('blogs').eq(1).should('contain', 'Third').and('contain', 'likes: 2')
+        cy.get('.blogDiv').as('blogs').eq(2).should('contain', 'First').and('contain', 'likes: 0')
+      })
+    })
   })
 })
