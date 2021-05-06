@@ -17,13 +17,30 @@ const asObject = (anecdote) => {
   }
 }
 
+const upVote = (array, id) => {
+  const updatedState = array.map( anecdote => {
+    const votes = anecdote.votes
+    return(
+      anecdote.id === id ? { ...anecdote, votes: votes + 1 } : anecdote
+    )
+  })
+  return updatedState
+}
+
 const initialState = anecdotesAtStart.map(asObject)
 
 const reducer = (state = initialState, action) => {
+  console.log('========================')
   console.log('state now: ', state)
   console.log('action', action)
 
-  return state
+  switch (action.type) {
+    case 'LIKE':
+      return upVote(state, action.id)
+
+    default:
+      return state
+  }
 }
 
 export default reducer

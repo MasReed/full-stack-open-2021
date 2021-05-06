@@ -6,20 +6,23 @@ const App = () => {
   const dispatch = useDispatch()
 
   const vote = (id) => {
-    console.log('vote', id)
+    dispatch({
+      type: 'LIKE',
+      id: id
+    })
   }
 
   return (
     <div>
       <h2>Anecdotes</h2>
       {anecdotes.map(anecdote =>
-        <div key={anecdote.id}>
+        <div style={{margin: '10px 0px'}} key={anecdote.id}>
           <div>
             {anecdote.content}
           </div>
           <div>
-            has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
+            has {anecdote.votes} votes
+            <button style={{marginLeft: '20px'}} onClick={() => vote(anecdote.id)}>vote</button>
           </div>
         </div>
       )}
