@@ -18,6 +18,7 @@ const asObject = (anecdote) => {
 }
 
 const upVote = (array, id) => {
+  // return new array with updated votes
   const updatedState = array.map( anecdote => {
     const votes = anecdote.votes
     return(
@@ -26,6 +27,7 @@ const upVote = (array, id) => {
   })
   return updatedState
 }
+
 
 const initialState = anecdotesAtStart.map(asObject)
 
@@ -37,7 +39,8 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'LIKE':
       return upVote(state, action.id)
-
+    case 'NEW':
+      return [...state, asObject(action.data)]
     default:
       return state
   }
