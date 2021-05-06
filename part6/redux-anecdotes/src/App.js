@@ -1,39 +1,34 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-
-const sort = (array, prop) => {
-  const copy = [...array]
-  const sortFn = (a, b) => {
-    if (a[prop] < b[prop]) {
-      return 1
-    } else {
-      return -1
-    }
-  }
-  return copy.sort(sortFn)
-}
+import { upVoteCreator, anecdoteCreator } from './reducers/anecdoteReducer'
+import AnecdoteForm from './components/AnecdoteForm'
 
 const App = () => {
-  const anecdotes = useSelector(state => sort(state, 'votes'))
+
+  const sortAnecdotes = (array, prop) => {
+    const copy = [...array]
+    const sortFn = (a, b) => {
+      if (a[prop] < b[prop]) {
+        return 1
+      } else {
+        return -1
+      }
+    }
+    return copy.sort(sortFn)
+  }
+
+  const anecdotes = useSelector(state => sortAnecdotes(state, 'votes'))
   const dispatch = useDispatch()
 
-
-
   const vote = (id) => {
-    dispatch({
-      type: 'LIKE',
-      id: id
-    })
+    dispatch(upVoteCreator(id))
   }
 
   const addAnecdote = (event) => {
     event.preventDefault()
     const content = event.target.newInput.value
     event.target.newInput.value = ''
-    dispatch({
-      type: 'NEW',
-      data: content
-    })
+    dispatch(anecdoteCreator(content))
   }
 
   return (
@@ -50,13 +45,7 @@ const App = () => {
           </div>
         </div>
       )}
-      <h2>create new</h2>
-      <form onSubmit={addAnecdote}>
-        <div>
-          <input name='newInput'/>
-        </div>
-        <button type='submit'>create</button>
-      </form>
+      <AnecdoteForm />
     </div>
   )
 }

@@ -28,7 +28,6 @@ const upVote = (array, id) => {
   return updatedState
 }
 
-
 const initialState = anecdotesAtStart.map(asObject)
 
 const reducer = (state = initialState, action) => {
@@ -47,3 +46,17 @@ const reducer = (state = initialState, action) => {
 }
 
 export default reducer
+
+export const upVoteCreator = (id) => {
+  return {
+    type: 'LIKE',
+    id: id
+  }
+}
+
+export const anecdoteCreator = (content) => {
+  return {
+    type: 'NEW',
+    data: content
+  }
+}
