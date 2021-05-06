@@ -1,9 +1,23 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
+const sort = (array, prop) => {
+  const copy = [...array]
+  const sortFn = (a, b) => {
+    if (a[prop] < b[prop]) {
+      return 1
+    } else {
+      return -1
+    }
+  }
+  return copy.sort(sortFn)
+}
+
 const App = () => {
-  const anecdotes = useSelector(state => state)
+  const anecdotes = useSelector(state => sort(state, 'votes'))
   const dispatch = useDispatch()
+
+
 
   const vote = (id) => {
     dispatch({
