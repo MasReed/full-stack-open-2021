@@ -18,6 +18,7 @@ const AnecdoteList = () => {
   }
 
   // Sort and Filter logic through useSelector
+  // TODO: See if state can further be decoupled
   const anecdotes = useSelector(state => {
     if (state.filters === 'ALL') {
       return sortAnecdotes(state.anecdotes, 'votes')
