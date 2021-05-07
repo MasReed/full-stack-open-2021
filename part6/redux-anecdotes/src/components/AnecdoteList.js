@@ -16,7 +16,7 @@ const AnecdoteList = () => {
     return copy.sort(sortFn)
   }
 
-  const anecdotes = useSelector(state => sortAnecdotes(state, 'votes'))
+  const anecdotes = useSelector(state => sortAnecdotes(state.anecdotes, 'votes'))
   const dispatch = useDispatch()
 
   const vote = (id) => {

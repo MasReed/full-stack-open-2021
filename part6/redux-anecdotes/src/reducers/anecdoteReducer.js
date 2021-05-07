@@ -30,8 +30,8 @@ const upVote = (array, id) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-const reducer = (state = initialState, action) => {
-  console.log('========================')
+const anecdoteReducer = (state = initialState, action) => {
+  console.log('=====Anecdotes=====')
   console.log('state now: ', state)
   console.log('action', action)
 
@@ -45,7 +45,7 @@ const reducer = (state = initialState, action) => {
   }
 }
 
-export default reducer
+export default anecdoteReducer
 
 export const upVoteCreator = (id) => {
   return {
