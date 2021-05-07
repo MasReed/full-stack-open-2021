@@ -17,7 +17,15 @@ const AnecdoteList = () => {
     return copy.sort(sortFn)
   }
 
-  const anecdotes = useSelector(state => sortAnecdotes(state.anecdotes, 'votes'))
+  // Sort and Filter logic through useSelector
+  const anecdotes = useSelector(state => {
+    if (state.filters === 'ALL') {
+      return sortAnecdotes(state.anecdotes, 'votes')
+    } else {
+      const filteredAnecdotes = state.anecdotes.filter( item => item.content.toLocaleLowerCase().includes(state.filters) )
+      return sortAnecdotes(filteredAnecdotes, 'votes')
+    }
+  })
   const dispatch = useDispatch()
 
   const vote = (id) => {
