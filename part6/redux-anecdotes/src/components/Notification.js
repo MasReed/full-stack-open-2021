@@ -22,6 +22,9 @@ const Notification = () => {
   } else if (notification.display === 'Green') {
     style.color = 'green'
     style.background = 'lightgreen'
+  } else if (notification.display === 'Red') {
+    style.color = 'red'
+    style.background = 'lightred'
   } else {
     style.display = 'none'
   }

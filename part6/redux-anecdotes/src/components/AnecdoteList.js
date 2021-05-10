@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { upVoteCreator } from '../reducers/anecdoteReducer'
-import { notificationCreator, notificationReseter } from '../reducers/notificationReducer'
+import { toastNotification } from '../reducers/notificationReducer'
 
 const AnecdoteList = () => {
 
@@ -31,8 +31,7 @@ const AnecdoteList = () => {
 
   const vote = (id) => {
     dispatch(upVoteCreator(id))
-    dispatch(notificationCreator('Blue', 'Voted!'))
-    setTimeout(() => dispatch(notificationReseter()), 5000)
+    dispatch(toastNotification('Blue', 'Voted!', 5))
   }
 
   return (

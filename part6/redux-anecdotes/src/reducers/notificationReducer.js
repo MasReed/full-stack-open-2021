@@ -5,11 +5,11 @@ const notificationReducer = (state = 'Hello World', action) => {
 
   switch (action.type) {
     case 'SET_NOTIFICATION':
-      const Obj = {
+      const setObj = {
         display: action.display,
         message: action.message
       }
-      return Obj
+      return setObj
     case 'UNSET_NOTIFICATION':
       const resetObj = {
         display: '',
@@ -21,17 +21,14 @@ const notificationReducer = (state = 'Hello World', action) => {
   }
 }
 
-export const notificationCreator = (display, message) => {
-  return {
-    type: 'SET_NOTIFICATION',
-    display,
-    message,
-  }
-}
-
-export const notificationReseter = () => {
-  return {
-    type: 'UNSET_NOTIFICATION'
+export const toastNotification = (display, message, seconds) => {
+  return async dispatch => {
+    dispatch({
+      type: 'SET_NOTIFICATION',
+      display,
+      message,
+    })
+    setTimeout(() => dispatch({type: 'UNSET_NOTIFICATION'}), (seconds * 1000))
   }
 }
 
