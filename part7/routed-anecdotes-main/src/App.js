@@ -74,7 +74,7 @@ const CreateNew = (props) => {
   const author = useField('text')
   const info = useField('text')
 
-  console.log({content, author, info})
+  console.log('spreadcontent', {...content})
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -87,10 +87,17 @@ const CreateNew = (props) => {
     history.push('/')
   }
 
+  const handleReset = (e) => {
+    console.log('handlereset')
+    content.reset()
+    author.reset()
+    info.reset()
+  }
+
   return (
     <div>
       <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={{display: 'inline'}}>
         <div style={{margin: '3px 0'}}>
           content
           <input style={{marginLeft: '5px'}} name='content' {...content} />
@@ -103,8 +110,9 @@ const CreateNew = (props) => {
           url
           <input style={{marginLeft: '34px'}} name='info' {...info} />
         </div>
-        <button type='submit' style={{marginLeft: '52px', padding: '2px 68px'}}>create</button>
+        <button type='submit' style={{marginRight: '6px', padding: '2px 37px'}}>create</button>
       </form>
+      <button onClick={() => handleReset()} style={{display: 'inline', padding: '2px 37px'}}>reset</button>
     </div>
   )
 }
