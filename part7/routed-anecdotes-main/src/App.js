@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import {
-  Switch, Route, Link,
+  Switch, Route, Link, Redirect,
   useParams, useHistory
 } from 'react-router-dom'
 
@@ -70,6 +70,8 @@ const CreateNew = (props) => {
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
 
+  const history = useHistory()
+
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
@@ -78,25 +80,26 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    history.push('/')
   }
 
   return (
     <div>
       <h2>create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div style={{margin: '3px 0'}}>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input style={{marginLeft: '5px'}} name='content' value={content} onChange={(e) => setContent(e.target.value)} />
         </div>
-        <div>
+        <div style={{margin: '3px 0'}}>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input style={{marginLeft: '11px'}} name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
         </div>
-        <div>
-          url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+        <div style={{margin: '3px 0'}}>
+          url
+          <input style={{marginLeft: '34px'}} name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
         </div>
-        <button>create</button>
+        <button style={{marginLeft: '52px', padding: '2px 68px'}}>create</button>
       </form>
     </div>
   )
@@ -126,6 +129,8 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`A new anecdote '${anecdote.content}' was added!`)
+    setTimeout(() => setNotification(''), 10000)
   }
 
   const anecdoteById = (id) =>
@@ -146,6 +151,8 @@ const App = () => {
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
+
+      {notification}
 
       <Switch>
         <Route path='/anecdotes/:id'>
