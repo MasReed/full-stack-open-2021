@@ -21,14 +21,18 @@ const notificationReducer = (state = 'Hello World', action) => {
   }
 }
 
+
+let timerId = null
 export const toastNotification = (display, message, seconds) => {
+  clearTimeout(timerId)
+
   return async dispatch => {
     dispatch({
       type: 'SET_NOTIFICATION',
       display,
       message,
     })
-    setTimeout(() => dispatch({type: 'UNSET_NOTIFICATION'}), (seconds * 1000))
+    timerId = setTimeout(() => dispatch({type: 'UNSET_NOTIFICATION'}), (seconds * 1000))
   }
 }
 
