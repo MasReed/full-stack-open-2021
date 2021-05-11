@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import {
-  Switch, Route, Link, Redirect,
+  Switch, Route, Link,
   useParams, useHistory
 } from 'react-router-dom'
+import { useField } from './hooks'
 
 const Menu = () => {
   const padding = {
@@ -66,18 +67,21 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
 
   const history = useHistory()
+
+  const content = useField('text')
+  const author = useField('text')
+  const info = useField('text')
+
+  console.log({content, author, info})
 
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0
     })
     history.push('/')
@@ -89,17 +93,17 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div style={{margin: '3px 0'}}>
           content
-          <input style={{marginLeft: '5px'}} name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input style={{marginLeft: '5px'}} name='content' {...content} />
         </div>
         <div style={{margin: '3px 0'}}>
           author
-          <input style={{marginLeft: '11px'}} name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input style={{marginLeft: '11px'}} name='author' {...author} />
         </div>
         <div style={{margin: '3px 0'}}>
           url
-          <input style={{marginLeft: '34px'}} name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+          <input style={{marginLeft: '34px'}} name='info' {...info} />
         </div>
-        <button style={{marginLeft: '52px', padding: '2px 68px'}}>create</button>
+        <button type='submit' style={{marginLeft: '52px', padding: '2px 68px'}}>create</button>
       </form>
     </div>
   )
