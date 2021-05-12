@@ -74,21 +74,18 @@ const CreateNew = (props) => {
   const author = useField('text')
   const info = useField('text')
 
-  console.log('spreadcontent', {...content})
-
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
-      content: content.value,
-      author: author.value,
-      info: info.value,
+      content: content.attributes.value,
+      author: author.attributes.value,
+      info: info.attributes.value,
       votes: 0
     })
     history.push('/')
   }
 
   const handleReset = (e) => {
-    console.log('handlereset')
     content.reset()
     author.reset()
     info.reset()
@@ -100,15 +97,15 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit} style={{display: 'inline'}}>
         <div style={{margin: '3px 0'}}>
           content
-          <input style={{marginLeft: '5px'}} name='content' {...content} />
+          <input style={{marginLeft: '5px'}} name='content' {...content.attributes} />
         </div>
         <div style={{margin: '3px 0'}}>
           author
-          <input style={{marginLeft: '11px'}} name='author' {...author} />
+          <input style={{marginLeft: '11px'}} name='author' {...author.attributes} />
         </div>
         <div style={{margin: '3px 0'}}>
           url
-          <input style={{marginLeft: '34px'}} name='info' {...info} />
+          <input style={{marginLeft: '34px'}} name='info' {...info.attributes} />
         </div>
         <button type='submit' style={{marginRight: '6px', padding: '2px 37px'}}>create</button>
       </form>
