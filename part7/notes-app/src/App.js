@@ -1,15 +1,34 @@
 import React, { useState } from 'react'
-import {
-  Switch, Route, Link, Redirect,
-  useHistory, useRouteMatch
-} from 'react-router-dom'
 
-import { Table, Form, Button, Alert, Nav, Navbar } from 'react-bootstrap'
+import {
+  Container,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Paper,
+  TextField,
+  Button,
+  AppBar,
+  Toolbar
+} from '@material-ui/core'
+
+import { Alert } from '@material-ui/lab'
+
+import {
+  Switch,
+  Route,
+  Link,
+  Redirect,
+  useRouteMatch,
+  useHistory,
+} from "react-router-dom"
 
 const Home = () => (
   <div>
     <h2>TKTL notes app</h2>
-    <p>Some homepage text</p>
+    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
   </div>
 )
 
@@ -18,38 +37,41 @@ const Note = ({ note }) => {
     <div>
       <h2>{note.content}</h2>
       <div>{note.user}</div>
-      <div><strong>{note.important ? 'important' : ''}</strong></div>
+      <div><strong>{note.important ? 'tärkeä' : ''}</strong></div>
     </div>
   )
 }
 
-const Notes = ({ notes }) => (
+const Notes = ({notes}) => (
   <div>
     <h2>Notes</h2>
-    <Table striped>
-      <tbody>
-        {notes.map(note =>
-          <tr key={note.id}>
-            <td>
-              <Link to={`/notes/${note.id}`}>{note.content}</Link>
-            </td>
-            <td>
-              {note.user}
-            </td>
-          </tr>
-        )}
-      </tbody>
-    </Table>
+
+    <TableContainer component={Paper}>
+      <Table>
+        <TableBody>
+          {notes.map(note => (
+            <TableRow key={note.id}>
+              <TableCell>
+                <Link to={`/notes/${note.id}`}>{note.content}</Link>
+              </TableCell>
+              <TableCell>
+                {note.name}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   </div>
 )
 
 const Users = () => (
   <div>
-    <h2>Users List</h2>
+    <h2>TKTL notes app</h2>
     <ul>
-      <li>Mock User 1</li>
-      <li>Mock User 2</li>
-      <li>Mock User 3</li>
+      <li>Matti Luukkainen</li>
+      <li>Juha Tauriainen</li>
+      <li>Arto Hellas</li>
     </ul>
   </div>
 )
@@ -59,29 +81,31 @@ const Login = (props) => {
 
   const onSubmit = (event) => {
     event.preventDefault()
-    props.onLogin('thisUser')
+    props.onLogin('mluukkai')
     history.push('/')
   }
 
   return (
     <div>
-      <h2>Login</h2>
-      <Form onSubmit={onSubmit}>
-        <Form.Group>
-          <Form.Label>Username:</Form.Label>
-          <Form.Control type='text' name='username' />
-          <Form.Label>Password:</Form.Label>
-          <Form.Control type='password' />
-          <Button variant='primary' type='submit'>Login</Button>
-        </Form.Group>
-      </Form>
+      <h2>login</h2>
+      <form onSubmit={onSubmit}>
+        <div>
+          <TextField label="username" />
+        </div>
+        <div>
+          <TextField  label="password" type='password' />
+        </div>
+        <div>
+          <Button variant="contained" color="primary" type="submit">
+            login
+          </Button>
+        </div>
+      </form>
     </div>
   )
 }
 
-
 const App = () => {
-
   const [notes, setNotes] = useState([
     {
       id: 1,
@@ -106,16 +130,12 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
 
-  const padding = {
-    padding: 5
-  }
-
   const login = (user) => {
     setUser(user)
-    setMessage(`Welcome ${user}`)
+    setMessage(`welcome ${user}`)
     setTimeout(() => {
       setMessage(null)
-    }, 5000)
+    }, 10000)
   }
 
   const match = useRouteMatch('/notes/:id')
@@ -123,66 +143,57 @@ const App = () => {
     ? notes.find(note => note.id === Number(match.params.id))
     : null
 
-
   return (
-    <div className='container'>
-      <div>
-        {(message &&
-          <Alert variant='success'>{message}</Alert>
-        )}
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="mr-auto">
-            <Nav.Link href="#" as="span">
-              <Link style={padding} to="/">home</Link>
-            </Nav.Link>
-            <Nav.Link href="#" as="span">
-              <Link style={padding} to="/notes">notes</Link>
-            </Nav.Link>
-            <Nav.Link href="#" as="span">
-              <Link style={padding} to="/users">users</Link>
-            </Nav.Link>
-            <Nav.Link href="#" as="span">
-              {user
-                ? <em style={padding}>{user} logged in</em>
-                : <Link style={padding} to="/login">login</Link>
-              }
-            </Nav.Link>
-          </Nav>
-          </Navbar.Collapse>
-        </Navbar>
-      </div>
+    <Container>
+      <AppBar position="static">
+        <Toolbar>
+          <Button color="inherit" component={Link} to="/">
+            home
+          </Button>
+          <Button color="inherit" component={Link} to="/notes">
+            notes
+          </Button>
+          <Button color="inherit" component={Link} to="/users">
+            users
+          </Button>
+          {user
+            ? <em>{user} logged in</em>
+            : <Button color="inherit" component={Link} to="/login">
+                login
+              </Button>
+          }
+        </Toolbar>
+      </AppBar>
+
+      {(message &&
+        <Alert severity="success">
+          {message}
+        </Alert>
+      )}
 
       <Switch>
-        <Route path='/notes/:id'>
+        <Route path="/notes/:id">
           <Note note={note} />
         </Route>
-
-        <Route path='/notes'>
+        <Route path="/notes">
           <Notes notes={notes} />
         </Route>
-
-        <Route path='/users'>
-          {user ? <Users /> : <Redirect to='/login' /> }
+        <Route path="/users">
+          {user ? <Users /> : <Redirect to="/login" />}
         </Route>
-
-        <Route path='/login'>
+        <Route path="/login">
           <Login onLogin={login} />
         </Route>
-
-        <Route path='/'>
+        <Route path="/">
           <Home />
         </Route>
-
       </Switch>
-
       <div>
         <br />
-        <i>Note app, CR 2021</i>
+        <em>Note app, Department of Computer Science 2021</em>
       </div>
-    </div>
+    </Container>
   )
 }
 
-export default App;
+export default App
