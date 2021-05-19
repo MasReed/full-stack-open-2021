@@ -13,6 +13,11 @@ const getAll = () => {
   return request.then(response => response.data)
 }
 
+const getOne = async (id) => {
+  const response = await axios.get(`${baseUrl}/${id}`)
+  return response.data
+}
+
 const create = async newObject => {
   const config = {
     headers: { Authorization: token },
@@ -40,6 +45,6 @@ const deletePost = async (id) => {
   return response.data
 }
 
-const exp = { getAll, create, update, deletePost, setToken }
+const exp = { getAll, getOne, create, update, deletePost, setToken }
 
 export default exp

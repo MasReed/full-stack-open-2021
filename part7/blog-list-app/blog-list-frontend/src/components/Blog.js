@@ -1,7 +1,12 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { blogLikeUpdater } from '../reducers/blogReducer'
+import { toastNotificationCreator } from '../reducers/notificationReducer'
 import Togglable from './Togglable'
 
 const Blog = ({ blog, currentUser, updateLikes, deleteBlog }) => {
+
+  const dispatch = useDispatch()
 
   const blogStyle={
     border: 'solid',
@@ -14,14 +19,21 @@ const Blog = ({ blog, currentUser, updateLikes, deleteBlog }) => {
   const handleLikeClick = (event) => {
     event.preventDefault()
 
-    const updatedBlogObject = {
-      title: blog.title,
-      author: blog.author,
-      url: blog.url,
-      likes: blog.likes + 1
-    }
+    try {
+      dispatch(blogLikeUpdater(blog.id))
 
-    updateLikes(blog.id, updatedBlogObject)
+      updateLikes()
+
+      dispatch(toastNotificationCreator(
+        'Liked!',
+        'blue'
+      ))
+    } catch (exception) {
+      dispatch(toastNotificationCreator(
+        `${exception}`,
+        'red'
+      ))
+    }
   }
 
   const handleDeleteClick = (event) => {

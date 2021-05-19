@@ -22,7 +22,7 @@ const NewBlogForm = ({ handleNewPost }) => {
         url: newBlogUrl
       }))
 
-      // rerender components & toggle visibility
+      // rerender & toggle visibility outside component
       handleNewPost()
 
       // success message

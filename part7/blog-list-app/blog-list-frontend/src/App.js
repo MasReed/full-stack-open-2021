@@ -83,29 +83,16 @@ const App = () => {
 
   const blogFormRef = useRef()
   const handleNewPost = async () => {
-
     blogFormRef.current.toggleVisibility()
     // rerender blogs
     setPingBlogs(!pingBlogs)
   }
 
-  const handleBlogLike = async (id, updatedBlogObject) => {
-    try {
-      await blogService.update(id, updatedBlogObject)
-      // rerender blogs
-      setPingBlogs(!pingBlogs)
 
-      toastNotification(
-        'Liked!',
-        'blue'
-      )
-    } catch (exception) {
-      toastNotification(
-        `${exception}`,
-        'red'
-      )
-    }
+  const handleBlogLike = () => {
+    setPingBlogs(!pingBlogs)
   }
+
 
   const handleBlogDelete = async (blog) => {
     try {
