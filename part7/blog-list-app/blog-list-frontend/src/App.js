@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import NewBlogForm from './components/NewBlogForm'
@@ -7,24 +8,34 @@ import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+import { notificationCreator, notificationReseter } from './reducers/notificationReducer'
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
+
   const [pingBlogs, setPingBlogs] = useState(false)
-  const [notificationMessage, setNotificationMessage] = useState('')
-  const [notificationColor, setNotificationColor] = useState('darkgrey')
+
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+
+  const dispatch = useDispatch()
+  const state = useSelector(state => state)
+
 
   useEffect( () => {
 
     async function fetchData() {
       const res = await blogService.getAll()
       setBlogs(res)
+      // store.dispatch({
+      //   type: 'SET_BLOGS',
+      //   data: res
+      // })
     }
 
     fetchData()
-  }, [ pingBlogs ]) //[ setBlogs]
+  }, [ pingBlogs ])
 
   useEffect( () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -141,15 +152,10 @@ const App = () => {
     }
   }
 
-
-  const toastNotification = async (message, color) => {
-    setNotificationMessage(message)
-    setNotificationColor(color)
-
-    await setTimeout( () => {
-      setNotificationMessage(null)
-      setNotificationColor('darkgrey')
-    }, 5000)
+  const toastNotification = (message, color) => {
+    dispatch(notificationCreator(message, color))
+    setTimeout( () => dispatch(notificationReseter()), 5000)
+    // TODO: make async with clearTimer()
   }
 
 
@@ -157,7 +163,7 @@ const App = () => {
     <div>
       <h2 style={{ margin: '20px 0' }}>Blogs</h2>
 
-      <Notification message={notificationMessage} color={notificationColor} />
+      <Notification message={state.message} color={state.color} />
 
       <hr />
 
