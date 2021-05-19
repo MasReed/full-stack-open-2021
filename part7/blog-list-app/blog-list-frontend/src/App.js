@@ -1,17 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
+
+import { notificationCreator, notificationReseter } from './reducers/notificationReducer'
+import { initializeBlogs } from './reducers/blogReducer'
+
 import blogService from './services/blogs'
 import loginService from './services/login'
 
-import { notificationCreator, notificationReseter } from './reducers/notificationReducer'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
 
   const [pingBlogs, setPingBlogs] = useState(false)
 
@@ -22,16 +25,10 @@ const App = () => {
   const dispatch = useDispatch()
   const state = useSelector(state => state)
 
-
   useEffect( () => {
-
     async function fetchData() {
       const res = await blogService.getAll()
-      setBlogs(res)
-      // store.dispatch({
-      //   type: 'SET_BLOGS',
-      //   data: res
-      // })
+      dispatch(initializeBlogs(res))
     }
 
     fetchData()
@@ -162,9 +159,7 @@ const App = () => {
   return (
     <div>
       <h2 style={{ margin: '20px 0' }}>Blogs</h2>
-
-      <Notification message={state.message} color={state.color} />
-
+      <Notification />
       <hr />
 
       {user === null ? <LoginForm
@@ -185,7 +180,7 @@ const App = () => {
 
           <hr />
 
-          {blogs
+          {state.blogs
             .sort( (a, b) => {
               if (a.likes < b.likes) {
                 return 1
