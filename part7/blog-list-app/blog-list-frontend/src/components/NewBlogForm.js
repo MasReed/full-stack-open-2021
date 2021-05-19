@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { blogCreator } from '../reducers/blogReducer'
+import { toastNotificationCreator } from '../reducers/notificationReducer'
 
 const NewBlogForm = ({ handleNewPost }) => {
+
+  const dispatch = useDispatch()
 
   const [newBlogTitle, setNewBlogTitle] = useState('')
   const [newBlogAuthor, setNewBlogAuthor] = useState('')
@@ -9,15 +14,37 @@ const NewBlogForm = ({ handleNewPost }) => {
   const makeNewPostObject = (event) => {
     event.preventDefault()
 
-    handleNewPost({
-      title: newBlogTitle,
-      author: newBlogAuthor,
-      url: newBlogUrl
-    })
+    try {
+      // update backend
+      dispatch(blogCreator({
+        title: newBlogTitle,
+        author: newBlogAuthor,
+        url: newBlogUrl
+      }))
 
-    setNewBlogTitle('')
-    setNewBlogAuthor('')
-    setNewBlogUrl('')
+      // rerender components & toggle visibility
+      handleNewPost()
+
+      // success message
+      dispatch(toastNotificationCreator(
+        `A new blog '${newBlogTitle}' by ${newBlogAuthor} successfully added!`,
+        'green'
+      ))
+
+    } catch (exception) {
+      // log failure message
+      console.log(exception)
+      dispatch(toastNotificationCreator(
+        `An error has occured: ${exception}`,
+        'red'
+      ))
+
+    } finally {
+      // reset input fields
+      setNewBlogTitle('')
+      setNewBlogAuthor('')
+      setNewBlogUrl('')
+    }
   }
 
   return (

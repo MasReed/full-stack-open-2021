@@ -1,14 +1,14 @@
 
 const notificationReducer = (state = { message: '', color: 'darkgrey' }, action) => {
-  // console.log('=====Notifications=====')
-  // console.log('state now: ', state)
-  // console.log('action', action)
+  console.log('=====Notifications=====')
+  console.log('state now: ', state)
+  console.log('action', action)
 
   switch (action.type) {
   case 'SET_NOTIFICATION': {
     const setObj = {
-      message: action.data.message,
-      color: action.data.color
+      message: action.message,
+      color: action.color
     }
     return setObj
   }
@@ -27,19 +27,16 @@ const notificationReducer = (state = { message: '', color: 'darkgrey' }, action)
 export default notificationReducer
 
 
-export const notificationCreator = (message, color) => {
-  return {
-    type: 'SET_NOTIFICATION',
-    data: {
-      message: message,
-      color: color
-    }
-  }
-}
+let timerId = null
+export const toastNotificationCreator = (message, color) => {
+  clearTimeout(timerId)
 
-
-export const notificationReseter = () => {
-  return {
-    type: 'UNSET_NOTIFICATION'
+  return async dispatch => {
+    dispatch({
+      type: 'SET_NOTIFICATION',
+      message,
+      color
+    })
+    timerId = setTimeout(() => dispatch({ type: 'UNSET_NOTIFICATION' }), 5000)
   }
 }

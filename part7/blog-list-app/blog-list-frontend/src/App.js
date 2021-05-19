@@ -7,7 +7,7 @@ import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
-import { notificationCreator, notificationReseter } from './reducers/notificationReducer'
+import { toastNotificationCreator } from './reducers/notificationReducer'
 import { initializeBlogs } from './reducers/blogReducer'
 
 import blogService from './services/blogs'
@@ -26,13 +26,8 @@ const App = () => {
   const state = useSelector(state => state)
 
   useEffect( () => {
-    async function fetchData() {
-      const res = await blogService.getAll()
-      dispatch(initializeBlogs(res))
-    }
-
-    fetchData()
-  }, [ pingBlogs ])
+    dispatch(initializeBlogs())
+  }, [ dispatch, pingBlogs ])
 
   useEffect( () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -87,29 +82,11 @@ const App = () => {
 
 
   const blogFormRef = useRef()
-  const handleNewPost = async (newBlogObject) => {
+  const handleNewPost = async () => {
 
-    try {
-      const newBlogPost = newBlogObject
-
-      await blogService.create(newBlogPost)
-
-      blogFormRef.current.toggleVisibility()
-
-      // rerender blogs
-      setPingBlogs(!pingBlogs)
-
-      toastNotification(
-        `A new blog '${newBlogPost.title}' by ${newBlogPost.author} successfully added!`,
-        'green'
-      )
-    } catch (exception) {
-      console.log(exception)
-      toastNotification(
-        `An error has occured: ${exception}`,
-        'red'
-      )
-    }
+    blogFormRef.current.toggleVisibility()
+    // rerender blogs
+    setPingBlogs(!pingBlogs)
   }
 
   const handleBlogLike = async (id, updatedBlogObject) => {
@@ -150,9 +127,7 @@ const App = () => {
   }
 
   const toastNotification = (message, color) => {
-    dispatch(notificationCreator(message, color))
-    setTimeout( () => dispatch(notificationReseter()), 5000)
-    // TODO: make async with clearTimer()
+    dispatch(toastNotificationCreator(message, color))
   }
 
 
