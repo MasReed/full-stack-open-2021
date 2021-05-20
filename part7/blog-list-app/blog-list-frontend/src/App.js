@@ -80,25 +80,13 @@ const App = () => {
     )
   }
 
-  const handleBlogDelete = async (blog) => {
-    try {
-      await blogService.deletePost(blog.id)
 
-      // rerender blogs
-      setPingBlogs(!pingBlogs)
 
-      toastNotification(
-        `'${blog.title}' deleted!`,
-        'darkorange'
-      )
-    } catch (exception) {
-      toastNotification(
-        `${exception}`,
-        'red'
-      )
-    }
+
+  const handleBlogDelete = async () => {
+    // rerender blogs
+    setPingBlogs(!pingBlogs)
   }
-
 
   const blogFormRef = useRef()
   const handleNewPost = async () => {
@@ -135,7 +123,7 @@ const App = () => {
           <hr />
 
           <Togglable buttonLabelToOpen='New Post' buttonLabelToClose='Cancel' ref={blogFormRef}>
-            <NewBlogForm handleNewPost={handleNewPost} />
+            <NewBlogForm handleNewPost={handleNewPost} currentUser={user} />
           </Togglable>
 
           <hr />

@@ -11,8 +11,13 @@ const blogReducer = (state = [], action) => {
     return action.data
 
   case 'NEW_BLOG':
-    console.log('NEW_BLOGS_STATE', [...state, action.data])
     return [...state, action.data]
+
+  case 'DELETE_BLOG':
+    console.log('DELETE_BLOG')
+    return state.map(blog =>
+      blog.id !== action.data.id ? blog : {}
+    )
 
   case 'LIKE_BLOG':
     return state.map(blog =>
@@ -36,12 +41,27 @@ export const initializeBlogs = () => {
   }
 }
 
-export const blogCreator = (blogObject) => {
+export const blogCreator = (blogObject, currentUser) => {
+  console.log('blogCreater current user', currentUser)
   return async dispatch => {
     const newBlog = await blogService.create(blogObject)
     dispatch({
       type: 'NEW_BLOG',
-      data: newBlog
+      data: { ...newBlog,
+        user: { ...newBlog.user,
+          username: currentUser.username
+        }
+      }
+    })
+  }
+}
+
+export const blogDestroyer = (id) => {
+  return async dispatch => {
+    await blogService.deletePost(id)
+    dispatch({
+      type: 'DELETE_BLOG',
+      data: id
     })
   }
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { blogLikeUpdater } from '../reducers/blogReducer'
+import { blogLikeUpdater, blogDestroyer } from '../reducers/blogReducer'
 import { toastNotificationCreator } from '../reducers/notificationReducer'
 import Togglable from './Togglable'
 
@@ -21,9 +21,7 @@ const Blog = ({ blog, currentUser, updateLikes, deleteBlog }) => {
 
     try {
       dispatch(blogLikeUpdater(blog))
-
       updateLikes()
-
       dispatch(toastNotificationCreator(
         'Liked!',
         'blue'
@@ -36,13 +34,18 @@ const Blog = ({ blog, currentUser, updateLikes, deleteBlog }) => {
     }
   }
 
+
   const handleDeleteClick = (event) => {
     event.preventDefault()
 
     const isConfirmed = window.confirm(`Permanently delete '${blog.title}' ?`)
 
-    return isConfirmed ? deleteBlog(blog) : null
+    deleteBlog()
+
+    return isConfirmed ? dispatch(blogDestroyer(blog.id)) : null
   }
+
+
 
   return (
     <div style={blogStyle} className='blogDiv'>

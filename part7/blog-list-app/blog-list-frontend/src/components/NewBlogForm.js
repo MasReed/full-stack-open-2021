@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { blogCreator } from '../reducers/blogReducer'
 import { toastNotificationCreator } from '../reducers/notificationReducer'
 
-const NewBlogForm = ({ handleNewPost }) => {
+const NewBlogForm = ({ handleNewPost, currentUser }) => {
 
   const dispatch = useDispatch()
 
@@ -20,7 +20,7 @@ const NewBlogForm = ({ handleNewPost }) => {
         title: newBlogTitle,
         author: newBlogAuthor,
         url: newBlogUrl
-      }))
+      }, currentUser))
 
       // rerender & toggle visibility outside component
       handleNewPost()
