@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { blogCreator } from '../reducers/blogReducer'
 import { toastNotificationCreator } from '../reducers/notificationReducer'
 
-const NewBlogForm = ({ handleNewPost, currentUser }) => {
+const NewBlogForm = ({ handleNewPost }) => {
 
   const dispatch = useDispatch()
+  const user = useSelector(state => state.user)
 
   const [newBlogTitle, setNewBlogTitle] = useState('')
   const [newBlogAuthor, setNewBlogAuthor] = useState('')
@@ -20,7 +21,7 @@ const NewBlogForm = ({ handleNewPost, currentUser }) => {
         title: newBlogTitle,
         author: newBlogAuthor,
         url: newBlogUrl
-      }, currentUser))
+      }, user))
 
       // rerender & toggle visibility outside component
       handleNewPost()

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import Blog from './components/Blog'
@@ -17,12 +17,8 @@ import blogService from './services/blogs'
 
 const App = () => {
 
-  const [pingBlogs, setPingBlogs] = useState(false)
-
   const dispatch = useDispatch()
   const state = useSelector(state => state)
-
-  console.log('STATE', state)
 
   useEffect( () => {
     dispatch(initializeBlogs())
@@ -53,17 +49,6 @@ const App = () => {
   const blogFormRef = useRef()
   const handleNewPost = async () => {
     blogFormRef.current.toggleVisibility()
-    // rerender blogs
-    setPingBlogs(!pingBlogs)
-  }
-
-  const handleBlogDelete = async () => {
-    // rerender blogs
-    setPingBlogs(!pingBlogs)
-  }
-
-  const handleBlogLike = () => {
-    setPingBlogs(!pingBlogs)
   }
 
   const toastNotification = (message, color) => {
@@ -103,8 +88,6 @@ const App = () => {
                 key={blog.id}
                 blog={blog}
                 currentUser={state.user}
-                updateLikes={handleBlogLike}
-                deleteBlog={handleBlogDelete}
               />
             )
           }

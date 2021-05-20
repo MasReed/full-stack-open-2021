@@ -1,12 +1,13 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { blogLikeUpdater, blogDestroyer } from '../reducers/blogReducer'
 import { toastNotificationCreator } from '../reducers/notificationReducer'
 import Togglable from './Togglable'
 
-const Blog = ({ blog, currentUser, updateLikes, deleteBlog }) => {
+const Blog = ({ blog }) => {
 
   const dispatch = useDispatch()
+  const user = useSelector(state => state.user)
 
   const blogStyle={
     border: 'solid',
@@ -21,7 +22,6 @@ const Blog = ({ blog, currentUser, updateLikes, deleteBlog }) => {
 
     try {
       dispatch(blogLikeUpdater(blog))
-      updateLikes()
       dispatch(toastNotificationCreator(
         'Liked!',
         'blue'
@@ -34,19 +34,28 @@ const Blog = ({ blog, currentUser, updateLikes, deleteBlog }) => {
     }
   }
 
-
   const handleDeleteClick = (event) => {
     event.preventDefault()
-
     const isConfirmed = window.confirm(`Permanently delete '${blog.title}' ?`)
 
-    isConfirmed ? dispatch(blogDestroyer(blog.id)) : null
+    if (isConfirmed) {
+      try {
+        dispatch(blogDestroyer(blog.id))
+        dispatch(toastNotificationCreator(
+          `'${blog.title}' deleted!`,
+          'orange'
+        ))
+      } catch (exception) {
+        dispatch(toastNotificationCreator(
+          `${exception}`,
+          'red'
+        ))
+      }
 
-    deleteBlog()
-
-    return
+    } else {
+      return null
+    }
   }
-
 
 
   return (
@@ -60,7 +69,7 @@ const Blog = ({ blog, currentUser, updateLikes, deleteBlog }) => {
             <p className='blogLikes' style={{ display: 'inline' }}>likes: {blog.likes}</p>
             <button onClick={handleLikeClick} style={{ marginLeft: '10px' }}>Like</button>
             {
-              (blog.user.username === currentUser.username)
+              (blog.user === user.id)
               && <button
                 onClick={handleDeleteClick}
                 style={{ marginLeft: '10px' }}>
