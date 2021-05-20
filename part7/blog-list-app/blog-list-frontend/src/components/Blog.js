@@ -40,9 +40,11 @@ const Blog = ({ blog, currentUser, updateLikes, deleteBlog }) => {
 
     const isConfirmed = window.confirm(`Permanently delete '${blog.title}' ?`)
 
+    isConfirmed ? dispatch(blogDestroyer(blog.id)) : null
+
     deleteBlog()
 
-    return isConfirmed ? dispatch(blogDestroyer(blog.id)) : null
+    return
   }
 
 
