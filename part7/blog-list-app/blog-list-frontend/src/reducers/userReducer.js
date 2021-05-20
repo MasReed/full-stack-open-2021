@@ -50,10 +50,10 @@ export const loggedInUserCreator = (username, password) => {
 
     } catch (exception) {
 
-      // dispatch(toastNotificationCreator(
-      //   'Invalid Username or Password',
-      //   'red'
-      // ))
+      dispatch(toastNotificationCreator(
+        'Invalid Username or Password',
+        'red'
+      ))
     }
   }
 }
@@ -61,5 +61,12 @@ export const loggedInUserCreator = (username, password) => {
 export const unsetUserCreator = () => {
   return {
     type: 'UNSET_USER'
+  }
+}
+
+export const setUserCreator = (username) => {
+  return {
+    type: 'SET_USER',
+    data: username
   }
 }

@@ -9,7 +9,7 @@ import Togglable from './components/Togglable'
 
 import { initializeBlogs } from './reducers/blogReducer'
 import { toastNotificationCreator } from './reducers/notificationReducer'
-import { loggedInUserCreator, unsetUserCreator } from './reducers/userReducer'
+import { setUserCreator, unsetUserCreator } from './reducers/userReducer'
 
 
 import blogService from './services/blogs'
@@ -28,10 +28,11 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      dispatch(loggedInUserCreator(user))
+
+      dispatch(setUserCreator(user))
       blogService.setToken(user.token)
     }
-  }, [])
+  }, [ dispatch ])
 
 
   const handleLogout = async (event) => {
