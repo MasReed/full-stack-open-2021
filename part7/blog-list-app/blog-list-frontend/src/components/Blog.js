@@ -20,7 +20,7 @@ const Blog = ({ blog, currentUser, updateLikes, deleteBlog }) => {
     event.preventDefault()
 
     try {
-      dispatch(blogLikeUpdater(blog.id))
+      dispatch(blogLikeUpdater(blog))
 
       updateLikes()
 

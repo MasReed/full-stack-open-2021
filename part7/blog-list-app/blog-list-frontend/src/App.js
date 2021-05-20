@@ -27,7 +27,7 @@ const App = () => {
 
   useEffect( () => {
     dispatch(initializeBlogs())
-  }, [ dispatch, pingBlogs ])
+  }, [ dispatch ])
 
   useEffect( () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -80,20 +80,6 @@ const App = () => {
     )
   }
 
-
-  const blogFormRef = useRef()
-  const handleNewPost = async () => {
-    blogFormRef.current.toggleVisibility()
-    // rerender blogs
-    setPingBlogs(!pingBlogs)
-  }
-
-
-  const handleBlogLike = () => {
-    setPingBlogs(!pingBlogs)
-  }
-
-
   const handleBlogDelete = async (blog) => {
     try {
       await blogService.deletePost(blog.id)
@@ -111,6 +97,18 @@ const App = () => {
         'red'
       )
     }
+  }
+
+
+  const blogFormRef = useRef()
+  const handleNewPost = async () => {
+    blogFormRef.current.toggleVisibility()
+    // rerender blogs
+    setPingBlogs(!pingBlogs)
+  }
+
+  const handleBlogLike = () => {
+    setPingBlogs(!pingBlogs)
   }
 
   const toastNotification = (message, color) => {
