@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { blogLikeUpdater, blogDestroyer } from '../reducers/blogReducer'
 import { toastNotificationCreator } from '../reducers/notificationReducer'
 import Togglable from './Togglable'
@@ -60,7 +61,9 @@ const Blog = ({ blog }) => {
 
   return (
     <div style={blogStyle} className='blogDiv'>
-      <h4 style={{ margin: '2px 0' }} className='blogTitle'>{blog.title}</h4>
+      <Link to={`/blogs/${blog.id}`}>
+        <h4 style={{ margin: '2px 0' }} className='blogTitle'>{blog.title}</h4>
+      </Link>
       <p style={{ margin: '2px 0' }} className='blogAuthor'>{blog.author}</p>
       <Togglable buttonLabelToOpen='Details' buttonLabelToClose='Hide'>
         <div className='togglableContent'>

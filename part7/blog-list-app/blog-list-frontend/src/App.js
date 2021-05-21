@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom'
 
 import Blog from './components/Blog'
+import BlogPage from './components/BlogPage'
 import LoginForm from './components/LoginForm'
 import LogoutButton from './components/LogoutButton'
 import NewBlogForm from './components/NewBlogForm'
@@ -44,7 +45,12 @@ const App = () => {
 
   const userMatch = useRouteMatch('/users/:id')
   const userToView = userMatch
-    ? state.users.find(user => user.id === (userMatch.params.id))
+    ? state.users.find( user => user.id === userMatch.params.id)
+    : null
+
+  const blogMatch = useRouteMatch('/blogs/:id')
+  const blogToView = blogMatch
+    ? state.blogs.find( blog => blog.id === blogMatch.params.id )
     : null
 
 
@@ -55,7 +61,6 @@ const App = () => {
 
   return (
     <div>
-
       <div name='header'>
         <div>
           <h2 style={{ padding: '20px 0 10px', margin: '0' }}>Welcome to the Blog App</h2>
@@ -86,6 +91,10 @@ const App = () => {
 
         <Route path='/users'>
           {state.user ? <UserList /> : <Redirect to='/login' />}
+        </Route>
+
+        <Route path='/blogs/:id'>
+          {state.user ? <BlogPage blog={blogToView} /> : <Redirect to ='/login' />}
         </Route>
 
         <Route path='/blogs'>
