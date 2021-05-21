@@ -3,7 +3,7 @@ import blogService from '../services/blogs'
 import loginService from '../services/login'
 
 const userReducer = (state = null, action) => {
-  console.log('=====Users=====')
+  console.log('=====User=====')
   console.log('state now: ', state)
   console.log('action', action)
 

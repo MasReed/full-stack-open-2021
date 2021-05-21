@@ -15,6 +15,7 @@ import UserList from './components/UserList'
 
 import { initializeBlogs } from './reducers/blogReducer'
 import { setUserCreator } from './reducers/userReducer'
+import { initializeUsers } from './reducers/usersReducer'
 
 import blogService from './services/blogs'
 
@@ -26,6 +27,7 @@ const App = () => {
 
   useEffect( () => {
     dispatch(initializeBlogs())
+    dispatch(initializeUsers())
   }, [ dispatch ])
 
   useEffect( () => {
@@ -47,8 +49,7 @@ const App = () => {
   return (
     <div>
 
-      <div>
-
+      <div name='header'>
         <div>
           <h2 style={{ padding: '20px 0 10px', margin: '0' }}>Welcome to the Blog App</h2>
           {state.user
@@ -61,20 +62,12 @@ const App = () => {
           <Link to='/' style={{ margin: '3px' }}>Home</Link>
           <Link to='/blogs' style={{ margin: '3px' }}>Blogs</Link>
           <Link to='/users' style={{ margin: '3px' }}>Users</Link>
-
+          <hr />
         </div>
-
-        <hr />
-
-
-
         <Notification />
-        <hr />
       </div>
 
-
       <Switch>
-
 
         <Route path='/login'>
           {state.user ? <Redirect to='/' /> : <LoginForm />}
@@ -118,8 +111,8 @@ const App = () => {
         <Route path='/'>
           {state.user ? <h2>HELLO WELCOME HOME</h2> : <Redirect to='/login' />}
         </Route>
-      </Switch>
 
+      </Switch>
     </div>
   )
 }
