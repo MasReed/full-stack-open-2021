@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   Switch, Route, Link,
-  Redirect
+  Redirect, useRouteMatch
 } from 'react-router-dom'
 
 import Blog from './components/Blog'
@@ -11,6 +11,7 @@ import LogoutButton from './components/LogoutButton'
 import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
+import User from './components/User'
 import UserList from './components/UserList'
 
 import { initializeBlogs } from './reducers/blogReducer'
@@ -39,6 +40,12 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [ dispatch ])
+
+
+  const userMatch = useRouteMatch('/users/:id')
+  const userToView = userMatch
+    ? state.users.find(user => user.id === (userMatch.params.id))
+    : null
 
 
   const blogFormRef = useRef()
@@ -71,6 +78,10 @@ const App = () => {
 
         <Route path='/login'>
           {state.user ? <Redirect to='/' /> : <LoginForm />}
+        </Route>
+
+        <Route path='/users/:id'>
+          {state.user ? <User user={userToView} /> : <Redirect to ='/login' />}
         </Route>
 
         <Route path='/users'>
