@@ -3,13 +3,13 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
+import LogoutButton from './components/LogoutButton'
 import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
 import { initializeBlogs } from './reducers/blogReducer'
-import { toastNotificationCreator } from './reducers/notificationReducer'
-import { setUserCreator, unsetUserCreator } from './reducers/userReducer'
+import { setUserCreator } from './reducers/userReducer'
 
 
 import blogService from './services/blogs'
@@ -35,27 +35,10 @@ const App = () => {
   }, [ dispatch ])
 
 
-  const handleLogout = async (event) => {
-    event.preventDefault()
-    dispatch(unsetUserCreator())
-    window.localStorage.removeItem('loggedBlogappUser')
-
-    toastNotification(
-      `${state.user.username} successfully logged out!`,
-      'green'
-    )
-  }
-
-
   const blogFormRef = useRef()
   const handleNewPost = async () => {
     blogFormRef.current.toggleVisibility()
   }
-
-  const toastNotification = (message, color) => {
-    dispatch(toastNotificationCreator(message, color))
-  }
-
 
   return (
     <div>
@@ -67,7 +50,7 @@ const App = () => {
         ? <LoginForm />
         : <div>
           <p>{state.user.username} is logged in.</p>
-          <button onClick={handleLogout}>Logout</button>
+          <LogoutButton />
           <hr />
 
           <Togglable buttonLabelToOpen='New Post' buttonLabelToClose='Cancel' ref={blogFormRef}>
