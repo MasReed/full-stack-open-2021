@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-// import blogService from '../services/blogs'
+import blogService from '../services/blogs'
 
 const BlogPage = ({ blog }) => {
 
@@ -10,8 +10,16 @@ const BlogPage = ({ blog }) => {
   const handleNewComment = async (event) => {
     event.preventDefault()
     console.log('comment:', comment)
-    setComment('')
-    return
+
+    try {
+      const addedComment = await blogService.addComment(blog.id, comment)
+      console.log('addedComment', addedComment)
+    } catch (exception) {
+      console.log(exception)
+    } finally {
+      setComment('')
+    }
+
   }
 
   return (

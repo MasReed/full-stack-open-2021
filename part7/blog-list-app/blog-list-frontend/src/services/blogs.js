@@ -40,6 +40,19 @@ const deletePost = async (id) => {
   return response.data
 }
 
-const exp = { getAll, create, update, deletePost, setToken }
+const addComment = async (id, content) => {
+  const config = {
+    headers: { Authorization: token }
+  }
+
+  const commentObj = {
+    comment: content
+  }
+
+  const response = await axios.post(`${baseUrl}/${id}/comments`, commentObj, config)
+  return response.data
+}
+
+const exp = { getAll, create, update, deletePost, setToken, addComment }
 
 export default exp
