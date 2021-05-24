@@ -71,9 +71,13 @@ const App = () => {
             </div>
             : null }
 
-          <Link to='/' style={{ margin: '3px' }}>Home</Link>
-          <Link to='/blogs' style={{ margin: '3px' }}>Blogs</Link>
-          <Link to='/users' style={{ margin: '3px' }}>Users</Link>
+
+          <div style={{ backgroundColor: 'lightgrey', padding: '8px' }}>
+            <Link to='/' style={{ margin: '3px' }}>Home</Link>
+            <Link to='/blogs' style={{ margin: '3px' }}>Blogs</Link>
+            <Link to='/users' style={{ margin: '3px' }}>Users</Link>
+          </div>
+
           <hr />
         </div>
         <Notification />
