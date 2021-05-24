@@ -1,25 +1,22 @@
 import React, { useState } from 'react'
-import blogService from '../services/blogs'
+import { useDispatch } from 'react-redux'
+import { blogCommentCreator } from '../reducers/blogReducer'
 
 const BlogPage = ({ blog }) => {
 
+  const dispatch = useDispatch()
   const [ comment, setComment ] = useState('')
 
-  console.log('BLOG', blog)
-
-  const handleNewComment = async (event) => {
+  const handleNewComment = (event) => {
     event.preventDefault()
-    console.log('comment:', comment)
 
     try {
-      const addedComment = await blogService.addComment(blog.id, comment)
-      console.log('addedComment', addedComment)
+      dispatch(blogCommentCreator(blog.id, comment))
     } catch (exception) {
       console.log(exception)
     } finally {
       setComment('')
     }
-
   }
 
   return (
@@ -37,6 +34,7 @@ const BlogPage = ({ blog }) => {
           <input
             id='newComment'
             type='text'
+            name='comment'
             value={comment}
             onChange={ ({ target }) => setComment(target.value) }
           />

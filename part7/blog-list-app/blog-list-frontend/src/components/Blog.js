@@ -60,7 +60,7 @@ const Blog = ({ blog }) => {
 
 
   return (
-    <div style={blogStyle} className='blogDiv'>
+    <div key={blog.id} style={blogStyle} className='blogDiv'>
       <Link to={`/blogs/${blog.id}`}>
         <h4 style={{ margin: '2px 0' }} className='blogTitle'>{blog.title}</h4>
       </Link>
