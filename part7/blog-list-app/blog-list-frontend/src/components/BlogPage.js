@@ -2,7 +2,7 @@ import React from 'react'
 
 const BlogPage = ({ blog }) => {
 
-  console.log(blog)
+  console.log('BLOG', blog)
 
   return (
     <div>
@@ -12,6 +12,13 @@ const BlogPage = ({ blog }) => {
       <hr />
       <p>Liked {blog.likes} times</p>
       <p>Posted by: {blog.user.username}</p>
+      <hr />
+      <h3>Comments:</h3>
+      {
+        blog.comments.map( comment => (
+          <li key={comment._id}>{comment.body}</li>
+        ))
+      }
     </div>
   )
 }
