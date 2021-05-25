@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { blogCreator } from '../reducers/blogReducer'
 import { toastNotificationCreator } from '../reducers/notificationReducer'
 
-const NewBlogForm = ({ handleNewPost }) => {
+const NewBlogForm = ({ blogFormRef }) => {
 
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
@@ -23,8 +23,8 @@ const NewBlogForm = ({ handleNewPost }) => {
         url: newBlogUrl
       }, user))
 
-      // rerender & toggle visibility outside component
-      handleNewPost()
+      // collapse form
+      blogFormRef.current.toggleVisibility()
 
       // success message
       dispatch(toastNotificationCreator(

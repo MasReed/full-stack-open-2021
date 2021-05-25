@@ -1,14 +1,11 @@
 import React, { useEffect, useRef } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import {
-  Switch, Route, Link,
-  Redirect, useRouteMatch
-} from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Switch, Route, Redirect, useRouteMatch } from 'react-router-dom'
 
-import BlogPage from './components/BlogPage'
 import BlogList from './components/BlogList'
+import BlogPage from './components/BlogPage'
 import LoginForm from './components/LoginForm'
-import LogoutButton from './components/LogoutButton'
+import NavigationHeader from './components/NavigationHeader'
 import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
@@ -27,11 +24,15 @@ const App = () => {
   const dispatch = useDispatch()
   const state = useSelector(state => state)
 
+  const blogFormRef = useRef()
+
+  // initial render will initialize blogs and users into redux store
   useEffect( () => {
     dispatch(initializeBlogs())
     dispatch(initializeUsers())
   }, [ dispatch ])
 
+  // initial render gets persisted user e.g during refreshes
   useEffect( () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
@@ -42,43 +43,23 @@ const App = () => {
     }
   }, [ dispatch ])
 
-
+  // finds user with id matching route
   const userMatch = useRouteMatch('/users/:id')
   const userToView = userMatch
     ? state.users.find( user => user.id === userMatch.params.id)
     : null
 
+  // finds blog with id matching route
   const blogMatch = useRouteMatch('/blogs/:id')
   const blogToView = blogMatch
     ? state.blogs.find( blog => blog.id === blogMatch.params.id )
     : null
 
-
-  const blogFormRef = useRef()
-  const handleNewPost = async () => {
-    blogFormRef.current.toggleVisibility()
-  }
-
+  // main app render
   return (
     <div>
       <div name='header'>
-        <div>
-          <h2 style={{ padding: '20px 0 10px', margin: '0' }}>Welcome to the Blog App</h2>
-
-          <div style={{ backgroundColor: 'lightblue', padding: '8px' }}>
-            <Link to='/' style={{ margin: '3px' }}><strong>Home</strong></Link>
-            <Link to='/blogs' style={{ margin: '3px' }}><strong>Blogs</strong></Link>
-            <Link to='/users' style={{ margin: '3px' }}><strong>Users</strong></Link>
-            {state.user
-              ? <div style={{ display: 'inline', padding: '5px 10px' }}>
-                <p style={{ display: 'inline', padding: '1px', margin: '0' }}>{state.user.username} is logged in.</p>
-                <LogoutButton />
-              </div>
-              : null }
-          </div>
-
-          <hr />
-        </div>
+        <NavigationHeader />
         <Notification />
       </div>
 
@@ -105,7 +86,7 @@ const App = () => {
             ? <div>
 
               <Togglable buttonLabelToOpen='New Post' buttonLabelToClose='Cancel' ref={blogFormRef}>
-                <NewBlogForm handleNewPost={handleNewPost} currentUser={state.user} />
+                <NewBlogForm blogFormRef={blogFormRef} />
               </Togglable>
 
               <BlogList />
