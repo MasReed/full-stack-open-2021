@@ -2,6 +2,7 @@ import { toastNotificationCreator } from '../reducers/notificationReducer'
 import blogService from '../services/blogs'
 import loginService from '../services/login'
 
+// returns null if no such item is stored
 const storedUser = JSON.parse(window.localStorage.getItem('loggedBlogappUser'))
 
 const userReducer = (state = storedUser, action) => {
@@ -24,6 +25,12 @@ const userReducer = (state = storedUser, action) => {
 
 export default userReducer
 
+/*
+Following action creators update data on backend through userService, then
+dispatch an action to update the store with the response. Potentially
+displays messages to the user.
+*/
+
 export const loggedInUserCreator = (username, password) => {
   return async dispatch => {
     try {
@@ -40,6 +47,7 @@ export const loggedInUserCreator = (username, password) => {
       // allows user to interact with blogs
       blogService.setToken(user.token)
 
+      // dispatch action to update store/state
       dispatch({
         type: 'SET_USER',
         data: user

@@ -2,9 +2,9 @@ import blogService from '../services/blogs'
 import { toastNotificationCreator } from '../reducers/notificationReducer'
 
 const blogReducer = (state = [], action) => {
-  console.log('=====Blogs=====')
-  console.log('state now: ', state)
-  console.log('action', action)
+  // console.log('=====Blogs=====')
+  // console.log('state now: ', state)
+  // console.log('action', action)
 
   switch (action.type) {
 
@@ -36,35 +36,53 @@ const blogReducer = (state = [], action) => {
 
 export default blogReducer
 
+/*
+Following action creators update data on backend through blogService, then
+dispatch an action to update the redux store with the response. Potentially
+displays messages to the user.
+*/
+
 export const initializeBlogs = () => {
   return async dispatch => {
-    const blogs = await blogService.getAll()
-    dispatch({
-      type: 'INIT_BLOGS',
-      data: blogs
-    })
+    try {
+      const blogs = await blogService.getAll()
+      dispatch({
+        type: 'INIT_BLOGS',
+        data: blogs
+      })
+    } catch (exception) {
+      console.log(exception)
+    }
   }
 }
 
 export const blogCreator = (blogObject) => {
   return async dispatch => {
-    const newBlog = await blogService.create(blogObject)
-    dispatch({
-      type: 'NEW_BLOG',
-      data: newBlog
-    })
+    try {
+      const newBlog = await blogService.create(blogObject)
+      dispatch({
+        type: 'NEW_BLOG',
+        data: newBlog
+      })
+    } catch (exception) {
+      console.log(exception)
+    }
   }
 }
 
 export const blogDestroyer = (id) => {
   return async dispatch => {
-    await blogService.deletePost(id)
-    dispatch({
-      type: 'DELETE_BLOG',
-      data: {
-        id: id
-      }
-    })
+    try {
+      await blogService.deletePost(id)
+      dispatch({
+        type: 'DELETE_BLOG',
+        data: {
+          id: id
+        }
+      })
+    } catch (exception) {
+      console.log(exception)
+    }
   }
 }
 
@@ -73,6 +91,7 @@ export const blogLikeUpdater = (blogToUpdate) => {
     try {
       const initialLikes = blogToUpdate.likes
       const blogWithUpdatedLikes = { ...blogToUpdate, likes: (initialLikes + 1) }
+      // update likes on backend
       const updatedBlog = await blogService.update(blogToUpdate.id, blogWithUpdatedLikes)
       dispatch({
         type: 'LIKE_BLOG',

@@ -17,6 +17,11 @@ const usersReducer = ( state = [], action) => {
 
 export default usersReducer
 
+/*
+Action creator updates data on backend through userService, then
+dispatch an action to update the redux store with the response.
+*/
+
 export const initializeUsers = () => {
   return async dispatch => {
     try {

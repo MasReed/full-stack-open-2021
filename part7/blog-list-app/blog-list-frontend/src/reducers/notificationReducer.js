@@ -26,7 +26,7 @@ const notificationReducer = (state = { message: '', color: 'darkgrey' }, action)
 
 export default notificationReducer
 
-
+/* Display colored banner with message for user to see for 5 seconds */
 let timerId = null
 export const toastNotificationCreator = (message, color) => {
   clearTimeout(timerId)
