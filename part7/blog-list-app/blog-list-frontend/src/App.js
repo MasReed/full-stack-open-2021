@@ -64,18 +64,17 @@ const App = () => {
       <div name='header'>
         <div>
           <h2 style={{ padding: '20px 0 10px', margin: '0' }}>Welcome to the Blog App</h2>
-          {state.user
-            ? <div style={{ padding: '5px 0' }}>
-              <p style={{ display: 'inline-block', margin: '3px' }}>{state.user.username} is logged in.</p>
-              <LogoutButton />
-            </div>
-            : null }
 
-
-          <div style={{ backgroundColor: 'lightgrey', padding: '8px' }}>
-            <Link to='/' style={{ margin: '3px' }}>Home</Link>
-            <Link to='/blogs' style={{ margin: '3px' }}>Blogs</Link>
-            <Link to='/users' style={{ margin: '3px' }}>Users</Link>
+          <div style={{ backgroundColor: 'lightblue', padding: '8px' }}>
+            <Link to='/' style={{ margin: '3px' }}><strong>Home</strong></Link>
+            <Link to='/blogs' style={{ margin: '3px' }}><strong>Blogs</strong></Link>
+            <Link to='/users' style={{ margin: '3px' }}><strong>Users</strong></Link>
+            {state.user
+              ? <div style={{ display: 'inline', padding: '5px 10px' }}>
+                <p style={{ display: 'inline', padding: '1px', margin: '0' }}>{state.user.username} is logged in.</p>
+                <LogoutButton />
+              </div>
+              : null }
           </div>
 
           <hr />
