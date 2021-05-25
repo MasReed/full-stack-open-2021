@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { blogDestroyer, blogCommentCreator, blogLikeUpdater } from '../reducers/blogReducer'
 
 const BlogPage = ({ blog }) => {
 
   const dispatch = useDispatch()
+  const currentUser = useSelector(state => state.user)
   const [ comment, setComment ] = useState('')
 
   const handleLikeClick = (event) => {
@@ -35,8 +36,22 @@ const BlogPage = ({ blog }) => {
       <div>
         <h2>{blog.title}</h2>
         <h3>{blog.author}</h3>
-        <a target="_blank" href={'//' + blog.url} rel="noreferrer">{blog.url}</a>
-        <p>Posted by: {blog.user.username}</p>
+        <a style={{ display: 'block' }} target="_blank" href={'//' + blog.url} rel="noreferrer">
+          <h4>{blog.url}</h4>
+        </a>
+
+        <div style={{ padding: '10px 0' }}>
+          <p style={{ display: 'inline' }}>Posted by: {blog.user.username}</p>
+          {
+            (blog.user.id === currentUser.id)
+            && <button
+              onClick={handleDeleteClick}
+              style={{ marginLeft: '10px' }}>
+              Delete
+            </button>
+          }
+        </div>
+
         <hr />
       </div>
 
@@ -63,8 +78,6 @@ const BlogPage = ({ blog }) => {
         <hr />
       </div>
 
-      <button onClick={handleDeleteClick}>DELETE</button>
-
       <div>
         <h3>Comments:</h3>
         {
@@ -78,39 +91,6 @@ const BlogPage = ({ blog }) => {
 }
 
 export default BlogPage
-
-// import { useDispatch, useSelector } from 'react-redux'
-
-// import { blogLikeUpdater, blogDestroyer } from '../reducers/blogReducer'
-// import { toastNotificationCreator } from '../reducers/notificationReducer'
-// import Togglable from './Togglable'
-
-// const dispatch = useDispatch()
-// const user = useSelector(state => state.user)
-
-//
-// const handleDeleteClick = (event) => {
-//   event.preventDefault()
-//   const isConfirmed = window.confirm(`Permanently delete '${blog.title}' ?`)
-//
-//   if (isConfirmed) {
-//     try {
-//       dispatch(blogDestroyer(blog.id))
-//       dispatch(toastNotificationCreator(
-//         `'${blog.title}' deleted!`,
-//         'orange'
-//       ))
-//     } catch (exception) {
-//       dispatch(toastNotificationCreator(
-//         `${exception}`,
-//         'red'
-//       ))
-//     }
-//
-//   } else {
-//     return null
-//   }
-// }
 
 
 // <Togglable buttonLabelToOpen='Details' buttonLabelToClose='Hide'>
