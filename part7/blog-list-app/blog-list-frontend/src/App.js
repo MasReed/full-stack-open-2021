@@ -5,8 +5,8 @@ import {
   Redirect, useRouteMatch
 } from 'react-router-dom'
 
-import Blog from './components/Blog'
 import BlogPage from './components/BlogPage'
+import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
 import LogoutButton from './components/LogoutButton'
 import NewBlogForm from './components/NewBlogForm'
@@ -109,24 +109,8 @@ const App = () => {
                 <NewBlogForm handleNewPost={handleNewPost} currentUser={state.user} />
               </Togglable>
 
-              <hr />
+              <BlogList />
 
-              {state.blogs
-                .sort( (a, b) => {
-                  if (a.likes < b.likes) {
-                    return 1
-                  } else {
-                    return -1
-                  }
-                })
-                .map(blog =>
-                  <Blog
-                    key={blog.id}
-                    blog={blog}
-                    currentUser={state.user}
-                  />
-                )
-              }
             </div>
             : <Redirect to='/login' />
           }
