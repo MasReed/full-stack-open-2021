@@ -5,9 +5,9 @@ import loginService from '../services/login'
 const storedUser = JSON.parse(window.localStorage.getItem('loggedBlogappUser'))
 
 const userReducer = (state = storedUser, action) => {
-  console.log('=====User=====')
-  console.log('state now: ', state)
-  console.log('action', action)
+  // console.log('=====User=====')
+  // console.log('state now: ', state)
+  // console.log('action', action)
 
   switch (action.type) {
 

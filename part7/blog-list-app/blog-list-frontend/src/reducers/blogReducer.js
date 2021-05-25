@@ -70,6 +70,7 @@ export const blogDestroyer = (id) => {
 export const blogLikeUpdater = (blogToUpdate) => {
   // TODO: FIX BUG WHERE UPDATING LIKES REMOVES BLOG.USER.USERNAME
   return async dispatch => {
+    console.log('BLOGTOUPDATE', blogToUpdate)
     const initialLikes = blogToUpdate.likes
     const blogWithUpdatedLikes = { ...blogToUpdate, likes: (initialLikes + 1) }
     const updatedBlog = await blogService.update(blogToUpdate.id, blogWithUpdatedLikes)

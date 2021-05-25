@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import Blog from './Blog'
+import BlogTile from './BlogTile'
 
 const BlogList = () => {
 
@@ -13,7 +13,7 @@ const BlogList = () => {
       }}
     )
     .map(blog =>
-      <Blog
+      <BlogTile
         key={blog.id}
         blog={blog}
       />
