@@ -1,4 +1,5 @@
 import blogService from '../services/blogs'
+import { toastNotificationCreator } from '../reducers/notificationReducer'
 
 const blogReducer = (state = [], action) => {
   console.log('=====Blogs=====')
@@ -68,25 +69,45 @@ export const blogDestroyer = (id) => {
 }
 
 export const blogLikeUpdater = (blogToUpdate) => {
-  // TODO: FIX BUG WHERE UPDATING LIKES REMOVES BLOG.USER.USERNAME
   return async dispatch => {
-    console.log('BLOGTOUPDATE', blogToUpdate)
-    const initialLikes = blogToUpdate.likes
-    const blogWithUpdatedLikes = { ...blogToUpdate, likes: (initialLikes + 1) }
-    const updatedBlog = await blogService.update(blogToUpdate.id, blogWithUpdatedLikes)
-    dispatch({
-      type: 'LIKE_BLOG',
-      data: updatedBlog
-    })
+    try {
+      const initialLikes = blogToUpdate.likes
+      const blogWithUpdatedLikes = { ...blogToUpdate, likes: (initialLikes + 1) }
+      const updatedBlog = await blogService.update(blogToUpdate.id, blogWithUpdatedLikes)
+      dispatch({
+        type: 'LIKE_BLOG',
+        data: updatedBlog
+      })
+      dispatch(toastNotificationCreator(
+        'Liked!',
+        'blue'
+      ))
+    } catch (exception) {
+      dispatch(toastNotificationCreator(
+        `${exception}`,
+        'red'
+      ))
+    }
   }
 }
 
 export const blogCommentCreator = (blogId, comment) => {
   return async dispatch => {
-    const addedComment = await blogService.addComment(blogId, comment)
-    dispatch({
-      type: 'NEW_COMMENT',
-      data: addedComment
-    })
+    try {
+      const addedComment = await blogService.addComment(blogId, comment)
+      dispatch({
+        type: 'NEW_COMMENT',
+        data: addedComment
+      })
+      dispatch(toastNotificationCreator(
+        'Comment Added!',
+        'blue'
+      ))
+    } catch (exception) {
+      dispatch(toastNotificationCreator(
+        `${exception}`,
+        'red'
+      ))
+    }
   }
 }

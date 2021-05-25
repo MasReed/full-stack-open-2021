@@ -1,41 +1,21 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { blogCommentCreator, blogLikeUpdater } from '../reducers/blogReducer'
-import { toastNotificationCreator } from '../reducers/notificationReducer'
-
 
 const BlogPage = ({ blog }) => {
 
   const dispatch = useDispatch()
   const [ comment, setComment ] = useState('')
 
-  const handleNewComment = (event) => {
-    event.preventDefault()
-
-    try {
-      dispatch(blogCommentCreator(blog.id, comment))
-    } catch (exception) {
-      console.log(exception)
-    } finally {
-      setComment('')
-    }
-  }
-
   const handleLikeClick = (event) => {
     event.preventDefault()
+    dispatch(blogLikeUpdater(blog))
+  }
 
-    try {
-      dispatch(blogLikeUpdater(blog))
-      dispatch(toastNotificationCreator(
-        'Liked!',
-        'blue'
-      ))
-    } catch (exception) {
-      dispatch(toastNotificationCreator(
-        `${exception}`,
-        'red'
-      ))
-    }
+  const handleNewComment = (event) => {
+    event.preventDefault()
+    dispatch(blogCommentCreator(blog.id, comment))
+    setComment('')
   }
 
   return (

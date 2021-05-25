@@ -17,7 +17,7 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
     author: body.author,
     url: body.url,
     likes: body.likes || 0,
-    user: request.user.id
+    user: request.user
   })
 
   if ((!blog.title) && (!blog.url)) {
@@ -51,7 +51,8 @@ blogsRouter.put('/:id', middleware.userExtractor, async (request, response) => {
     title: body.title,
     author: body.author,
     url: body.url,
-    likes: body.likes
+    likes: body.likes,
+    user: body.user
   }
 
   const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
@@ -69,7 +70,7 @@ blogsRouter.post('/:id/comments', middleware.userExtractor, async (request, resp
   const blogToComment = await Blog.findById(request.params.id)
 
   blogToComment.comments.push(comment)
-  
+
   const savedBlog = await blogToComment.save()
 
   response.status(200).json(savedBlog.toJSON()).end()
