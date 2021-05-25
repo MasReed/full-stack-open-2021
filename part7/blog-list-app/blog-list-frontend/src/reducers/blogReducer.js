@@ -80,6 +80,10 @@ export const blogDestroyer = (id) => {
           id: id
         }
       })
+      dispatch(toastNotificationCreator(
+        'Blog Deleted.',
+        'orange'
+      ))
     } catch (exception) {
       console.log(exception)
     }

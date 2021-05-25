@@ -1,9 +1,9 @@
 import userService from '../services/users'
 
 const usersReducer = ( state = [], action) => {
-  console.log('=====Users=====')
-  console.log('state now: ', state)
-  console.log('action', action)
+  // console.log('=====Users=====')
+  // console.log('state now: ', state)
+  // console.log('action', action)
 
   switch (action.type) {
 

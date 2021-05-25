@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { blogCommentCreator, blogLikeUpdater } from '../reducers/blogReducer'
+import { Redirect } from 'react-router-dom'
+import { blogDestroyer, blogCommentCreator, blogLikeUpdater } from '../reducers/blogReducer'
 
 const BlogPage = ({ blog }) => {
 
@@ -16,6 +17,17 @@ const BlogPage = ({ blog }) => {
     event.preventDefault()
     dispatch(blogCommentCreator(blog.id, comment))
     setComment('')
+  }
+
+  const handleDeleteClick = (event) => {
+    event.preventDefault()
+    const isConfirmed = window.confirm(`Permanently delete '${blog.title}' ?`)
+
+    isConfirmed ? dispatch(blogDestroyer(blog.id)) : null
+  }
+
+  if (!blog) {
+    return <Redirect to='/blogs' />
   }
 
   return (
@@ -49,9 +61,12 @@ const BlogPage = ({ blog }) => {
         </form>
 
         <hr />
+      </div>
 
+      <button onClick={handleDeleteClick}>DELETE</button>
+
+      <div>
         <h3>Comments:</h3>
-
         {
           blog.comments.map( comment => (
             <li key={comment._id} style={{ padding: '2px 0' }}>{comment.body}</li>

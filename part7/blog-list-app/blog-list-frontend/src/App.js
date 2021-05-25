@@ -100,6 +100,10 @@ const App = () => {
           {state.user ? <h2>HELLO WELCOME HOME</h2> : <Redirect to='/login' />}
         </Route>
 
+        <Route path="*">
+          {<h2>Not Found</h2>}
+        </Route>
+
       </Switch>
     </div>
   )

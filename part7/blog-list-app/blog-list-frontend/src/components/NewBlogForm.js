@@ -20,8 +20,12 @@ const NewBlogForm = ({ blogFormRef }) => {
       dispatch(blogCreator({
         title: newBlogTitle,
         author: newBlogAuthor,
-        url: newBlogUrl
-      }, user))
+        url: newBlogUrl,
+        user: {
+          id: user.id,
+          username: user.username
+        }
+      }))
 
       // collapse form
       blogFormRef.current.toggleVisibility()
