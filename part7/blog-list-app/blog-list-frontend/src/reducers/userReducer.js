@@ -2,7 +2,9 @@ import { toastNotificationCreator } from '../reducers/notificationReducer'
 import blogService from '../services/blogs'
 import loginService from '../services/login'
 
-const userReducer = (state = null, action) => {
+const storedUser = JSON.parse(window.localStorage.getItem('loggedBlogappUser'))
+
+const userReducer = (state = storedUser, action) => {
   console.log('=====User=====')
   console.log('state now: ', state)
   console.log('action', action)
