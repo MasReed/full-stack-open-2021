@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { blogCommentCreator } from '../reducers/blogReducer'
+import { blogCommentCreator, blogLikeUpdater } from '../reducers/blogReducer'
+import { toastNotificationCreator } from '../reducers/notificationReducer'
+
 
 const BlogPage = ({ blog }) => {
 
@@ -19,27 +21,57 @@ const BlogPage = ({ blog }) => {
     }
   }
 
+  const handleLikeClick = (event) => {
+    event.preventDefault()
+
+    try {
+      dispatch(blogLikeUpdater(blog))
+      dispatch(toastNotificationCreator(
+        'Liked!',
+        'blue'
+      ))
+    } catch (exception) {
+      dispatch(toastNotificationCreator(
+        `${exception}`,
+        'red'
+      ))
+    }
+  }
+
   return (
     <div>
-      <h2>{blog.title}</h2>
-      <h3>{blog.author}</h3>
-      <a href=''>{blog.url}</a>
-      <hr />
-      <p>Liked {blog.likes} times</p>
-      <p>Posted by: {blog.user.username}</p>
-      <hr />
       <div>
-        <h3>Comments:</h3>
-        <form style={{ padding: '10px' }}>
-          <input
+        <h2>{blog.title}</h2>
+        <h3>{blog.author}</h3>
+        <a target="_blank" href={'//' + blog.url} rel="noreferrer">{blog.url}</a>
+        <p>Posted by: {blog.user.username}</p>
+        <hr />
+      </div>
+
+      <div>
+        <p style={{ display: 'inline' }}>{blog.likes} Likes</p>
+        <button onClick={handleLikeClick} style={{ margin: '10px' }}>Like</button>
+
+        <form>
+          <label>{blog.comments.length} Comments</label>
+          <textarea
             id='newComment'
-            type='text'
+            type='textblock'
             name='comment'
             value={comment}
             onChange={ ({ target }) => setComment(target.value) }
+            cols='120'
+            rows='10'
+            style={{ display: 'block', resize: 'none' }}
+            placeholder='e.g. I liked it!'
           />
           <button onClick={handleNewComment}>Add Comment</button>
         </form>
+
+        <hr />
+
+        <h3>Comments:</h3>
+
         {
           blog.comments.map( comment => (
             <li key={comment._id} style={{ padding: '2px 0' }}>{comment.body}</li>
@@ -61,22 +93,6 @@ export default BlogPage
 // const dispatch = useDispatch()
 // const user = useSelector(state => state.user)
 
-// const handleLikeClick = (event) => {
-//   event.preventDefault()
-//
-//   try {
-//     dispatch(blogLikeUpdater(blog))
-//     dispatch(toastNotificationCreator(
-//       'Liked!',
-//       'blue'
-//     ))
-//   } catch (exception) {
-//     dispatch(toastNotificationCreator(
-//       `${exception}`,
-//       'red'
-//     ))
-//   }
-// }
 //
 // const handleDeleteClick = (event) => {
 //   event.preventDefault()
