@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Switch, Route, Redirect, useRouteMatch } from 'react-router-dom'
-// import 'bootstrap/dist/css/bootstrap.min.css'
+import './index.css'
 
 import BlogList from './components/BlogList'
 import BlogPage from './components/BlogPage'
@@ -98,7 +98,7 @@ const App = () => {
         </Route>
 
         <Route path='/'>
-          {state.user ? <h2>HELLO WELCOME HOME</h2> : <Redirect to='/login' />}
+          {state.user ? <h2>Welcome to the Blog App</h2> : <Redirect to='/login' />}
         </Route>
 
         <Route path="*">
