@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import Button from 'react-bootstrap/Button'
+
 import { blogCreator } from '../reducers/blogReducer'
 import { toastNotificationCreator } from '../reducers/notificationReducer'
 
@@ -87,7 +89,7 @@ const NewBlogForm = ({ blogFormRef }) => {
           />
         </div>
         <div style={{ margin: '5px 0 0 60px' }}>
-          <button id='createBlog' type='submit' style={{ padding: '3px 66.5px' }}>Create </button>
+          <Button id='createBlog' type='submit' style={{ padding: '3px 66.5px' }}>Create </Button>
         </div>
       </form>
     </div>

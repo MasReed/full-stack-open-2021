@@ -1,5 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import Button from 'react-bootstrap/Button'
+
 import { toastNotificationCreator } from '../reducers/notificationReducer'
 import { unsetUserCreator } from '../reducers/userReducer'
 
@@ -20,7 +22,7 @@ const LogoutButton = () => {
 
   return (
     <div style={{ display: 'inline-block', margin: '5px 5px' }}>
-      <button onClick={handleLogout}>Logout</button>
+      <Button onClick={handleLogout} variant='outline-secondary' size='sm'>Logout</Button>
     </div>
   )
 }

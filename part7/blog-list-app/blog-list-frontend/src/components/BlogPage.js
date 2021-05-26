@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
+import Button from 'react-bootstrap/Button'
 import { blogDestroyer, blogCommentCreator, blogLikeUpdater } from '../reducers/blogReducer'
 
 /*
@@ -48,11 +49,13 @@ const BlogPage = ({ blog }) => {
           <p style={{ display: 'inline' }}>Posted by: {blog.user.username}</p>
           {
             (blog.user.id === currentUser.id)
-            && <button
+            && <Button
               onClick={handleDeleteClick}
-              style={{ marginLeft: '10px' }}>
+              style={{ marginLeft: '10px' }}
+              variant='outline-warning'
+            >
               Delete
-            </button>
+            </Button>
           }
         </div>
 
@@ -61,7 +64,7 @@ const BlogPage = ({ blog }) => {
 
       <div>
         <p style={{ display: 'inline' }}>{blog.likes} Likes</p>
-        <button onClick={handleLikeClick} style={{ margin: '10px' }}>Like</button>
+        <Button onClick={handleLikeClick} variant='primary' style={{ margin: '10px' }}>Like</Button>
 
         <form>
           <label>{blog.comments.length} Comments</label>
@@ -76,7 +79,7 @@ const BlogPage = ({ blog }) => {
             style={{ display: 'block', resize: 'none' }}
             placeholder='e.g. I liked it!'
           />
-          <button onClick={handleNewComment}>Add Comment</button>
+          <Button onClick={handleNewComment} variant='primary'>Add Comment</Button>
         </form>
 
         <hr />

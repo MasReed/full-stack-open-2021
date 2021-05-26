@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import Button from 'react-bootstrap/Button'
 import { loggedInUserCreator } from '../reducers/userReducer'
 
 const LoginForm = () => {
@@ -42,8 +43,8 @@ const LoginForm = () => {
           onChange={ ({ target }) => setPassword(target.value)}
         />
       </div>
-      <div style={{ margin: '5px 0 0 75px' }}>
-        <button id='loginButton' type='submit' style={{ padding: '3px 70px' }}>Login</button>
+      <div>
+        <Button id='loginButton' type='submit' variant='outline-primary'>Login</Button>
       </div>
     </form>
   )
