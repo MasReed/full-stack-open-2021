@@ -14,25 +14,33 @@ const UserList = () => {
     border: 'solid',
     borderColor: 'purple',
     borderWidth: 1,
+    display: 'flex',
+    justifyContent: 'space-between',
     marginBottom: 5,
     padding: '10px 0 7px 4px'
   }
 
   return (
-    <div>
+    <div className='container'>
       <h2>Users</h2>
-      <h4>Blogs Created</h4>
+      <h5>All of `em</h5>
+
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <h6>Username</h6>
+        <h6>Blogs Created</h6>
+      </div>
+
       <div>
         {
           users.map( user =>
             <div key={user.id} style={userStyle}>
-              <p style={{ display: 'inline-block', margin: '0 20px' }}>{user.blogs.length}</p>
               <Link
                 to={`/users/${user.id}`}
-                style={{ display: 'inline-block', marginLeft: '50px' }}
+                style={{ margin: '0', padding: '10px' }}
               >
                 {user.username}
               </Link>
+              <p style={{ padding: '10px 45px' }}>{user.blogs.length}</p>
             </div>
           )
         }

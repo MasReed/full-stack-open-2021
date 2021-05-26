@@ -56,10 +56,11 @@ const NewBlogForm = ({ blogFormRef }) => {
 
   return (
     <div>
-      <h2>Create New Post</h2>
+      <h2>New Post</h2>
+
       <form onSubmit={makeNewPostObject} className='newBlogDiv'>
         <div style={{ margin: '5px 0' }}>
-          <label style={{ marginRight: '26px' }}>Title:</label>
+          <label>Title:</label>
           <input
             id='newBlogTitle'
             type='text'
@@ -68,8 +69,9 @@ const NewBlogForm = ({ blogFormRef }) => {
             onChange={ ({ target }) => setNewBlogTitle(target.value)}
           />
         </div>
+
         <div style={{ margin: '5px 0' }}>
-          <label style={{ marginRight: '10px' }}>Author:</label>
+          <label>Author:</label>
           <input
             id='newBlogAuthor'
             type='text'
@@ -78,8 +80,9 @@ const NewBlogForm = ({ blogFormRef }) => {
             onChange={ ({ target }) => setNewBlogAuthor(target.value)}
           />
         </div>
+
         <div style={{ margin: '5px 0' }}>
-          <label style={{ marginRight: '24px' }}>URL:</label>
+          <label>URL:</label>
           <input
             id='newBlogUrl'
             type='text'
@@ -88,9 +91,11 @@ const NewBlogForm = ({ blogFormRef }) => {
             onChange={ ({ target }) => setNewBlogUrl(target.value)}
           />
         </div>
-        <div style={{ margin: '5px 0 0 60px' }}>
-          <Button id='createBlog' type='submit' style={{ padding: '3px 66.5px' }}>Create </Button>
+
+        <div>
+          <Button id='createBlog' type='submit'>Create </Button>
         </div>
+
       </form>
     </div>
   )

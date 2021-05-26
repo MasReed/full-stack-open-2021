@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Switch, Route, Redirect, useRouteMatch } from 'react-router-dom'
 import './index.css'
@@ -7,9 +7,7 @@ import BlogList from './components/BlogList'
 import BlogPage from './components/BlogPage'
 import LoginForm from './components/LoginForm'
 import NavigationHeader from './components/NavigationHeader'
-import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
-import Togglable from './components/Togglable'
 import UserPage from './components/UserPage'
 import UserList from './components/UserList'
 
@@ -24,8 +22,6 @@ const App = () => {
 
   const dispatch = useDispatch()
   const state = useSelector(state => state)
-
-  const blogFormRef = useRef()
 
   // initial render will initialize blogs and users into redux store
   useEffect( () => {
@@ -58,7 +54,7 @@ const App = () => {
 
   // main app render
   return (
-    <div>
+    <React.Fragment>
       <div className='sticky-top'>
         <NavigationHeader />
         <Notification />
@@ -84,18 +80,7 @@ const App = () => {
           </Route>
 
           <Route path='/blogs'>
-            {state.user
-              ? <div>
-
-                <Togglable buttonLabelToOpen='New Post' buttonLabelToClose='Cancel' ref={blogFormRef}>
-                  <NewBlogForm blogFormRef={blogFormRef} />
-                </Togglable>
-
-                <BlogList />
-
-              </div>
-              : <Redirect to='/login' />
-            }
+            {state.user ? <BlogList /> : <Redirect to='/login' />}
           </Route>
 
           <Route path='/'>
@@ -108,7 +93,7 @@ const App = () => {
 
         </Switch>
       </React.Fragment>
-    </div>
+    </React.Fragment>
   )
 }
 
