@@ -82,7 +82,7 @@ export const blogDestroyer = (id) => {
       })
       dispatch(toastNotificationCreator(
         'Blog Deleted.',
-        'orange'
+        'danger'
       ))
     } catch (exception) {
       console.log(exception)
@@ -103,12 +103,12 @@ export const blogLikeUpdater = (blogToUpdate) => {
       })
       dispatch(toastNotificationCreator(
         'Liked!',
-        'blue'
+        'primary'
       ))
     } catch (exception) {
       dispatch(toastNotificationCreator(
         `${exception}`,
-        'red'
+        'danger'
       ))
     }
   }
@@ -124,12 +124,12 @@ export const blogCommentCreator = (blogId, comment) => {
       })
       dispatch(toastNotificationCreator(
         'Comment Added!',
-        'blue'
+        'primary'
       ))
     } catch (exception) {
       dispatch(toastNotificationCreator(
         `${exception}`,
-        'red'
+        'danger'
       ))
     }
   }

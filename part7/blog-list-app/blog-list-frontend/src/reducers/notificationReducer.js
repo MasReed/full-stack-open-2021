@@ -1,5 +1,5 @@
 
-const notificationReducer = (state = { message: '', color: 'darkgrey' }, action) => {
+const notificationReducer = (state = { message: '', variant: 'secondary' }, action) => {
   // console.log('=====Notifications=====')
   // console.log('state now: ', state)
   // console.log('action', action)
@@ -8,14 +8,14 @@ const notificationReducer = (state = { message: '', color: 'darkgrey' }, action)
   case 'SET_NOTIFICATION': {
     const setObj = {
       message: action.message,
-      color: action.color
+      variant: action.variant
     }
     return setObj
   }
   case 'UNSET_NOTIFICATION': {
     const resetObj = {
       message: '',
-      color: 'darkgrey'
+      variant: 'secondary'
     }
     return resetObj
   }
@@ -28,14 +28,14 @@ export default notificationReducer
 
 /* Display colored banner with message for user to see for 5 seconds */
 let timerId = null
-export const toastNotificationCreator = (message, color) => {
+export const toastNotificationCreator = (message, variant) => {
   clearTimeout(timerId)
 
   return async dispatch => {
     dispatch({
       type: 'SET_NOTIFICATION',
       message,
-      color
+      variant
     })
     timerId = setTimeout(() => dispatch({ type: 'UNSET_NOTIFICATION' }), 5000)
   }

@@ -14,7 +14,7 @@ const LogoutButton = () => {
 
     dispatch(toastNotificationCreator(
       `${user.username} successfully logged out!`,
-      'green'
+      'success'
     ))
   }
 

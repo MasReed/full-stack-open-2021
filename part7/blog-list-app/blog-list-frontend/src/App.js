@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Switch, Route, Redirect, useRouteMatch } from 'react-router-dom'
+// import 'bootstrap/dist/css/bootstrap.min.css'
 
 import BlogList from './components/BlogList'
 import BlogPage from './components/BlogPage'
@@ -57,7 +58,7 @@ const App = () => {
 
   // main app render
   return (
-    <div>
+    <div className='container'>
       <div name='header'>
         <NavigationHeader />
         <Notification />

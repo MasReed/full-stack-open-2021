@@ -55,14 +55,14 @@ export const loggedInUserCreator = (username, password) => {
 
       dispatch(toastNotificationCreator(
         `${username} successfully logged in!`,
-        'green'
+        'success'
       ))
 
     } catch (exception) {
 
       dispatch(toastNotificationCreator(
         'Invalid Username or Password',
-        'red'
+        'danger'
       ))
     }
   }

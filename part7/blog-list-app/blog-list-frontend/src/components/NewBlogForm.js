@@ -33,7 +33,7 @@ const NewBlogForm = ({ blogFormRef }) => {
       // success message
       dispatch(toastNotificationCreator(
         `A new blog '${newBlogTitle}' by ${newBlogAuthor} successfully added!`,
-        'green'
+        'success'
       ))
 
     } catch (exception) {
@@ -41,7 +41,7 @@ const NewBlogForm = ({ blogFormRef }) => {
       console.log(exception)
       dispatch(toastNotificationCreator(
         `An error has occured: ${exception}`,
-        'red'
+        'danger'
       ))
 
     } finally {
