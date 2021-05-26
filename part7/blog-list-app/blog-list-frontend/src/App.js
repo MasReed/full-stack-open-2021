@@ -58,54 +58,56 @@ const App = () => {
 
   // main app render
   return (
-    <div className='container'>
-      <div name='header'>
+    <div>
+      <div className='sticky-top'>
         <NavigationHeader />
         <Notification />
       </div>
 
-      <Switch>
+      <React.Fragment>
+        <Switch>
 
-        <Route path='/login'>
-          {state.user ? <Redirect to='/' /> : <LoginForm />}
-        </Route>
+          <Route path='/login'>
+            {state.user ? <Redirect to='/' /> : <LoginForm />}
+          </Route>
 
-        <Route path='/users/:id'>
-          {state.user ? <UserPage user={userToView} /> : <Redirect to ='/login' />}
-        </Route>
+          <Route path='/users/:id'>
+            {state.user ? <UserPage user={userToView} /> : <Redirect to ='/login' />}
+          </Route>
 
-        <Route path='/users'>
-          {state.user ? <UserList /> : <Redirect to='/login' />}
-        </Route>
+          <Route path='/users'>
+            {state.user ? <UserList /> : <Redirect to='/login' />}
+          </Route>
 
-        <Route path='/blogs/:id'>
-          {state.user ? <BlogPage blog={blogToView} /> : <Redirect to ='/login' />}
-        </Route>
+          <Route path='/blogs/:id'>
+            {state.user ? <BlogPage blog={blogToView} /> : <Redirect to ='/login' />}
+          </Route>
 
-        <Route path='/blogs'>
-          {state.user
-            ? <div>
+          <Route path='/blogs'>
+            {state.user
+              ? <div>
 
-              <Togglable buttonLabelToOpen='New Post' buttonLabelToClose='Cancel' ref={blogFormRef}>
-                <NewBlogForm blogFormRef={blogFormRef} />
-              </Togglable>
+                <Togglable buttonLabelToOpen='New Post' buttonLabelToClose='Cancel' ref={blogFormRef}>
+                  <NewBlogForm blogFormRef={blogFormRef} />
+                </Togglable>
 
-              <BlogList />
+                <BlogList />
 
-            </div>
-            : <Redirect to='/login' />
-          }
-        </Route>
+              </div>
+              : <Redirect to='/login' />
+            }
+          </Route>
 
-        <Route path='/'>
-          {state.user ? <h2>Welcome to the Blog App</h2> : <Redirect to='/login' />}
-        </Route>
+          <Route path='/'>
+            {state.user ? <h2>Welcome to the Blog App</h2> : <Redirect to='/login' />}
+          </Route>
 
-        <Route path="*">
-          {<h2>Not Found</h2>}
-        </Route>
+          <Route path="*">
+            {<h2>Not Found</h2>}
+          </Route>
 
-      </Switch>
+        </Switch>
+      </React.Fragment>
     </div>
   )
 }

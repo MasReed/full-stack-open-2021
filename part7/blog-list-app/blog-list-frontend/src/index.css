@@ -12,9 +12,12 @@ code {
     monospace;
 }
 
+.bg-primary {
+  background-color: lightblue !important;
+}
+
 .container {
-  padding-left: 0;
-  padding-right: 0;
+  padding: 32px 64px;
 }
 
 .navbar-color {

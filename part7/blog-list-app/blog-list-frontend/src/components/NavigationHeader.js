@@ -12,7 +12,7 @@ const NavigationHeader = () => {
   const currentUser = useSelector(state => state.user)
   return (
     <React.Fragment>
-      <Navbar bg='dark' variant='dark' expand='lg' fixed='top'>
+      <Navbar bg='primary' variant='light' expand='lg'>
         <Navbar.Brand href='home'>BlogLister</Navbar.Brand>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>

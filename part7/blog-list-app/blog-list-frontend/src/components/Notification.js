@@ -15,11 +15,11 @@ const Notification = () => {
   }
 
   return (
-    <div>
+    <React.Fragment>
       <Alert variant={notification.variant}>
         {notification.message}
       </Alert>
-    </div>
+    </React.Fragment>
   )
 }
 

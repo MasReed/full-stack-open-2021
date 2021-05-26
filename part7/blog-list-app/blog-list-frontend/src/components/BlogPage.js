@@ -2,7 +2,11 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
+import Container from 'react-bootstrap/Container'
+
 import { blogDestroyer, blogCommentCreator, blogLikeUpdater } from '../reducers/blogReducer'
+
+import BlogHeading from './BlogHeading'
 
 /*
 Display the details of a singular blog, with ability to like, comment, or delete
@@ -36,38 +40,47 @@ const BlogPage = ({ blog }) => {
     return <Redirect to='/blogs' />
   }
 
+
   return (
-    <div>
-      <div>
-        <h2>{blog.title}</h2>
-        <h3>{blog.author}</h3>
-        <a style={{ display: 'block' }} target="_blank" href={'//' + blog.url} rel="noreferrer">
-          <h4>{blog.url}</h4>
-        </a>
+    <Container>
 
-        <div style={{ padding: '10px 0' }}>
-          <p style={{ display: 'inline' }}>Posted by: {blog.user.username}</p>
-          {
-            (blog.user.id === currentUser.id)
-            && <Button
-              onClick={handleDeleteClick}
-              style={{ marginLeft: '10px' }}
-              variant='outline-warning'
-            >
-              Delete
-            </Button>
-          }
-        </div>
+      <BlogHeading blog={blog} />
 
-        <hr />
+      <hr style={{ marginBottom: '8px' }}/>
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0' }}>
+        <p style={{ margin: '0' }}>{blog.likes} Likes</p>
+        <p style={{ margin: '0' }}>Posted by: {blog.user.username}</p>
       </div>
 
-      <div>
-        <p style={{ display: 'inline' }}>{blog.likes} Likes</p>
-        <Button onClick={handleLikeClick} variant='primary' style={{ margin: '10px' }}>Like</Button>
+      <p style={{ margin: '0', padding: '0' }}>{blog.comments.length} Comments</p>
 
+      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0' }}>
+        <Button
+          onClick={handleLikeClick}
+          variant='secondary'
+          style={{ margin: '6px 0 3px', padding: '8px 14px' }}
+        >Like</Button>
+
+        {
+          (blog.user.id === currentUser.id)
+          && <Button
+            onClick={handleDeleteClick}
+            variant='outline-warning'
+            size='sm'
+            style={{ margin: '6px 0 3px', float: 'right' }}
+          >
+            Delete
+          </Button>
+        }
+
+
+      </div>
+
+      <hr style={{ marginTop: '8px' }}/>
+
+      <div>
         <form>
-          <label>{blog.comments.length} Comments</label>
           <textarea
             id='newComment'
             type='textblock'
@@ -93,7 +106,7 @@ const BlogPage = ({ blog }) => {
           ))
         }
       </div>
-    </div>
+    </Container>
   )
 }
 
