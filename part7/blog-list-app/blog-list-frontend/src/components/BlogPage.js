@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 
-import { blogDestroyer, blogCommentCreator, blogLikeUpdater } from '../reducers/blogReducer'
+import { blogCommentCreator } from '../reducers/blogReducer'
 
 import BlogHeading from './BlogHeading'
+import BlogMetrics from './BlogMetrics'
 
 /*
 Display the details of a singular blog, with ability to like, comment, or delete
@@ -15,25 +16,12 @@ Display the details of a singular blog, with ability to like, comment, or delete
 const BlogPage = ({ blog }) => {
 
   const dispatch = useDispatch()
-  const currentUser = useSelector(state => state.user)
   const [ comment, setComment ] = useState('')
-
-  const handleLikeClick = (event) => {
-    event.preventDefault()
-    dispatch(blogLikeUpdater(blog))
-  }
 
   const handleNewComment = (event) => {
     event.preventDefault()
     dispatch(blogCommentCreator(blog.id, comment))
     setComment('')
-  }
-
-  const handleDeleteClick = (event) => {
-    event.preventDefault()
-    const isConfirmed = window.confirm(`Permanently delete '${blog.title}' ?`)
-
-    isConfirmed ? dispatch(blogDestroyer(blog.id)) : null
   }
 
   if (!blog) {
@@ -48,34 +36,7 @@ const BlogPage = ({ blog }) => {
 
       <hr style={{ marginBottom: '8px' }}/>
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0' }}>
-        <p style={{ margin: '0' }}>{blog.likes} Likes</p>
-        <p style={{ margin: '0' }}>Posted by: {blog.user.username}</p>
-      </div>
-
-      <p style={{ margin: '0', padding: '0' }}>{blog.comments.length} Comments</p>
-
-      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0' }}>
-        <Button
-          onClick={handleLikeClick}
-          variant='secondary'
-          style={{ margin: '6px 0 3px', padding: '8px 14px' }}
-        >Like</Button>
-
-        {
-          (blog.user.id === currentUser.id)
-          && <Button
-            onClick={handleDeleteClick}
-            variant='outline-warning'
-            size='sm'
-            style={{ margin: '6px 0 3px', float: 'right' }}
-          >
-            Delete
-          </Button>
-        }
-
-
-      </div>
+      <BlogMetrics blog={blog} />
 
       <hr style={{ marginTop: '8px' }}/>
 
