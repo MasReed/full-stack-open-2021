@@ -7,7 +7,7 @@ const Notification = () => {
 
   const notificationStyle = {
     color: notification.color,
-    background: 'lightgrey',
+    background: ('light' + notification.color),
     fontSize: '20px',
     borderStyle: 'solid',
     borderRadius: '5px',

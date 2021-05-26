@@ -1,6 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+/*
+Display minimal details of a blog in a 'box', used to create BlogList
+*/
 
 const BlogTile = ({ blog }) => {
 

@@ -2,6 +2,10 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
+/*
+Display list of all users and the number of blogs they have created.
+*/
+
 const UserList = () => {
 
   const users = useSelector( state => state.users )

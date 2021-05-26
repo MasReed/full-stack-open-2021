@@ -9,7 +9,7 @@ import NavigationHeader from './components/NavigationHeader'
 import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
-import User from './components/User'
+import UserPage from './components/UserPage'
 import UserList from './components/UserList'
 
 import { initializeBlogs } from './reducers/blogReducer'
@@ -70,7 +70,7 @@ const App = () => {
         </Route>
 
         <Route path='/users/:id'>
-          {state.user ? <User user={userToView} /> : <Redirect to ='/login' />}
+          {state.user ? <UserPage user={userToView} /> : <Redirect to ='/login' />}
         </Route>
 
         <Route path='/users'>

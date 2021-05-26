@@ -17,9 +17,6 @@ const LoginForm = () => {
 
     setUsername('')
     setPassword('')
-
-    console.log('logging in with', username)
-
   }
 
 

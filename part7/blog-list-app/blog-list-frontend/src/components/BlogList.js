@@ -4,6 +4,7 @@ import BlogTile from './BlogTile'
 
 const BlogList = () => {
 
+  // sort blogs by most likes and map each one to a display component
   const blogs = useSelector(state => state.blogs
     .sort( (a, b) => {
       if (a.likes < b.likes) {

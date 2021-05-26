@@ -3,6 +3,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { blogDestroyer, blogCommentCreator, blogLikeUpdater } from '../reducers/blogReducer'
 
+/*
+Display the details of a singular blog, with ability to like, comment, or delete
+*/
+
 const BlogPage = ({ blog }) => {
 
   const dispatch = useDispatch()
@@ -91,22 +95,3 @@ const BlogPage = ({ blog }) => {
 }
 
 export default BlogPage
-
-
-// <Togglable buttonLabelToOpen='Details' buttonLabelToClose='Hide'>
-//   <div className='togglableContent'>
-//     <p style={{ margin: '5px 0' }}>{blog.url}</p>
-//     <div style={{ margin: '5px 0' }}>
-//       <p className='blogLikes' style={{ display: 'inline' }}>likes: {blog.likes}</p>
-//       <button onClick={handleLikeClick} style={{ marginLeft: '10px' }}>Like</button>
-//       {
-//         (blog.user === user.id)
-//         && <button
-//           onClick={handleDeleteClick}
-//           style={{ marginLeft: '10px' }}>
-//           Delete
-//         </button>
-//       }
-//     </div>
-//   </div>
-// </Togglable>

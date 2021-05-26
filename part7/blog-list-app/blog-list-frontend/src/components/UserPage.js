@@ -1,6 +1,10 @@
 import React from 'react'
 
-const User = ({ user }) => {
+/*
+Display the details of a singular user, with list of their blogs
+*/
+
+const UserPage = ({ user }) => {
 
   if (!user) {
     return null
@@ -21,4 +25,4 @@ const User = ({ user }) => {
   )
 }
 
-export default User
+export default UserPage

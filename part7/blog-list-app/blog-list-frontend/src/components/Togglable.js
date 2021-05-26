@@ -1,6 +1,11 @@
 import React, { useState, useImperativeHandle } from 'react'
 import PropTypes from 'prop-types'
 
+/*
+Component which shows or hides its contents by clicking open or close buttons,
+uses useRef in main App.js
+*/
+
 const Togglable = React.forwardRef((props, ref) => {
 
   const [visible, setVisible] = useState(false)
