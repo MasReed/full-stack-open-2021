@@ -85,7 +85,7 @@ const App = () => {
           </Route>
 
           <Route path='/'>
-            {state.user ? <HomePage /> : <Redirect to='/login' />}
+            <HomePage />
           </Route>
 
           <Route path="*">

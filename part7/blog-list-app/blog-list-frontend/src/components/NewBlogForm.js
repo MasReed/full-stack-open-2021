@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
 
 import { blogCreator } from '../reducers/blogReducer'
 import { toastNotificationCreator } from '../reducers/notificationReducer'
@@ -58,45 +59,41 @@ const NewBlogForm = ({ blogFormRef }) => {
     <div>
       <h2>New Post</h2>
 
-      <form onSubmit={makeNewPostObject} className='newBlogDiv'>
-        <div style={{ margin: '5px 0' }}>
-          <label>Title:</label>
-          <input
-            id='newBlogTitle'
-            type='text'
-            value={newBlogTitle}
-            name='title'
-            onChange={ ({ target }) => setNewBlogTitle(target.value)}
-          />
-        </div>
+      <React.Fragment>
+        <Form onSubmit={makeNewPostObject} style={{ marginTop: '20px' }}>
+          <Form.Group controlId='formNewBlogTitle'>
+            <Form.Control
+              name='newBlogTitle'
+              value={newBlogTitle}
+              onChange={ ({ target }) => setNewBlogTitle(target.value) }
+              placeholder='e.g. The Best Blog' />
+          </Form.Group>
 
-        <div style={{ margin: '5px 0' }}>
-          <label>Author:</label>
-          <input
-            id='newBlogAuthor'
-            type='text'
-            value={newBlogAuthor}
-            name='author'
-            onChange={ ({ target }) => setNewBlogAuthor(target.value)}
-          />
-        </div>
+          <Form.Group controlId='formNewBlogAuthor'>
+            <Form.Control
+              name='newBlogAuthor'
+              value={newBlogAuthor}
+              onChange={ ({ target }) => setNewBlogAuthor(target.value) }
+              placeholder='e.g. Ehts A. Rhealwun' />
+          </Form.Group>
 
-        <div style={{ margin: '5px 0' }}>
-          <label>URL:</label>
-          <input
-            id='newBlogUrl'
-            type='text'
-            value={newBlogUrl}
-            name='url'
-            onChange={ ({ target }) => setNewBlogUrl(target.value)}
-          />
-        </div>
+          <Form.Group controlId='formNewBlogUrl'>
+            <Form.Control
+              name='newBlogUrl'
+              value={newBlogUrl}
+              onChange={ ({ target }) => setNewBlogUrl(target.value) }
+              placeholder='e.g. www.blog.com' />
+          </Form.Group>
 
-        <div>
-          <Button id='createBlog' type='submit'>Create </Button>
-        </div>
+          <div style={{ float: 'right' }}>
+            <Button type='submit' variant='light' style={{ backgroundColor: '#e06666' }}>
+              Create
+            </Button>
+          </div>
+        </Form>
+      </React.Fragment>
 
-      </form>
+
     </div>
   )
 }

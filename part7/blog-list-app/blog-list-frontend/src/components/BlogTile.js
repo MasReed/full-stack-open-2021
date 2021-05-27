@@ -9,7 +9,7 @@ const BlogTile = ({ blog }) => {
 
   const blogStyle={
     border: 'solid',
-    borderColor: 'purple',
+    borderColor: '#e06666',
     borderRadius: 3,
     borderWidth: 2,
     marginBottom: 5,
