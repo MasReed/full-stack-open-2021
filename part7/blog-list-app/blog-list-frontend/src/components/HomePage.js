@@ -6,11 +6,11 @@ const HomePage = () => {
   const state = useSelector(state => state)
 
   const containerStyle={
-    backgroundColor: 'lightblue',
+    backgroundColor: '#fff',
     border: 'solid',
-    borderColor: 'grey',
-    borderRadius: '2px',
-    borderWidth: '1px',
+    borderColor: '#e06666',
+    borderRadius: '5px',
+    borderWidth: '10px',
     margin: '60px 0'
   }
 
