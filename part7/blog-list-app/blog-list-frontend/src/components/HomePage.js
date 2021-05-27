@@ -10,7 +10,7 @@ const HomePage = () => {
     border: 'solid',
     borderColor: '#e06666',
     borderRadius: '5px',
-    borderWidth: '10px',
+    borderWidth: '5px',
     margin: '60px 0'
   }
 

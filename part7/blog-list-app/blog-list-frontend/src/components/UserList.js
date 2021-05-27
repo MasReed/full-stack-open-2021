@@ -14,13 +14,12 @@ const UserList = () => {
     border: 'solid',
     borderColor: '#e06666',
     borderRadius: 3,
-    borderWidth: 2,
+    borderWidth: 1,
     display: 'flex',
     justifyContent: 'space-between',
     marginBottom: 5,
     padding: '10px 0 7px 4px'
   }
-
 
   return (
     <div className='container'>

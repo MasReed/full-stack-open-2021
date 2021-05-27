@@ -11,13 +11,13 @@ const BlogTile = ({ blog }) => {
     border: 'solid',
     borderColor: '#e06666',
     borderRadius: 3,
-    borderWidth: 2,
-    marginBottom: 5,
-    padding: '10px 0 7px 4px'
+    borderWidth: 1,
+    marginBottom: 10,
+    padding: '10px 16px 7px'
   }
 
   return (
-    <div key={blog.id} style={blogStyle} className='blogDiv'>
+    <div style={blogStyle} className='blogDiv'>
 
       <Link to={`/blogs/${blog.id}`}>
         <h3 style={{ margin: '2px 0' }} className='blogTitle'>{blog.title}</h3>

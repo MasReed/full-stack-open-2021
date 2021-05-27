@@ -1,4 +1,8 @@
 import React from 'react'
+import Container from 'react-bootstrap/Container'
+
+import BlogTile from './BlogTile'
+
 
 /*
 Display the details of a singular user, with list of their blogs
@@ -11,17 +15,23 @@ const UserPage = ({ user }) => {
   }
 
   return (
-    <div>
-      <h2>{user.username}</h2>
-      <h4>Blogs Added:</h4>
-      <ul>
-        {
-          user.blogs.map( blog =>
-            <p key={blog.id}>{blog.title}</p>
-          )
-        }
-      </ul>
-    </div>
+    <Container>
+      <div style={{ marginBottom: '75px' }}>
+        <h1>{user.username}</h1>
+        <h5>Some user tagline..</h5>
+      </div>
+
+      <div style={{ color: 'lightblue', display: 'flex', justifyContent: 'space-between' }}>
+        <h4 style={{ margin: '0', padding: '3px' }}>Blogs Created</h4>
+      </div>
+
+      <hr style={{ margin: '4px 0 16px' }} />
+
+      {
+        user.blogs.map( blog => <BlogTile key={blog.id} blog={blog} /> )
+      }
+
+    </Container>
   )
 }
 
