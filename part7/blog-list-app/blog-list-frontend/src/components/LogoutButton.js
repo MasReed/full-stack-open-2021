@@ -22,7 +22,7 @@ const LogoutButton = () => {
 
   return (
     <div style={{ display: 'inline-block', margin: '5px 5px' }}>
-      <Button onClick={handleLogout} variant='outline-light' size='sm'>Logout</Button>
+      <Button onClick={handleLogout} variant='outline-dark' size='sm'>Logout</Button>
     </div>
   )
 }

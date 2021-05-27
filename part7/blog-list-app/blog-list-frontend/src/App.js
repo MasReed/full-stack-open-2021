@@ -5,6 +5,7 @@ import './index.css'
 
 import BlogList from './components/BlogList'
 import BlogPage from './components/BlogPage'
+import HomePage from './components/HomePage'
 import LoginForm from './components/LoginForm'
 import NavigationHeader from './components/NavigationHeader'
 import Notification from './components/Notification'
@@ -84,7 +85,7 @@ const App = () => {
           </Route>
 
           <Route path='/'>
-            {state.user ? <h2>Welcome to the Blog App</h2> : <Redirect to='/login' />}
+            {state.user ? <HomePage /> : <Redirect to='/login' />}
           </Route>
 
           <Route path="*">
