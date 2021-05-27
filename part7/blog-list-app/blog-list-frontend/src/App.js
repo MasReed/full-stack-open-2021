@@ -6,7 +6,7 @@ import './index.css'
 import BlogList from './components/BlogList'
 import BlogPage from './components/BlogPage'
 import HomePage from './components/HomePage'
-import LoginForm from './components/LoginForm'
+import LoginPage from './components/LoginPage'
 import NavigationHeader from './components/NavigationHeader'
 import Notification from './components/Notification'
 import UserPage from './components/UserPage'
@@ -65,7 +65,7 @@ const App = () => {
         <Switch>
 
           <Route path='/login'>
-            {state.user ? <Redirect to='/' /> : <LoginForm />}
+            {state.user ? <Redirect to='/' /> : <LoginPage />}
           </Route>
 
           <Route path='/users/:id'>

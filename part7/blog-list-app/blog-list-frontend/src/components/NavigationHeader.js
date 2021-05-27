@@ -13,7 +13,7 @@ const NavigationHeader = () => {
   return (
     <React.Fragment>
       <Navbar bg='primary' variant='light' expand='lg'>
-        <Navbar.Brand href='home'>BlogLister</Navbar.Brand>
+        <Navbar.Brand href='/'>BlogLister</Navbar.Brand>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav className='mr-auto'>
