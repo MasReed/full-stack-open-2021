@@ -30,8 +30,8 @@ const UserList = () => {
       </div>
 
       <div style={{ color: 'lightblue', display: 'flex', justifyContent: 'space-between' }}>
-        <h4 style={{ margin: '0', padding: '3px' }}>Username</h4>
-        <h4 style={{ margin: '0', padding: '3px' }}>Blogs Created</h4>
+        <h4 style={{ margin: '0', padding: '3px 0' }}>Username</h4>
+        <h4 style={{ margin: '0', padding: '3px 0' }}>Blogs Created</h4>
       </div>
 
       <hr style={{ margin: '4px 0 16px' }}/>

@@ -1,0 +1,15 @@
+
+implement useHistory
+fix navbar to root routes -> user/:id, click users, goes to users/users
+refactor container into <Container> / double check react-bootstrap components thru out
+abstract reused css to stylesheet
+check mobile responsiveness
+
+change links to entire BlogTile
+change hover of blogtile to change color
+
+
+COLORS:
+  light-purple: #9166e0
+  lighter purple: #dfcdff
+  light salmon: #e06666

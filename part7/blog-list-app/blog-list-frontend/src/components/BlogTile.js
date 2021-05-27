@@ -17,14 +17,14 @@ const BlogTile = ({ blog }) => {
   }
 
   return (
-    <div style={blogStyle} className='blogDiv'>
-
+    <React.Fragment>
       <Link to={`/blogs/${blog.id}`}>
-        <h3 style={{ margin: '2px 0' }} className='blogTitle'>{blog.title}</h3>
+        <div style={blogStyle}>
+          <h3 style={{ margin: '2px 0' }}>{blog.title}</h3>
+          <p style={{ margin: '2px 0', color: 'grey' }}>{blog.author}</p>
+        </div>
       </Link>
-      <p style={{ margin: '2px 0', color: 'grey' }} className='blogAuthor'>{blog.author}</p>
-
-    </div>
+    </React.Fragment>
   )
 }
 
